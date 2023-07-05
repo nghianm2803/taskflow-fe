@@ -35,7 +35,7 @@ function HomePage() {
           <Typography variant="h6" mb={3}>
             Join us!
           </Typography>
-          <Button variant="contained" component={Link} to="/projects">
+          <Button variant="contained" component={Link} to="/project">
             Projects
           </Button>
         </Box>

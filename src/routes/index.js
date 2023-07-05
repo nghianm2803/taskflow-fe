@@ -2,7 +2,6 @@ import * as React from "react";
 import { Routes, Route } from "react-router-dom";
 import BlankLayout from "../layouts/BlankLayout";
 import MainLayout from "../layouts/MainLayout";
-import DetailPage from "../pages/DetailPage";
 import HomePage from "../pages/HomePage";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
@@ -10,6 +9,8 @@ import NotFoundPage from "../pages/NotFoundPage";
 import UserProfilePage from "../pages/UserProfilePage";
 import AuthRequire from "./AuthRequire";
 import Profile from "../features/user/Profile";
+import ProjectList from "../features/project/ProjectList";
+// import SingleProject from "../features/project/SingleProject";
 
 function Router() {
   return (
@@ -23,7 +24,8 @@ function Router() {
         }
       >
         <Route index element={<HomePage />} />
-        <Route path="project/:projectId" element={<DetailPage />} />
+        <Route path="/project" element={<ProjectList />} />
+        {/* <Route path="/projects/:id" element={<SingleProject />} /> */}
         <Route path="user/:userId" element={<UserProfilePage />} />
         <Route
           path="/me"
