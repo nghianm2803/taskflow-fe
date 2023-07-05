@@ -121,18 +121,15 @@ function AuthProvider({ children }) {
 
   const login = async ({ email, password }, callback) => {
     const response = await apiService.post("/auth/login", { email, password });
-    const { user, accessToken } = response.data;
-
-    console.log("Log response.data", response.data);
+    const { user, accessToken } = response.data.data;
 
     setSession(accessToken);
     dispatch({
       type: LOGIN_SUCCESS,
-      payload: response.data.data,
+      payload: { user },
     });
 
     callback();
-    console.log("Log user and accessToken", user, accessToken);
   };
 
   const register = async ({ name, email, password }, callback) => {
@@ -142,7 +139,7 @@ function AuthProvider({ children }) {
       password,
     });
 
-    const { user, accessToken } = response.data;
+    const { user, accessToken } = response.data.data;
     setSession(accessToken);
     dispatch({
       type: REGISTER_SUCCESS,
