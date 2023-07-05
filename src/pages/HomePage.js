@@ -12,7 +12,8 @@ function HomePage() {
 
   return (
     <div>
-      <h1>Welcome {auth.user?.username}</h1>
+      <h1>Welcome {auth.user?.name}</h1>
+      {console.log("log auth:", auth)}
       <button
         onClick={() => {
           auth.logout(() => navigate("/"));

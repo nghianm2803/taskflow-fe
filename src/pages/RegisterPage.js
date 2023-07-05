@@ -11,33 +11,39 @@ import { LoadingButton } from "@mui/lab";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
-import { useNavigate, useLocation, Link as RouterLink } from "react-router-dom";
+import { useNavigate, Link as RouterLink } from "react-router-dom";
 
-import { FCheckbox, FormProvider, FTextField } from "../components/form";
 import useAuth from "../hooks/useAuth";
+import { FormProvider, FTextField } from "../components/form";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 
-const LoginSchema = Yup.object().shape({
+const RegisterSchema = Yup.object().shape({
+  name: Yup.string().required("Name is required"),
   email: Yup.string().email("Invalid email").required("Email is required"),
   password: Yup.string().required("Password is required"),
+  passwordConfirmation: Yup.string()
+    .required("Please confirm your password")
+    .oneOf([Yup.ref("password")], "Passwords must match"),
 });
 
 const defaultValues = {
+  name: "",
   email: "",
   password: "",
-  remember: true,
+  passwordConfirmation: "",
 };
 
-function LoginPage() {
+function RegisterPage() {
   const navigate = useNavigate();
-  const location = useLocation();
   const auth = useAuth();
   const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordConfirmation, setShowPasswordConfirmation] =
+    useState(false);
 
   const methods = useForm({
-    resolver: yupResolver(LoginSchema),
+    resolver: yupResolver(RegisterSchema),
     defaultValues,
   });
   const {
@@ -48,12 +54,10 @@ function LoginPage() {
   } = methods;
 
   const onSubmit = async (data) => {
-    const from = location.state?.from?.pathname || "/";
-    let { email, password } = data;
-
+    const { name, email, password } = data;
     try {
-      await auth.login({ email, password }, () => {
-        navigate(from, { replace: true });
+      await auth.register({ name, email, password }, () => {
+        navigate("/", { replace: true });
       });
     } catch (error) {
       reset();
@@ -69,14 +73,14 @@ function LoginPage() {
             <Alert severity="error">{errors.responseError.message}</Alert>
           )}
           <Alert severity="info">
-            Don’t have an account?{" "}
-            <Link variant="subtitle2" component={RouterLink} to="/register">
-              Get started
+            Already have an account?{" "}
+            <Link variant="subtitle2" component={RouterLink} to="/login">
+              Sign in
             </Link>
           </Alert>
 
+          <FTextField name="name" label="Full name" />
           <FTextField name="email" label="Email address" />
-
           <FTextField
             name="password"
             label="Password"
@@ -94,32 +98,43 @@ function LoginPage() {
               ),
             }}
           />
-        </Stack>
+          <FTextField
+            name="passwordConfirmation"
+            label="Password Confirmation"
+            type={showPasswordConfirmation ? "text" : "password"}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={() =>
+                      setShowPasswordConfirmation(!showPasswordConfirmation)
+                    }
+                    edge="end"
+                  >
+                    {showPasswordConfirmation ? (
+                      <VisibilityIcon />
+                    ) : (
+                      <VisibilityOffIcon />
+                    )}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
 
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-          sx={{ my: 2 }}
-        >
-          <FCheckbox name="remember" label="Remember me" />
-          <Link component={RouterLink} variant="subtitle2" to="/">
-            Forgot password?
-          </Link>
+          <LoadingButton
+            fullWidth
+            size="large"
+            type="submit"
+            variant="contained"
+            loading={isSubmitting}
+          >
+            Register
+          </LoadingButton>
         </Stack>
-
-        <LoadingButton
-          fullWidth
-          size="large"
-          type="submit"
-          variant="contained"
-          loading={isSubmitting}
-        >
-          Login
-        </LoadingButton>
       </FormProvider>
     </Container>
   );
 }
 
-export default LoginPage;
+export default RegisterPage;

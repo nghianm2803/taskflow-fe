@@ -24,11 +24,11 @@ function MainHeader() {
             <Logo />
           </IconButton>
           <Typography variant="h6" color="inherit" component="div">
-            CoderStore
+            Taskflow
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
           <Typography variant="h6" color="inherit" component="div">
-            Welcome {user?.username}!
+            Welcome {user?.name}!
           </Typography>
         </Toolbar>
       </AppBar>
