@@ -130,4 +130,20 @@ export const updateProject =
     }
   };
 
+export const deleteProject =
+  ({ id }) =>
+  async (dispatch) => {
+    dispatch(slice.actions.startLoading());
+    try {
+      const response = await apiService.delete(`/project/${id}`);
+      console.log("res", response);
+      dispatch(slice.actions.deleteProjectSuccess(response.data));
+      toast.success(response.data);
+      dispatch(getProjects());
+    } catch (error) {
+      dispatch(slice.actions.hasError(error.message));
+      toast.error(error.message);
+    }
+  };
+
 export default slice.reducer;

@@ -21,7 +21,7 @@ const updateSchema = yup.object().shape({
   description: yup.string().required("Description is required"),
 });
 
-function EditProject({ project, openEditDialog, editDialogClose, projectId }) {
+function EditProject({ project, openEditDialog, editDialogClose }) {
   const dispatch = useDispatch();
   const isLoading = useSelector((state) => state.project.isLoading);
 
@@ -37,7 +37,7 @@ function EditProject({ project, openEditDialog, editDialogClose, projectId }) {
   } = methods;
 
   const onSubmit = (data) => {
-    dispatch(updateProject({ projectId, id: project._id, ...data }));
+    dispatch(updateProject({ id: project._id, ...data }));
     editDialogClose();
   };
 
