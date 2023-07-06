@@ -135,6 +135,7 @@ function ProjectList() {
                   height: "100%",
                   position: "relative",
                   overflow: "hidden",
+                  backgroundColor: "#D2B48C",
                 }}
                 onMouseEnter={handleHover}
                 onMouseLeave={handleLeave}
@@ -151,7 +152,6 @@ function ProjectList() {
 
                     justifyContent: "center",
                     alignItems: "center",
-                    backgroundColor: "#D2B48C",
                     color: "#172b4d",
                     fontSize: "1.5rem",
                     borderRadius: "10px",
