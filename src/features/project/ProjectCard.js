@@ -44,9 +44,11 @@ function ProjectCard({ project }) {
               padding: "8px",
               display: "flex",
               flexDirection: "column",
+              backgroundColor: "aquamarine",
               justifyContent: "space-between",
               minHeight: "250px",
               marginTop: "20px",
+              borderRadius: "10px"
             }}
           >
             <Box>

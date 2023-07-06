@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import apiService from "../../app/apiService";
 import { toast } from "react-toastify";
 import { PROJECTS_LIMIT_PER_PAGE } from "../../app/config";
+import { getCurrentUserProfile } from "../user/userSlice";
 
 const initialState = {
   isLoading: false,
@@ -27,12 +28,18 @@ const slice = createSlice({
       state.project = projects;
       state.totalPages = totalPages;
     },
-    // createDonationSuccess(state, action) {
-    //   state.isLoading = false;
-    //   state.error = null;
-    //   const { donation } = action.payload;
-    //   state.donation = donation;
-    // },
+    getSingleProjectSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      const currentProject = action.payload.data;
+      state.currentProject = currentProject;
+    },
+    createProjectSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      const { project } = action.payload.data;
+      state.project = [...state.project, project];
+    },
   },
 });
 
@@ -52,8 +59,6 @@ export const getProjects =
         params,
       });
 
-      console.log("API Response:", response.data); // Log the response data
-
       dispatch(slice.actions.getProjectSuccess(response.data));
     } catch (error) {
       console.error("Error occurred during API request:", error);
@@ -67,28 +72,32 @@ export const getSingleProject = (id) => async (dispatch) => {
     dispatch(slice.actions.startLoading());
 
     const response = await apiService.get(`project/${id}`);
+
+    console.log("log response: ", response);
     dispatch(slice.actions.getSingleProjectSuccess(response.data));
+
+    console.log("log response.data: ", response.data);
   } catch (error) {
     dispatch(slice.actions.hasError(error.message));
     toast.error(error.message);
   }
 };
 
-// export const createDonation =
-//   ({ projectId, userId, amount, status }) =>
-//   async (dispatch) => {
-//     try {
-//       dispatch(slice.actions.startLoading());
-//       const response = await apiService.post(
-//         `/project/${projectId}/donation/${userId}`,
-//         { amount, status }
-//       );
-//       dispatch(slice.actions.createDonationSuccess(response.data));
-
-//     } catch (error) {
-//       dispatch(slice.actions.hasError(error.message));
-//       toast.error(error.message);
-//     }
-//   };
+export const createProject =
+  ({ name, description }) =>
+  async (dispatch) => {
+    try {
+      dispatch(slice.actions.startLoading());
+      const response = await apiService.post("/project/", {
+        name,
+        description,
+      });
+      dispatch(slice.actions.createProjectSuccess(response.data));
+      dispatch(getCurrentUserProfile());
+    } catch (error) {
+      dispatch(slice.actions.hasError(error.message));
+      toast.error(error.message);
+    }
+  };
 
 export default slice.reducer;

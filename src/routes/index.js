@@ -10,7 +10,7 @@ import UserProfilePage from "../pages/UserProfilePage";
 import AuthRequire from "./AuthRequire";
 import Profile from "../features/user/Profile";
 import ProjectList from "../features/project/ProjectList";
-// import SingleProject from "../features/project/SingleProject";
+import SingleProject from "../features/project/SingleProject";
 
 function Router() {
   return (
@@ -25,7 +25,7 @@ function Router() {
       >
         <Route index element={<HomePage />} />
         <Route path="/project" element={<ProjectList />} />
-        {/* <Route path="/projects/:id" element={<SingleProject />} /> */}
+        <Route path="/project/:id" element={<SingleProject />} />
         <Route path="user/:userId" element={<UserProfilePage />} />
         <Route
           path="/me"
