@@ -48,7 +48,7 @@ function ProjectCard({ project }) {
               justifyContent: "space-between",
               minHeight: "250px",
               marginTop: "20px",
-              borderRadius: "10px"
+              borderRadius: "10px",
             }}
           >
             <Box>

@@ -2,12 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 import apiService from "../../app/apiService";
 import { toast } from "react-toastify";
 import { PROJECTS_LIMIT_PER_PAGE } from "../../app/config";
-import { getCurrentUserProfile } from "../user/userSlice";
 
 const initialState = {
   isLoading: false,
   error: null,
   project: [],
+  updatedProject: {},
 };
 
 const slice = createSlice({
@@ -39,6 +39,19 @@ const slice = createSlice({
       state.error = null;
       const { project } = action.payload.data;
       state.project = [...state.project, project];
+    },
+    updateProjectSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      const updatedProject = action.payload.data;
+      state.updatedProject = updatedProject;
+    },
+    deleteProjectSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      const { project } = action.payload.data;
+      console.log("project", project);
+      delete state.project;
     },
   },
 });
@@ -93,7 +106,24 @@ export const createProject =
         description,
       });
       dispatch(slice.actions.createProjectSuccess(response.data));
-      dispatch(getCurrentUserProfile());
+      toast.success(response.message);
+      dispatch(getProjects());
+    } catch (error) {
+      dispatch(slice.actions.hasError(error.message));
+      toast.error(error.message);
+    }
+  };
+
+export const updateProject =
+  ({ id, name, description, deadline, priority }) =>
+  async (dispatch) => {
+    try {
+      dispatch(slice.actions.startLoading());
+      const data = { name, description, deadline, priority };
+      const response = await apiService.put(`/project/${id}`, data);
+      dispatch(slice.actions.updateProjectSuccess(response.data));
+      toast.success(response.message);
+      dispatch(getSingleProject(id));
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));
       toast.error(error.message);
