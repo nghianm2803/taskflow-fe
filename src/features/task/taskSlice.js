@@ -2,7 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import apiService from "../../app/apiService";
 import { TASKS_PER_PAGE } from "../../app/config";
-import { cloudinaryUpload } from "../../utils/cloudinary";
 import { getCurrentUserProfile } from "../user/userSlice";
 
 const initialState = {
@@ -73,15 +72,12 @@ export const getTasks =
   };
 
 export const createTask =
-  ({ content, image }) =>
+  ({ content }) =>
   async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
-      // upload image to cloudinary
-      const imageUrl = await cloudinaryUpload(image);
       const response = await apiService.post("/task", {
         content,
-        image: imageUrl,
       });
       dispatch(slice.actions.createTaskSuccess(response.data));
       toast.success("Create task successfully");

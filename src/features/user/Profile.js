@@ -1,44 +1,116 @@
 import useAuth from "../../hooks/useAuth";
-import { Link, Grid, Typography, Stack, Box } from "@mui/material";
-import EmailIcon from "@mui/icons-material/Email";
-import { styled } from "@mui/material/styles";
-import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
+import { Container, Grid, Typography, Stack, Box, Card } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+import { FormProvider, FTextField, FUploadAvatar } from "../../components/form";
+import { fData } from "../../utils/numberFormat";
+import { updateUserProfile } from "./userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 
-const IconStyle = styled(Box)(({ theme }) => ({
-  width: 20,
-  height: 20,
-  marginTop: 1,
-  flexShrink: 0,
-  marginRight: theme.spacing(2),
-}));
+const UpdateUserSchema = yup.object().shape({
+  name: yup.string().required("Name is required"),
+});
 
 function Profile() {
   const { user } = useAuth();
   const { name, email, role } = user;
 
-  return (
-    <Grid container spacing={3}>
-      <Stack spacing={2} sx={{ p: 3 }}>
-        <Typography variant="body2">{name}</Typography>
-        <Stack direction="row">
-          <IconStyle>
-            <EmailIcon />
-          </IconStyle>
-          <Typography variant="body2">{email}</Typography>
-        </Stack>
+  const isLoading = useSelector((state) => state.user.isLoading);
 
-        <Stack direction="row">
-          <IconStyle>
-            <BusinessCenterIcon />
-          </IconStyle>
-          <Typography variant="body2">
-            <Link component="span" variant="subtitle2" color="text.primary">
-              {role}
-            </Link>
-          </Typography>
-        </Stack>
-      </Stack>
-    </Grid>
+  const defaultValues = {
+    name: user?.name || "",
+    email: user?.email || "",
+    avatar: user?.avatar || "",
+    role: user?.role || "",
+  };
+
+  const methods = useForm({
+    resolver: yupResolver(UpdateUserSchema),
+    defaultValues,
+  });
+  const {
+    setValue,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = methods;
+
+  const dispatch = useDispatch();
+
+  const onSubmit = (data) => {
+    // dispatch(updateUserProfile({ userId: user._id, ...data }));
+  };
+
+  return (
+    <Container>
+      <Typography variant="h5" gutterBottom>
+        My Profile{" "}
+      </Typography>
+
+      <Box sx={{ mb: 5 }} />
+
+      <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={4}>
+            <Card sx={{ py: 10, px: 3, textAlign: "center" }}>
+              <FUploadAvatar
+                name="avatarUrl"
+                accept="image/*"
+                maxSize={3145728}
+                // onDrop={handleDrop}
+                helperText={
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      mt: 2,
+                      mx: "auto",
+                      display: "block",
+                      textAlign: "center",
+                      color: "text.secondary",
+                    }}
+                  >
+                    Allowed *.jpeg, *.jpg, *.png, *.gif
+                    <br /> max size of {fData(3145728)}
+                  </Typography>
+                }
+              />
+            </Card>
+          </Grid>
+
+          <Grid item xs={12} md={8}>
+            <Card sx={{ p: 3 }}>
+              <Box
+                sx={{
+                  display: "grid",
+                  rowGap: 3,
+                  columnGap: 2,
+                  gridTemplateColumns: {
+                    xs: "repeat(1, 1fr)",
+                    sm: "repeat(2, 1fr)",
+                  },
+                }}
+              >
+                <FTextField name="name" label="Name" />
+                <FTextField name="email" label="Email" disabled />
+              </Box>
+
+              <Stack spacing={3} alignItems="flex-end" sx={{ mt: 3 }}>
+                <FTextField name="role" label="Role" />
+
+                <LoadingButton
+                  type="submit"
+                  variant="contained"
+                  loading={isSubmitting || isLoading}
+                >
+                  Save Changes
+                </LoadingButton>
+              </Stack>
+            </Card>
+          </Grid>
+        </Grid>
+      </FormProvider>
+    </Container>
   );
 }
 

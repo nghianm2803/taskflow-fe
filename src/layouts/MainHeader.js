@@ -75,18 +75,7 @@ function MainHeader() {
       >
         My Profile
       </MenuItem>
-
-      <MenuItem
-        onClick={handleMenuClose}
-        to="/account"
-        component={RouterLink}
-        sx={{ mx: 1 }}
-      >
-        Account Settings
-      </MenuItem>
-
       <Divider sx={{ borderStyle: "dashed" }} />
-
       <MenuItem onClick={handleLogout} sx={{ m: 1 }}>
         Logout
       </MenuItem>
