@@ -8,7 +8,7 @@ const initialState = {
   isLoading: false,
   error: null,
   task: [],
-  updatedProject: {},
+  projectTo: {},
 };
 
 const slice = createSlice({
@@ -33,13 +33,10 @@ const slice = createSlice({
       state.isLoading = false;
       state.error = null;
 
-      const { tasks, count } = action.payload;
-      tasks.forEach((task) => {
-        state.task = task;
-        if (!state.currentPageTasks.includes(task._id))
-          state.currentPageTasks.push(task._id);
-      });
-      state.totalTasks = count;
+      const { projectId, tasks } = action.payload;
+
+      tasks.forEach((task) => (state.task = task));
+      state.projectTo[projectId] = tasks.map((task) => task._id).reverse();
     },
 
     createTaskSuccess(state, action) {
@@ -55,7 +52,7 @@ const slice = createSlice({
 });
 
 export const getTasks =
-  ({ userId, page = 1, limit = TASKS_PER_PAGE }) =>
+  ({ projectId, page = 1, limit = TASKS_PER_PAGE }) =>
   async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
@@ -63,8 +60,7 @@ export const getTasks =
       const response = await apiService.get("/task", {
         params,
       });
-      if (page === 1) dispatch(slice.actions.resetTasks());
-      dispatch(slice.actions.getTasksSuccess(response.data));
+      dispatch(slice.actions.getTasksSuccess(...response.data, projectId));
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));
       toast.error(error.message);

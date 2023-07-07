@@ -17,6 +17,7 @@ import DeleteProject from "./DeleteProject";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import TaskList from "../task/TaskList";
 
 function SingleProject() {
   const { id } = useParams();
@@ -128,6 +129,8 @@ function SingleProject() {
               openDeleteDialog={openDeleteDialog}
               deleteDialogClose={deleteDialogClose}
             />
+
+            {/* <TaskList /> */}
           </Box>
         )}
       </Stack>
