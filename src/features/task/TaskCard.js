@@ -8,10 +8,10 @@ import { fDate } from "../../utils/formatTime";
 const TaskCard = ({ task }) => {
   const navigate = useNavigate();
 
-  const handleExplore = () => {
-    const taskId = task._id;
-    navigate(`/task/${taskId}`);
-  };
+  // const handleExplore = () => {
+  //   const taskId = task._id;
+  //   navigate(`/task/${taskId}`);
+  // };
 
   const [isHovered, setIsHovered] = useState(false);
 
@@ -49,7 +49,7 @@ const TaskCard = ({ task }) => {
           },
         }}
       >
-        <Typography>{task.assignedTo}</Typography>
+        <Typography>{task.assignTo}</Typography>
         <Typography> {fDate(task.deadline)}</Typography>
       </Box>
     </Card>

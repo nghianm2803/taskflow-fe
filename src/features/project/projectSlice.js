@@ -86,10 +86,9 @@ export const getSingleProject = (id) => async (dispatch) => {
 
     const response = await apiService.get(`project/${id}`);
 
-    console.log("log response: ", response);
     dispatch(slice.actions.getSingleProjectSuccess(response.data));
 
-    console.log("log response.data: ", response.data);
+    // console.log("log response.data: ", response.data);
   } catch (error) {
     dispatch(slice.actions.hasError(error.message));
     toast.error(error.message);

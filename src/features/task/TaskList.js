@@ -10,31 +10,29 @@ import { Stack } from "@mui/material";
  * Display tasks?.map in TaskCard form
  * Box list of tasks devided into 4 column Pending, Working, Review, Done
  * Check task.status === "status" for fit column
- * SingleProject get import TaskList of its
+ * SingleProject get import TasksList of its
  */
 
 const TaskList = ({ projectId }) => {
-  const { projectTo, isLoading } =
-    useSelector(
-      (state) => ({
-        projectTo: state.task.projectTo,
-        isLoading: state.task.isLoading,
-      }),
-      shallowEqual
-    );
+  const { tasksList, isLoading } = useSelector((state) => state.task);
+  console.log("TaskList - tasksList:", tasksList);
+  
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (projectId) dispatch(getTasks({ projectId }));
+    if (projectId) {
+      dispatch(getTasks({ projectId }));
+    }
+    console.log("TaskList - projectId:", projectId);
+    console.log("TaskList - tasksList:", tasksList);
   }, [projectId, dispatch]);
 
   let renderTasks;
 
-  if (projectTo) {
-    const tasks = projectTo.map((taskId) => projectTo[taskId]);
+  if (tasksList && tasksList.length > 0) {
     renderTasks = (
       <Stack spacing={1.5}>
-        {tasks.map((task) => (
+        {tasksList.map((task) => (
           <TaskCard key={task._id} task={task} />
         ))}
       </Stack>
@@ -42,6 +40,10 @@ const TaskList = ({ projectId }) => {
   } else if (isLoading) {
     renderTasks = <LoadingScreen />;
   }
+
+  console.log("TaskList - Rendered tasks:", renderTasks);
+
+  return renderTasks;
 };
 
 export default TaskList;

@@ -7,7 +7,7 @@ import { getCurrentUserProfile } from "../user/userSlice";
 const initialState = {
   isLoading: false,
   error: null,
-  task: [],
+  tasksList: [],
   projectTo: {},
 };
 
@@ -25,28 +25,26 @@ const slice = createSlice({
     },
 
     resetTasks(state, action) {
-      state.task = {};
-      state.currentPageTasks = [];
+      state.tasksList = [];
     },
 
     getTasksSuccess(state, action) {
       state.isLoading = false;
       state.error = null;
 
-      const { projectId, tasks } = action.payload;
+      const { taskList } = action.payload.data;
 
-      tasks.forEach((task) => (state.task = task));
-      state.projectTo[projectId] = tasks.map((task) => task._id).reverse();
+      state.tasksList = taskList.map((task) => ({
+        ...task,
+        projectTo: task.projectTo,
+      }));
     },
 
     createTaskSuccess(state, action) {
       state.isLoading = false;
       state.error = null;
-      const newTask = action.payload;
-      if (state.currentPageTasks.length % TASKS_PER_PAGE === 0)
-        state.currentPageTasks.pop();
-      state.task = newTask;
-      state.currentPageTasks.unshift(newTask._id);
+      const newTask = action.payload.data;
+      state.tasksList.unshift(newTask);
     },
   },
 });
@@ -57,10 +55,9 @@ export const getTasks =
     dispatch(slice.actions.startLoading());
     try {
       const params = { page, limit };
-      const response = await apiService.get("/task", {
-        params,
-      });
-      dispatch(slice.actions.getTasksSuccess(...response.data, projectId));
+      const response = await apiService.get("/task", { params });
+      console.log("getTasks - response:", response.data);
+      dispatch(slice.actions.getTasksSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));
       toast.error(error.message);
