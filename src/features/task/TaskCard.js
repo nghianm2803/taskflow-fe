@@ -49,7 +49,7 @@ const TaskCard = ({ task }) => {
           },
         }}
       >
-        <Typography>{task.assignTo}</Typography>
+        <Typography>{task.assignTo ? task.assignTo : "Unassigned"}</Typography>
         <Typography> {fDate(task.deadline)}</Typography>
       </Box>
     </Card>

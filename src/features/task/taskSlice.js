@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import apiService from "../../app/apiService";
-import { TASKS_PER_PAGE } from "../../app/config";
 import { getCurrentUserProfile } from "../user/userSlice";
 
 const initialState = {
@@ -34,10 +33,9 @@ const slice = createSlice({
 
       const { taskList } = action.payload.data;
 
-      state.tasksList = taskList.map((task) => ({
-        ...task,
-        projectTo: task.projectTo,
-      }));
+      state.tasksList = taskList.filter(
+        (task) => task.projectTo._id === action.payload.projectId
+      );
     },
 
     createTaskSuccess(state, action) {
@@ -50,14 +48,13 @@ const slice = createSlice({
 });
 
 export const getTasks =
-  ({ projectId, page = 1, limit = TASKS_PER_PAGE }) =>
+  ({ projectId }) =>
   async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
-      const params = { page, limit };
-      const response = await apiService.get("/task", { params });
+      const response = await apiService.get("/task");
       console.log("getTasks - response:", response.data);
-      dispatch(slice.actions.getTasksSuccess(response.data));
+      dispatch(slice.actions.getTasksSuccess(response.data, projectId));
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));
       toast.error(error.message);

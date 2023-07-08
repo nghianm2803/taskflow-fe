@@ -130,7 +130,7 @@ function SingleProject() {
               deleteDialogClose={deleteDialogClose}
             />
 
-            <TasksList projectId={project._id} />
+            {project && project._id && <TasksList projectId={project._id} />}
           </Box>
         )}
       </Stack>
