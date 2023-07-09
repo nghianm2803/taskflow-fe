@@ -57,16 +57,13 @@ const slice = createSlice({
 });
 
 export const getProjects =
-  ({ page, limit = PROJECTS_LIMIT_PER_PAGE, search, sortBy }) =>
+  ({ page, limit = PROJECTS_LIMIT_PER_PAGE, name }) =>
   async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
       const params = { page, limit };
-      if (search) {
-        params.search = search;
-      }
-      if (sortBy) {
-        params.sortBy = sortBy;
+      if (name) {
+        params.name = name;
       }
       const response = await apiService.get(`/project`, {
         params,

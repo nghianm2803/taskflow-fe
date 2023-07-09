@@ -13,9 +13,7 @@ import {
   Modal,
   Fade,
 } from "@mui/material";
-import { FormProvider } from "../../components/form";
 import SearchInput from "../../components/SearchInput";
-import SortProject from "../../components/SortProject";
 import { useForm } from "react-hook-form";
 import ProjectCard from "./ProjectCard";
 import ProjectForm from "./ProjectForm";
@@ -25,8 +23,7 @@ import "./projectcard.css";
 function ProjectList() {
   const [page, setPage] = useState(1);
   const dispatch = useDispatch();
-  const [search, setSearch] = useState("");
-  const [sortBy, setSortBy] = useState("");
+  const [name, setName] = useState("");
   const projects = useSelector((state) => state.project.project);
   const totalPage = useSelector((state) => state.project.totalPages);
 
@@ -40,8 +37,8 @@ function ProjectList() {
     setIsHovered(false);
   };
 
-  const handleOnSubmit = (search) => {
-    setSearch(search);
+  const handleOnSubmit = (name) => {
+    setName(name);
   };
 
   const handleChange = (e, value) => {
@@ -56,26 +53,16 @@ function ProjectList() {
     setIsCreatingProject(false);
   };
 
-  const handleSortChange = (sortValue) => {
-    setSortBy(sortValue);
-  };
   const methods = useForm();
-
-  const { handleSubmit } = methods;
-
-  const onSubmit = (formData) => {
-    setSortBy(formData.sortBy);
-  };
 
   useEffect(() => {
     dispatch(
       getProjects({
         page,
-        search,
-        sortBy,
+        name,
       })
     );
-  }, [dispatch, page, search, sortBy]);
+  }, [dispatch, page, name]);
 
   return (
     <Container
@@ -98,21 +85,9 @@ function ProjectList() {
       >
         Browse current Start Up opportunities on Taskflow.
       </Typography>
-      <Stack
-        display="flex"
-        flexDirection={{ xs: "column", md: "row" }}
-        justifyContent="space-between"
-        alignItems="center"
-      >
-        <Box marginBottom={5}>
-          <SearchInput handleOnSubmit={handleOnSubmit} />
-        </Box>
-        <Box marginBottom={5}>
-          <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-            <SortProject handleSortChange={handleSortChange} mt={2} />
-          </FormProvider>
-        </Box>
-      </Stack>
+      <Box marginBottom={5}>
+        <SearchInput handleOnSubmit={handleOnSubmit} />
+      </Box>
       {projects ? (
         <>
           <Grid

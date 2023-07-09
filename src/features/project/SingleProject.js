@@ -7,6 +7,9 @@ import {
   DialogContent,
   IconButton,
   Typography,
+  Grid,
+  Card,
+  CardContent,
 } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -73,7 +76,7 @@ function SingleProject() {
         justifyContent="space-between"
       >
         {project && (
-          <Box width="100%" minheight="80vh" padding={1}>
+          <Box width="100%" minHeight="80vh" padding={1}>
             <ProjectHeader project={project} />
             <Box>
               <IconButton onClick={handleDialogOpen}>
@@ -129,6 +132,89 @@ function SingleProject() {
               openDeleteDialog={openDeleteDialog}
               deleteDialogClose={deleteDialogClose}
             />
+
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6} md={3}>
+                <Card
+                  sx={{
+                    width: "100%",
+                    height: "100%",
+                    backgroundColor: "#EDEEF8",
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <CardContent>
+                    <Typography variant="body2" display="block" align="left">
+                      Pending
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid item xs={12} sm={6} md={3}>
+                <Card
+                  sx={{
+                    width: "100%",
+                    height: "60%",
+                    backgroundColor: "#FFFDEC",
+                  }}
+                >
+                  <CardContent
+                    sx={{
+                      "&:last-child": {
+                        paddingBottom: 0, // Set the desired value or remove the property completely
+                      },
+                    }}
+                  >
+                    <Typography variant="body2" display="block" align="left">
+                      Working
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid item xs={12} sm={6} md={3}>
+                <Card
+                  sx={{
+                    width: "100%",
+                    height: "60%",
+                    backgroundColor: "#E6F9FB",
+                  }}
+                >
+                  <CardContent
+                    sx={{
+                      "&:last-child": {
+                        paddingBottom: 0, // Set the desired value or remove the property completely
+                      },
+                    }}
+                  >
+                    <Typography variant="body2" display="block" align="left">
+                      Review
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid item xs={12} sm={6} md={3}>
+                <Card
+                  sx={{
+                    width: "100%",
+                    height: "60%",
+                    backgroundColor: "#F4F9ED",
+                  }}
+                >
+                  <CardContent
+                    sx={{
+                      "&:last-child": {
+                        paddingBottom: 0, // Set the desired value or remove the property completely
+                      },
+                    }}
+                  >
+                    <Typography variant="body2" display="block" align="left">
+                      Done
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            </Grid>
 
             {project && project._id && <TasksList projectId={project._id} />}
           </Box>
