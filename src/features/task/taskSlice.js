@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import apiService from "../../app/apiService";
-import { getCurrentUserProfile } from "../user/userSlice";
 
 const initialState = {
   isLoading: false,
@@ -48,12 +47,11 @@ const slice = createSlice({
 });
 
 export const getTasks =
-  ({ projectId }) =>
+  ({ projectId, limit }) =>
   async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
-      const response = await apiService.get("/task");
-      console.log("getTasks - response:", response.data);
+      const response = await apiService.get(`/task?limit=${limit}`);
       dispatch(slice.actions.getTasksSuccess(response.data, projectId));
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));
@@ -61,22 +59,20 @@ export const getTasks =
     }
   };
 
-export const createTask =
-  ({ content }) =>
-  async (dispatch) => {
-    dispatch(slice.actions.startLoading());
-    try {
-      const response = await apiService.post("/task", { content });
-      const newTask = response.data;
-
-      dispatch(slice.actions.createTaskSuccess(newTask));
-      toast.success("Create task successfully");
-      dispatch(getCurrentUserProfile());
-    } catch (error) {
-      dispatch(slice.actions.hasError(error.message));
-      toast.error(error.message);
-    }
-  };
+export const createTask = (data) => async (dispatch) => {
+  dispatch(slice.actions.startLoading());
+  try {
+    const response = await apiService.post("/task", data);
+    const createdTask = response.data;
+    dispatch(slice.actions.createTaskSuccess(createdTask));
+    toast.success("Task created successfully");
+    return createdTask;
+  } catch (error) {
+    dispatch(slice.actions.hasError(error.message));
+    toast.error(error.message);
+    throw error;
+  }
+};
 
 export const addTaskToProject =
   ({ taskId, projectId }) =>
