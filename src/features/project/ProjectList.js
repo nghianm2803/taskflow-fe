@@ -53,8 +53,6 @@ function ProjectList() {
     setIsCreatingProject(false);
   };
 
-  const methods = useForm();
-
   useEffect(() => {
     dispatch(
       getProjects({

@@ -1,12 +1,25 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import TaskCard from "./TaskCard";
 import { useDispatch, useSelector } from "react-redux";
 import { getTasks } from "./taskSlice";
 import LoadingScreen from "../../components/LoadingScreen";
-import { Grid } from "@mui/material";
+import { Grid, Card, CardContent, Typography } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import "./taskstyle.css";
 
 const TaskList = ({ projectId }) => {
   const { tasksList, isLoading } = useSelector((state) => state.task);
+
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleHover = () => {
+    setIsHovered(true);
+  };
+
+  const handleLeave = () => {
+    setIsHovered(false);
+  };
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -42,6 +55,34 @@ const TaskList = ({ projectId }) => {
             {pendingTasks.map((task) => (
               <TaskCard key={task._id} task={task} />
             ))}
+            <Card
+              className={isHovered ? "task-card-hovered" : "task-card"}
+              sx={{
+                marginTop: "5px",
+                width: "100%",
+                height: "20%",
+                position: "relative",
+                textAlign: "center",
+                alignItems: "center",
+              }}
+              onMouseEnter={handleHover}
+              onMouseLeave={handleLeave}
+              // onClick={handleExplore}
+            >
+              <CardContent
+                style={{
+                  paddingBottom: "16px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <AddIcon fontSize="small" />
+                <Typography variant="body2" display="block" align="center">
+                  Task
+                </Typography>
+              </CardContent>
+            </Card>
           </Grid>
         )}
 

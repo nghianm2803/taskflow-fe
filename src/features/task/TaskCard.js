@@ -1,6 +1,5 @@
 import { Typography, Box, Card } from "@mui/material";
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import "./taskstyle.css";
 import { useNavigate } from "react-router-dom";
 import { fDate } from "../../utils/formatTime";
@@ -28,16 +27,17 @@ const TaskCard = ({ task }) => {
       className={isHovered ? "task-card-hovered" : "task-card"}
       sx={{
         p: 1,
-        width: 320,
-        height: "100%",
+        width: "100%",
+        height: "40%",
         position: "relative",
         overflow: "hidden",
+        marginBottom: "5px",
       }}
       onMouseEnter={handleHover}
       onMouseLeave={handleLeave}
       // onClick={handleExplore}
     >
-      <Typography sx={{ overflowWrap: "break-word" }}>{task.name}</Typography>
+      <Typography sx={style}>{task.name}</Typography>
       <Box
         sx={{
           display: "grid",
@@ -49,11 +49,22 @@ const TaskCard = ({ task }) => {
           },
         }}
       >
-        <Typography>{task.assignTo ? task.assignTo : "Unassigned"}</Typography>
-        <Typography> {fDate(task.deadline)}</Typography>
+        <Typography sx={style}>
+          {task.assignTo ? task.assignTo : "Unassigned"}
+        </Typography>
+        <Typography sx={style}> {fDate(task.deadline)}</Typography>
       </Box>
     </Card>
   );
+};
+
+const style = {
+  fontWeight: "500px",
+  fontSize: "14px",
+  lineHeight: "20px",
+  letterSpace: "0px",
+  wordBreak: "break-word",
+  cursor: "pointer",
 };
 
 export default TaskCard;

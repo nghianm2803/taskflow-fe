@@ -85,7 +85,6 @@ export const getSingleProject = (id) => async (dispatch) => {
 
     dispatch(slice.actions.getSingleProjectSuccess(response.data));
 
-    // console.log("log response.data: ", response.data);
   } catch (error) {
     dispatch(slice.actions.hasError(error.message));
     toast.error(error.message);
