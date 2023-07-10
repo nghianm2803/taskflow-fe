@@ -28,10 +28,10 @@ const TaskCard = ({ task }) => {
       sx={{
         p: 1,
         width: "100%",
-        height: "40%",
+        height: "80px",
         position: "relative",
         overflow: "hidden",
-        marginBottom: "5px",
+        marginBottom: "10px",
       }}
       onMouseEnter={handleHover}
       onMouseLeave={handleLeave}

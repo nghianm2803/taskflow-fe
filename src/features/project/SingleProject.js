@@ -21,8 +21,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import TasksList from "../task/TaskList";
+import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 import AssignmentIcon from "@mui/icons-material/Assignment";
-import ContentPasteGoIcon from "@mui/icons-material/ContentPasteGo";
 import ContentPasteSearchIcon from "@mui/icons-material/ContentPasteSearch";
 import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 
@@ -155,7 +155,7 @@ function SingleProject() {
                       alignItems: "center",
                     }}
                   >
-                    <AssignmentIcon
+                    <ContentPasteIcon
                       style={{ color: "#3F51B5", paddingRight: "5px" }}
                     />
                     <Typography variant="body2" display="block" align="left">
@@ -181,7 +181,7 @@ function SingleProject() {
                       alignItems: "center",
                     }}
                   >
-                    <ContentPasteGoIcon
+                    <AssignmentIcon
                       style={{ color: "#F1C93B", paddingRight: "5px" }}
                     />
                     <Typography variant="body2" display="block" align="left">

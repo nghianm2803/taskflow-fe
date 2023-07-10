@@ -1,16 +1,51 @@
 import React, { useEffect, useState } from "react";
 import TaskCard from "./TaskCard";
 import { useDispatch, useSelector } from "react-redux";
-import { getTasks } from "./taskSlice";
+import { getTasks, createTask } from "./taskSlice";
 import LoadingScreen from "../../components/LoadingScreen";
-import { Grid, Card, CardContent, Typography } from "@mui/material";
+import { Grid, Card, Typography, alpha, Box } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import "./taskstyle.css";
+import { FormProvider, FTextField } from "../../components/form";
+import { LoadingButton } from "@mui/lab";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
+import { useForm } from "react-hook-form";
 
 const TaskList = ({ projectId }) => {
   const { tasksList, isLoading } = useSelector((state) => state.task);
 
+  const yupSchema = Yup.object().shape({
+    name: Yup.string().required("This field is required"),
+    description: Yup.string().required("This field is required"),
+  });
+
+  const defaultValues = {
+    name: "",
+    description: "",
+  };
+
+  const methods = useForm({
+    resolver: yupResolver(yupSchema),
+    defaultValues,
+  });
+  const {
+    handleSubmit,
+    reset,
+    formState: { isSubmitting },
+  } = methods;
+  const dispatch = useDispatch();
+
+  const onSubmit = (data) => {
+    dispatch(createTask(data)).then(() => reset());
+  };
+
   const [isHovered, setIsHovered] = useState(false);
+  const [showForm, setShowForm] = useState(false);
+
+  const handleTaskClick = () => {
+    setShowForm((prevState) => !prevState);
+  };
 
   const handleHover = () => {
     setIsHovered(true);
@@ -19,8 +54,6 @@ const TaskList = ({ projectId }) => {
   const handleLeave = () => {
     setIsHovered(false);
   };
-
-  const dispatch = useDispatch();
 
   useEffect(() => {
     if (projectId) {
@@ -58,31 +91,77 @@ const TaskList = ({ projectId }) => {
             <Card
               className={isHovered ? "task-card-hovered" : "task-card"}
               sx={{
-                marginTop: "5px",
+                marginTop: "10px",
+                marginBottom: "10px",
                 width: "100%",
-                height: "20%",
+                height: "40px",
                 position: "relative",
                 textAlign: "center",
                 alignItems: "center",
+                display: "flex",
+                justifyContent: "center",
               }}
               onMouseEnter={handleHover}
               onMouseLeave={handleLeave}
-              // onClick={handleExplore}
+              onClick={handleTaskClick}
             >
-              <CardContent
-                style={{
-                  paddingBottom: "16px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <AddIcon fontSize="small" />
-                <Typography variant="body2" display="block" align="center">
-                  Task
-                </Typography>
-              </CardContent>
+              <AddIcon fontSize="small" />
+              <Typography variant="body2" display="block" align="center">
+                Task
+              </Typography>
             </Card>
+            {showForm && (
+              <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+                <FTextField
+                  name="name"
+                  fullWidth
+                  required
+                  placeholder="Task's name"
+                  sx={{
+                    "& fieldset": {
+                      borderWidth: `1px !important`,
+                      borderColor: alpha("#47BA5F", 0.32),
+                    },
+                  }}
+                />
+                <FTextField
+                  name="description"
+                  fullWidth
+                  required
+                  placeholder="Task's description"
+                  sx={{
+                    "& fieldset": {
+                      borderWidth: `1px !important`,
+                      borderColor: alpha("#47BA5F", 0.32),
+                    },
+                  }}
+                />
+                <FTextField
+                  type="date"
+                  name="deadline"
+                  sx={{ width: 1, mb: "20px" }}
+                />
+
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "flex-end",
+                  }}
+                >
+                  <LoadingButton
+                    type="submit"
+                    variant="contained"
+                    size="small"
+                    loading={isSubmitting || isLoading}
+                  >
+                    Create Task
+                  </LoadingButton>
+                  {/* Invalid name & Invalid description & Invalid Deadline &
+                  Deadline must be in the format 'yyyy-mm-dd hh:mm:ss' */}
+                </Box>
+              </FormProvider>
+            )}
           </Grid>
         )}
 

@@ -66,12 +66,24 @@ export const createTask =
   async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
-      const response = await apiService.post("/task", {
-        content,
-      });
-      dispatch(slice.actions.createTaskSuccess(response.data));
+      const response = await apiService.post("/task", { content });
+      const newTask = response.data;
+
+      dispatch(slice.actions.createTaskSuccess(newTask));
       toast.success("Create task successfully");
       dispatch(getCurrentUserProfile());
+    } catch (error) {
+      dispatch(slice.actions.hasError(error.message));
+      toast.error(error.message);
+    }
+  };
+
+export const addTaskToProject =
+  ({ taskId, projectId }) =>
+  async (dispatch) => {
+    dispatch(slice.actions.startLoading());
+    try {
+      await apiService.put(`/task/${taskId}/project/${projectId}`);
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));
       toast.error(error.message);
