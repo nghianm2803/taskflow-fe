@@ -14,7 +14,6 @@ import {
   Fade,
 } from "@mui/material";
 import SearchInput from "../../components/SearchInput";
-import { useForm } from "react-hook-form";
 import ProjectCard from "./ProjectCard";
 import ProjectForm from "./ProjectForm";
 import LoadingScreen from "../../components/LoadingScreen";
@@ -155,7 +154,7 @@ function ProjectList() {
                           p: 4,
                         }}
                       >
-                        <ProjectForm />
+                        <ProjectForm onClose={handleCloseModal} />
                       </Box>
                     </Fade>
                   </Modal>

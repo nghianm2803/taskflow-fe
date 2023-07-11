@@ -31,7 +31,8 @@ const slice = createSlice({
       state.error = null;
       const { taskList } = action.payload.data;
       state.tasksList = taskList.filter(
-        (task) => task.projectTo._id === action.payload.projectId
+        (task) =>
+          task.projectTo._id === action.payload.projectId && !task.isDeleted
       );
     },
     getSingleTaskSuccess(state, action) {
@@ -46,12 +47,26 @@ const slice = createSlice({
       const newTask = action.payload.data;
       state.tasksList.unshift(newTask);
     },
+    deleteTaskSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      const { id } = action.payload.data;
+      state.tasksList = state.tasksList.filter((task) => task._id !== id);
+    },
+
+    // deleteTaskSuccess(state, action) {
+    //   state.isLoading = false;
+    //   state.error = null;
+    //   const taskId = action.payload;
+    //   state.tasksList = state.tasksList.filter((task) => task._id !== taskId);
+    // },
   },
 });
 
 export const getTasks =
   ({ projectId, limit }) =>
   async (dispatch) => {
+    console.log("getTasks called");
     dispatch(slice.actions.startLoading());
     try {
       const response = await apiService.get(`/task?limit=${limit}`);
@@ -101,15 +116,32 @@ export const addTaskToProject =
   };
 
 export const updateTask =
-  ({ id, name, description, deadline, priority }) =>
+  ({ id, name, description, status, deadline, priority }) =>
   async (dispatch) => {
     try {
       dispatch(slice.actions.startLoading());
-      const data = { name, description, deadline, priority };
+      const data = { name, description, status, deadline, priority };
       const response = await apiService.put(`/task/${id}`, data);
       dispatch(slice.actions.updateTaskSuccess(response.data));
       toast.success(response.message);
       dispatch(getSingleTask(id));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error.message));
+      toast.error(error.message);
+    }
+  };
+
+export const deleteTask =
+  ({ id }) =>
+  async (dispatch) => {
+    dispatch(slice.actions.startLoading());
+    try {
+      const response = await apiService.delete(`/task/${id}`);
+      dispatch(slice.actions.deleteTaskSuccess(response.data));
+      toast.success(response.data);
+      console.log("delete task succeed");
+      dispatch(getTasks());
+      console.log("getTasks called after delete");
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));
       toast.error(error.message);

@@ -19,7 +19,7 @@ const defaultValues = {
   description: "",
 };
 
-function ProjectForm() {
+function ProjectForm({ onClose }) {
   const { isLoading } = useSelector((state) => state.project);
 
   const methods = useForm({
@@ -34,7 +34,10 @@ function ProjectForm() {
   const dispatch = useDispatch();
 
   const onSubmit = (data) => {
-    dispatch(createProject(data)).then(() => reset());
+    dispatch(createProject(data)).then(() => {
+      reset();
+      onClose();
+    });
   };
 
   return (

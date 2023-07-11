@@ -8,14 +8,13 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { deleteProject, getSingleProject } from "./projectSlice";
+import { deleteProject } from "./projectSlice";
 
 function DeleteProject({ id, openDeleteDialog, deleteDialogClose }) {
   const dispatch = useDispatch();
 
   const handleDeleteProject = () => {
     dispatch(deleteProject({ id }));
-    dispatch(getSingleProject({ id }));
     deleteDialogClose();
   };
 
