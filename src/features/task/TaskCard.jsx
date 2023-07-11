@@ -1,11 +1,51 @@
-import React, { useState } from "react";
-import { Typography, Box, Card, CardContent, Collapse } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import {
+  Typography,
+  Box,
+  Card,
+  CardContent,
+  Divider,
+  IconButton,
+} from "@mui/material";
 import "./taskstyle.css";
 import { fDate } from "../../utils/formatTime";
+import CloseIcon from "@mui/icons-material/Close";
+import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { FTextField, FormProvider } from "../../components/form";
+import { LoadingButton } from "@mui/lab";
+import { updateTask } from "./taskSlice";
+
+const updateSchema = yup.object().shape({
+  name: yup.string().required("Name is required"),
+  description: yup.string().required("Description is required"),
+});
 
 const TaskCard = ({ task }) => {
+  const dispatch = useDispatch();
   const [isHovered, setIsHovered] = useState(false);
   const [showDetail, setShowDetail] = useState(false);
+
+  const methods = useForm({
+    resolver: yupResolver(updateSchema),
+  });
+
+  const {
+    reset,
+    setValue,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = methods;
+
+  const onSubmit = (data) => {
+    dispatch(updateTask({ id: task._id, ...data }));
+  };
+
+  useEffect(() => {
+    reset(task);
+  }, [task, reset]);
 
   const handleHover = () => {
     setIsHovered(true);
@@ -17,6 +57,10 @@ const TaskCard = ({ task }) => {
 
   const handleTaskClick = () => {
     setShowDetail(!showDetail);
+  };
+
+  const handleCloseForm = () => {
+    setShowDetail(false);
   };
 
   return (
@@ -55,30 +99,82 @@ const TaskCard = ({ task }) => {
           </Box>
         </Card>
         {showDetail && (
-          <Collapse
-            in={showDetail}
-            timeout="1000"
-            unmountOnExit
+          <Box
             sx={{
-              position: "relative",
-              top: 0,
+              position: "fixed",
+              top: "170px",
               right: 0,
               width: "50%",
-              transition: "width 0.3s ease",
-              transformOrigin: "top right",
-              backgroundColor: "red",
+              height: "calc(100vh - 65px)",
+              overflow: "hidden",
+              backgroundColor: "#9BE8D8",
+              borderTopLeftRadius: "10px",
+              borderTopRightRadius: "10px",
             }}
           >
-            <Box sx={{ mt: 2 }}>
-              <CardContent>
-                <Card sx={{ maxWidth: 345 }}>
-                  <Typography variant="body2">
-                    Task details: {task.description}
-                  </Typography>
+            <IconButton
+              sx={{
+                position: "absolute",
+                top: "10px",
+                right: "10px",
+              }}
+              onClick={handleCloseForm}
+            >
+              <CloseIcon />
+            </IconButton>
+            <CardContent>
+              <Typography>{task.name}</Typography>
+            </CardContent>
+            <Divider />
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "flex-start",
+                padding: "10px",
+              }}
+            >
+              <Box sx={{ marginRight: "10px" }}>
+                <Card>
+                  <CardContent>
+                    <Typography variant="body2">
+                      Status {task.status}
+                    </Typography>
+                  </CardContent>
                 </Card>
-              </CardContent>
+              </Box>
+              <Box sx={{ marginRight: "10px" }}>
+                <Card>
+                  <CardContent>
+                    <Typography variant="body2">
+                      Assignee {task.assignTo ? task.assignTo : "Unassigned"}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Box>
+              <Box sx={{ marginRight: "10px" }}>
+                <Card>
+                  <CardContent>
+                    <Typography variant="body2">
+                      Deadline{fDate(task.deadline)}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Box>
             </Box>
-          </Collapse>
+            <Box sx={{ padding: "10px", height: "150px" }}>
+              <Card sx={{ padding: "10px", height: "100px" }}>
+                <Typography sx={{ textAlign: "left" }}>Description</Typography>
+                <CardContent>
+                  <Typography>{task.description}</Typography>
+                </CardContent>
+              </Card>
+            </Box>
+            <Box sx={{ padding: "10px" }}>
+              <Card>
+                <CardContent>Comment section here</CardContent>
+              </Card>
+            </Box>
+          </Box>
         )}
       </Box>
     </>

@@ -100,20 +100,20 @@ export const addTaskToProject =
     }
   };
 
-// export const updateTask =
-// ({ id, name, description, deadline, priority }) =>
-// async (dispatch) => {
-//   try {
-//     dispatch(slice.actions.startLoading());
-//     const data = { name, description, deadline, priority };
-//     const response = await apiService.put(`/task/${id}`, data);
-//     dispatch(slice.actions.updateTaskSuccess(response.data));
-//     toast.success(response.message);
-//     dispatch(getSingleTask(id));
-//   } catch (error) {
-//     dispatch(slice.actions.hasError(error.message));
-//     toast.error(error.message);
-//   }
-// };
+export const updateTask =
+  ({ id, name, description, deadline, priority }) =>
+  async (dispatch) => {
+    try {
+      dispatch(slice.actions.startLoading());
+      const data = { name, description, deadline, priority };
+      const response = await apiService.put(`/task/${id}`, data);
+      dispatch(slice.actions.updateTaskSuccess(response.data));
+      toast.success(response.message);
+      dispatch(getSingleTask(id));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error.message));
+      toast.error(error.message);
+    }
+  };
 
 export default slice.reducer;

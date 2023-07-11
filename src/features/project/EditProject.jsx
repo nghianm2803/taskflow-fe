@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { yupResolver } from "@hookform/resolvers/yup";
 import {
   Box,
   Dialog,
@@ -12,6 +11,7 @@ import {
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { FTextField, FormProvider } from "../../components/form";
 import { LoadingButton } from "@mui/lab";
 import { updateProject } from "./projectSlice";
