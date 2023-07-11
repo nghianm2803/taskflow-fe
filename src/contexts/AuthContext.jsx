@@ -1,4 +1,4 @@
-import { createContext, useReducer, useEffect, useMemo } from "react";
+import { createContext, useReducer, useEffect } from "react";
 import { useSelector } from "react-redux";
 import apiService from "../app/apiService";
 import { isValidToken } from "../utils/jwt";
@@ -155,18 +155,15 @@ function AuthProvider({ children }) {
     callback();
   };
 
-  const authContextValue = useMemo(
-    () => ({
-      ...state,
-      login,
-      register,
-      logout,
-    }),
-    [state, login, register, logout]
-  );
-
   return (
-    <AuthContext.Provider value={authContextValue}>
+    <AuthContext.Provider
+      value={{
+        ...state,
+        login,
+        register,
+        logout,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import TaskCard from "./TaskCard";
 import { useDispatch, useSelector } from "react-redux";
 import { getTasks, createTask, addTaskToProject } from "./taskSlice";
-import LoadingScreen from "../../components/LoadingScreen";
 import { Grid, Card, Typography, alpha, Box } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import "./taskstyle.css";
+import TaskCard from "./TaskCard";
+import LoadingScreen from "../../components/LoadingScreen";
 import { FormProvider, FTextField } from "../../components/form";
 import { LoadingButton } from "@mui/lab";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -70,18 +70,10 @@ const TaskList = ({ projectId }) => {
 
   const [isHovered, setIsHovered] = useState(false);
   const [showForm, setShowForm] = useState(false);
-  const [selectedTaskId, setSelectedTaskId] = useState(null);
-  const [detailTask, setDetailTask] = useState(null);
 
-  const handleTaskClick = (taskId) => {
-    console.log("Task card clicked:", taskId);
-    setSelectedTaskId(taskId);
-    setDetailTask(true);
+  const handleTaskClick = () => {
+    setShowForm((prevState) => !prevState);
   };
-  useEffect(() => {
-    console.log("Tasks list:", tasksList);
-    console.log("Selected task ID:", selectedTaskId);
-  }, [tasksList, selectedTaskId]);
 
   const handleHover = () => {
     setIsHovered(true);
@@ -122,13 +114,7 @@ const TaskList = ({ projectId }) => {
         {pendingTasks.length > 0 && (
           <Grid item xs={12} sm={6} md={3}>
             {pendingTasks.map((task) => (
-              <TaskCard
-                key={task._id}
-                task={task}
-                onClick={() => console.log("Task card clicked:")}
-
-             
-              />
+              <TaskCard key={task._id} task={task} />
             ))}
             <Card
               className={isHovered ? "task-card-hovered" : "task-card"}
@@ -146,8 +132,6 @@ const TaskList = ({ projectId }) => {
               onMouseEnter={handleHover}
               onMouseLeave={handleLeave}
               onClick={() => {
-                setSelectedTaskId(null);
-                setDetailTask(null);
                 setShowForm((prevState) => !prevState);
               }}
             >
@@ -205,14 +189,6 @@ const TaskList = ({ projectId }) => {
                   </LoadingButton>
                 </Box>
               </FormProvider>
-            )}
-            {detailTask && (
-              <Box sx={{ marginTop: "10px" }}>
-                <Typography variant="body2" align="center">
-                  Detail Task Form
-                </Typography>
-                {/* Place your detail task form component here */}
-              </Box>
             )}
           </Grid>
         )}
