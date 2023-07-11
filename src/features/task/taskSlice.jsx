@@ -29,14 +29,17 @@ const slice = createSlice({
     getTasksSuccess(state, action) {
       state.isLoading = false;
       state.error = null;
-
       const { taskList } = action.payload.data;
-
       state.tasksList = taskList.filter(
         (task) => task.projectTo._id === action.payload.projectId
       );
     },
-
+    getSingleTaskSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      const currentTask = action.payload.data;
+      state.currentTask = currentTask;
+    },
     createTaskSuccess(state, action) {
       state.isLoading = false;
       state.error = null;
@@ -58,6 +61,17 @@ export const getTasks =
       toast.error(error.message);
     }
   };
+
+export const getSingleTask = (id) => async (dispatch) => {
+  try {
+    dispatch(slice.actions.startLoading());
+    const response = await apiService.get(`task/${id}`);
+    dispatch(slice.actions.getSingleTaskSuccess(response.data));
+  } catch (error) {
+    dispatch(slice.actions.hasError(error.message));
+    toast.error(error.message);
+  }
+};
 
 export const createTask = (data) => async (dispatch) => {
   dispatch(slice.actions.startLoading());
@@ -85,5 +99,21 @@ export const addTaskToProject =
       toast.error(error.message);
     }
   };
+
+// export const updateTask =
+// ({ id, name, description, deadline, priority }) =>
+// async (dispatch) => {
+//   try {
+//     dispatch(slice.actions.startLoading());
+//     const data = { name, description, deadline, priority };
+//     const response = await apiService.put(`/task/${id}`, data);
+//     dispatch(slice.actions.updateTaskSuccess(response.data));
+//     toast.success(response.message);
+//     dispatch(getSingleTask(id));
+//   } catch (error) {
+//     dispatch(slice.actions.hasError(error.message));
+//     toast.error(error.message);
+//   }
+// };
 
 export default slice.reducer;

@@ -84,7 +84,6 @@ export const getSingleProject = (id) => async (dispatch) => {
     const response = await apiService.get(`project/${id}`);
 
     dispatch(slice.actions.getSingleProjectSuccess(response.data));
-
   } catch (error) {
     dispatch(slice.actions.hasError(error.message));
     toast.error(error.message);
@@ -110,11 +109,11 @@ export const createProject =
   };
 
 export const updateProject =
-  ({ id, name, description, deadline, priority }) =>
+  ({ id, name, description }) =>
   async (dispatch) => {
     try {
       dispatch(slice.actions.startLoading());
-      const data = { name, description, deadline, priority };
+      const data = { name, description };
       const response = await apiService.put(`/project/${id}`, data);
       dispatch(slice.actions.updateProjectSuccess(response.data));
       toast.success(response.message);

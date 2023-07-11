@@ -114,7 +114,7 @@ function UploadAvatar({ error, file, helperText, sx, ...other }) {
         </DropZoneStyle>
       </RootStyle>
 
-      {helperText && helperText}
+      {helperText}
 
       {fileRejections.length > 0 && (
         <RejectionFiles fileRejections={fileRejections} />

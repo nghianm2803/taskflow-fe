@@ -92,7 +92,7 @@ function UploadSingleFile({ error = false, file, helperText, sx, ...other }) {
         <RejectionFiles fileRejections={fileRejections} />
       )}
 
-      {helperText && helperText}
+      {helperText}
     </Box>
   );
 }

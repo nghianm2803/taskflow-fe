@@ -5,13 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { fDate } from "../../utils/formatTime";
 
 const TaskCard = ({ task }) => {
-  const navigate = useNavigate();
-
-  // const handleExplore = () => {
-  //   const taskId = task._id;
-  //   navigate(`/task/${taskId}`);
-  // };
-
   const [isHovered, setIsHovered] = useState(false);
 
   const handleHover = () => {
@@ -20,6 +13,10 @@ const TaskCard = ({ task }) => {
 
   const handleLeave = () => {
     setIsHovered(false);
+  };
+
+  const handleTaskClick = () => {
+    console.log("Task card clicked:", task._id);
   };
 
   return (
@@ -35,7 +32,7 @@ const TaskCard = ({ task }) => {
       }}
       onMouseEnter={handleHover}
       onMouseLeave={handleLeave}
-      // onClick={handleExplore}
+      onClick={handleTaskClick}
     >
       <Typography sx={style}>{task.name}</Typography>
       <Box

@@ -94,8 +94,8 @@ function ProjectList() {
             spacing={{ xs: 2, md: 3 }}
             columns={{ xs: 12, sm: 8, md: 12 }}
           >
-            {projects?.map((project, index) => (
-              <Grid item xs={12} sm={4} md={4} key={index}>
+            {projects?.map((project) => (
+              <Grid item xs={12} sm={4} md={4} key={project._id}>
                 <ProjectCard key={project._id} project={project} />
               </Grid>
             ))}

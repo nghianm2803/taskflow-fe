@@ -70,10 +70,18 @@ const TaskList = ({ projectId }) => {
 
   const [isHovered, setIsHovered] = useState(false);
   const [showForm, setShowForm] = useState(false);
+  const [selectedTaskId, setSelectedTaskId] = useState(null);
+  const [detailTask, setDetailTask] = useState(null);
 
-  const handleTaskClick = () => {
-    setShowForm((prevState) => !prevState);
+  const handleTaskClick = (taskId) => {
+    console.log("Task card clicked:", taskId);
+    setSelectedTaskId(taskId);
+    setDetailTask(true);
   };
+  useEffect(() => {
+    console.log("Tasks list:", tasksList);
+    console.log("Selected task ID:", selectedTaskId);
+  }, [tasksList, selectedTaskId]);
 
   const handleHover = () => {
     setIsHovered(true);
@@ -114,7 +122,13 @@ const TaskList = ({ projectId }) => {
         {pendingTasks.length > 0 && (
           <Grid item xs={12} sm={6} md={3}>
             {pendingTasks.map((task) => (
-              <TaskCard key={task._id} task={task} />
+              <TaskCard
+                key={task._id}
+                task={task}
+                onClick={() => console.log("Task card clicked:")}
+
+             
+              />
             ))}
             <Card
               className={isHovered ? "task-card-hovered" : "task-card"}
@@ -131,7 +145,11 @@ const TaskList = ({ projectId }) => {
               }}
               onMouseEnter={handleHover}
               onMouseLeave={handleLeave}
-              onClick={handleTaskClick}
+              onClick={() => {
+                setSelectedTaskId(null);
+                setDetailTask(null);
+                setShowForm((prevState) => !prevState);
+              }}
             >
               <AddIcon fontSize="small" />
               <Typography variant="body2" display="block" align="center">
@@ -185,10 +203,16 @@ const TaskList = ({ projectId }) => {
                   >
                     Create Task
                   </LoadingButton>
-                  {/* Invalid name & Invalid description & Invalid Deadline &
-                  Deadline must be in the format 'yyyy-mm-dd hh:mm:ss' */}
                 </Box>
               </FormProvider>
+            )}
+            {detailTask && (
+              <Box sx={{ marginTop: "10px" }}>
+                <Typography variant="body2" align="center">
+                  Detail Task Form
+                </Typography>
+                {/* Place your detail task form component here */}
+              </Box>
             )}
           </Grid>
         )}
@@ -220,6 +244,85 @@ const TaskList = ({ projectId }) => {
     );
   } else if (isLoading) {
     renderTasks = <LoadingScreen />;
+  } else {
+    renderTasks = (
+      <Grid container spacing={2}>
+        <Grid item xs={12} sm={6} md={3}>
+          <Card
+            className={isHovered ? "task-card-hovered" : "task-card"}
+            sx={{
+              marginTop: "10px",
+              marginBottom: "10px",
+              width: "100%",
+              height: "40px",
+              position: "relative",
+              textAlign: "center",
+              alignItems: "center",
+              display: "flex",
+              justifyContent: "center",
+            }}
+            onMouseEnter={handleHover}
+            onMouseLeave={handleLeave}
+            onClick={handleTaskClick}
+          >
+            <AddIcon fontSize="small" />
+            <Typography variant="body2" display="block" align="center">
+              Task
+            </Typography>
+          </Card>
+          {showForm && (
+            <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+              <FTextField
+                name="name"
+                fullWidth
+                required
+                placeholder="Task's name"
+                sx={{
+                  "& fieldset": {
+                    borderWidth: `1px !important`,
+                    borderColor: alpha("#47BA5F", 0.32),
+                  },
+                }}
+              />
+              <FTextField
+                name="description"
+                fullWidth
+                required
+                placeholder="Task's description"
+                sx={{
+                  "& fieldset": {
+                    borderWidth: `1px !important`,
+                    borderColor: alpha("#47BA5F", 0.32),
+                  },
+                }}
+              />
+              <FTextField
+                type="datetime-local"
+                name="deadline"
+                sx={{ width: 1, mb: "20px" }}
+              />
+
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "flex-end",
+                }}
+              >
+                <LoadingButton
+                  type="submit"
+                  variant="contained"
+                  size="small"
+                  loading={isSubmitting || isLoading}
+                >
+                  Create Task
+                </LoadingButton>
+              </Box>
+            </FormProvider>
+          )}
+        </Grid>
+      </Grid>
+    );
   }
 
   return renderTasks;
