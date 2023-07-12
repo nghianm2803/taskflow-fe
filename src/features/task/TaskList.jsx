@@ -47,7 +47,7 @@ const TaskList = ({ projectId }) => {
     const minutes = String(deadlineDate.getMinutes()).padStart(2, "0");
     const seconds = String(deadlineDate.getSeconds()).padStart(2, "0");
 
-    const formattedDeadline = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    const formattedDeadline = `${year}/${month}/${day} ${hours}:${minutes}:${seconds}`;
 
     const formattedData = {
       ...data,

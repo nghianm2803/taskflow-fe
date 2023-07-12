@@ -13,7 +13,7 @@ import {
   Modal,
 } from "@mui/material";
 import "./taskstyle.css";
-import { fDate } from "../../utils/formatTime";
+import { fDate, fDeadline } from "../../utils/formatTime";
 import CloseIcon from "@mui/icons-material/Close";
 import { useDispatch } from "react-redux";
 import { updateTask, deleteTask } from "./taskSlice";
@@ -30,9 +30,12 @@ const TaskCard = ({ task }) => {
   const [showDetail, setShowDetail] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
   const [detailTask, setDetailTask] = useState(task);
+  const [isEditingDeadline, setIsEditingDeadline] = useState(false);
+  const [isInvalidDate, setIsInvalidDate] = useState(false);
 
   const descriptionRef = useRef(null);
   const nameRef = useRef(null);
+  const deadlineRef = useRef(null);
 
   const handleHover = () => {
     setIsHovered(true);
@@ -117,6 +120,38 @@ const TaskCard = ({ task }) => {
     );
   };
 
+  const handleDeadlineChange = () => {
+    setIsEditingDeadline(!isEditingDeadline);
+  };
+
+  const updateDeadline = (e) => {
+    const newDeadline = e.target.value;
+    const formattedDeadline = new Date(newDeadline);
+
+    if (!isNaN(formattedDeadline)) {
+      const formattedString = formattedDeadline.toISOString().slice(0, 16);
+      setDetailTask((prevTask) => ({
+        ...prevTask,
+        deadline: formattedString,
+      }));
+      setIsInvalidDate(false); // Reset the error state
+    } else {
+      setIsInvalidDate(true); // Set the error state to true
+    }
+  };
+
+  const handleDeadlineKeyPress = (e) => {
+    if (e.key === "Enter") {
+      dispatch(
+        updateTask({
+          id: detailTask._id,
+          deadline: detailTask.deadline,
+        })
+      );
+      deadlineRef.current.blur();
+    }
+  };
+
   const handleMenuTask = () => {
     // Implement MenuTask here
   };
@@ -127,14 +162,6 @@ const TaskCard = ({ task }) => {
   const handleCloseModal = () => {
     setDeleteModal(false);
   };
-
-  // const handleDelete = async () => {
-  //   await dispatch(deleteProductOfStore(id)).then(() =>
-  //     dispatch(getAllProductStore({ storeId: storeId, page: page, limit: 10 }))
-  //   );
-
-  //   handleCloseDeleteBox();
-  // };
 
   const handleConfirmDelete = () => {
     dispatch(
@@ -163,7 +190,7 @@ const TaskCard = ({ task }) => {
           onMouseLeave={handleLeave}
           onClick={handleTaskClick}
         >
-          <Typography sx={style}>{task.name}</Typography>
+          <Typography sx={styleTypo}>{task.name}</Typography>
           <Box
             sx={{
               display: "grid",
@@ -175,10 +202,10 @@ const TaskCard = ({ task }) => {
               },
             }}
           >
-            <Typography sx={style}>
+            <Typography sx={styleTypo}>
               {task.assignTo ? task.assignTo : "Unassigned"}
             </Typography>
-            <Typography sx={style}> {fDate(task.deadline)}</Typography>
+            <Typography sx={styleTypo}> {fDate(task.deadline)}</Typography>
           </Box>
         </Card>
 
@@ -199,6 +226,18 @@ const TaskCard = ({ task }) => {
             }}
           >
             {/* Delete Button */}
+            <IconButton
+              sx={{
+                position: "absolute",
+                top: "10px",
+                right: "70px",
+                zIndex: 1,
+              }}
+              onClick={handleDeleteTask}
+            >
+              <DeleteIcon />
+            </IconButton>
+
             <IconButton
               sx={{
                 position: "absolute",
@@ -311,7 +350,7 @@ const TaskCard = ({ task }) => {
                   <CardContent>
                     <Typography variant="body2">
                       Assignee{" "}
-                      {detailTask.assignTo ? detailTask.assignTo : "Unassigned"}
+                      {detailTask.assignTo ? detailTask.assignTo : "Empty"}
                     </Typography>
                   </CardContent>
                 </Card>
@@ -353,27 +392,39 @@ const TaskCard = ({ task }) => {
               <Box sx={{ marginRight: "10px" }}>
                 <Card
                   sx={{
-                    width: "140px",
+                    width: "170px",
                     height: "90px",
                   }}
                 >
                   <CardContent>
-                    <Typography variant="body2">
-                      Deadline{fDate(detailTask.deadline)}
-                    </Typography>
+                    <Typography variant="body2">Deadline</Typography>
+                    {isEditingDeadline ? (
+                      <TextField
+                        value={fDeadline(detailTask.deadline)}
+                        onChange={updateDeadline}
+                        onKeyPress={handleDeadlineKeyPress}
+                        fullWidth
+                        inputRef={deadlineRef}
+                        variant="standard"
+                        error={isInvalidDate} // Apply the error state to the TextField
+                        helperText={isInvalidDate && "Invalid date value"} // Display the error message when isInvalidDate is true
+                      />
+                    ) : (
+                      <Typography
+                        variant="body2"
+                        onClick={handleDeadlineChange}
+                        sx={{
+                          marginTop: "10px",
+                          "&:hover": { color: "#78C1F3", fontWeight: "bold" },
+                          cursor: "pointer",
+                        }}
+                      >
+                        {fDeadline(detailTask.deadline)}
+                      </Typography>
+                    )}
                   </CardContent>
                 </Card>
               </Box>
-              <IconButton
-                sx={{
-                  top: "10px",
-                  right: "10px",
-                  zIndex: 1,
-                }}
-                onClick={handleDeleteTask}
-              >
-                <DeleteIcon />
-              </IconButton>
             </Box>
 
             {/** Delete Modal */}
@@ -447,7 +498,7 @@ const TaskCard = ({ task }) => {
   );
 };
 
-const style = {
+const styleTypo = {
   fontWeight: "500px",
   fontSize: "14px",
   lineHeight: "20px",
