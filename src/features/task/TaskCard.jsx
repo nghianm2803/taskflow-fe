@@ -103,6 +103,20 @@ const TaskCard = ({ task }) => {
     );
   };
 
+  const handlePriorityChange = (e) => {
+    const newPriority = e.target.value;
+    setDetailTask((prevTask) => ({
+      ...prevTask,
+      priority: newPriority,
+    }));
+    dispatch(
+      updateTask({
+        id: detailTask._id,
+        priority: newPriority,
+      })
+    );
+  };
+
   const handleMenuTask = () => {
     // Implement MenuTask here
   };
@@ -121,7 +135,6 @@ const TaskCard = ({ task }) => {
 
   //   handleCloseDeleteBox();
   // };
-
 
   const handleConfirmDelete = () => {
     dispatch(
@@ -182,6 +195,7 @@ const TaskCard = ({ task }) => {
               backgroundColor: "#9BE8D8",
               borderTopLeftRadius: "10px",
               borderTopRightRadius: "10px",
+              zIndex: 1,
             }}
           >
             {/* Delete Button */}
@@ -225,7 +239,7 @@ const TaskCard = ({ task }) => {
               sx={{
                 display: "flex",
                 alignItems: "flex-start",
-                padding: "10px",
+                padding: "20px",
               }}
             >
               <Box sx={{ marginRight: "10px" }}>
@@ -287,8 +301,13 @@ const TaskCard = ({ task }) => {
                   </CardContent>
                 </Card>
               </Box>
-              <Box sx={{ marginRight: "10px", width: "100px", height: "40px" }}>
-                <Card>
+              <Box sx={{ marginRight: "10px" }}>
+                <Card
+                  sx={{
+                    width: "140px",
+                    height: "90px",
+                  }}
+                >
                   <CardContent>
                     <Typography variant="body2">
                       Assignee{" "}
@@ -298,7 +317,46 @@ const TaskCard = ({ task }) => {
                 </Card>
               </Box>
               <Box sx={{ marginRight: "10px" }}>
-                <Card>
+                <Card
+                  sx={{
+                    width: "140px",
+                    height: "90px",
+                    backgroundColor: {
+                      Low: "#CBFFA9",
+                      Medium: "#F1C93B",
+                      High: "#EF6262",
+                    }[detailTask.priority],
+                  }}
+                >
+                  <CardContent>
+                    <Typography variant="body2">Priority</Typography>
+                    <Select
+                      value={detailTask.priority}
+                      onChange={handlePriorityChange}
+                      fullWidth
+                      sx={{
+                        width: "100px",
+                        height: "40px",
+                      }}
+                      renderValue={(selected) => (
+                        <Typography variant="body2">{selected}</Typography>
+                      )}
+                      variant="standard"
+                    >
+                      <MenuItem value="Low">Low</MenuItem>
+                      <MenuItem value="Medium">Medium</MenuItem>
+                      <MenuItem value="High">High</MenuItem>
+                    </Select>
+                  </CardContent>
+                </Card>
+              </Box>
+              <Box sx={{ marginRight: "10px" }}>
+                <Card
+                  sx={{
+                    width: "140px",
+                    height: "90px",
+                  }}
+                >
                   <CardContent>
                     <Typography variant="body2">
                       Deadline{fDate(detailTask.deadline)}

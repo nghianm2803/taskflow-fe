@@ -100,7 +100,7 @@ export const createProject =
         description,
       });
       dispatch(slice.actions.createProjectSuccess(response.data));
-      toast.success(response.message);
+      toast.success(response.data.message);
       dispatch(getProjects());
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));
@@ -116,7 +116,7 @@ export const updateProject =
       const data = { name, description };
       const response = await apiService.put(`/project/${id}`, data);
       dispatch(slice.actions.updateProjectSuccess(response.data));
-      toast.success(response.message);
+      toast.success(response.data.message);
       dispatch(getSingleProject(id));
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));
@@ -132,7 +132,7 @@ export const deleteProject =
       const response = await apiService.delete(`/project/${id}`);
       console.log("res", response);
       dispatch(slice.actions.deleteProjectSuccess(response.data));
-      toast.success(response.data);
+      toast.success(response.data.message);
       dispatch(getProjects());
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));

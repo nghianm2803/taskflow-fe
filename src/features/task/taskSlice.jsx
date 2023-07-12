@@ -7,6 +7,7 @@ const initialState = {
   error: null,
   tasksList: [],
   projectTo: {},
+  updatedTask: {},
 };
 
 const slice = createSlice({
@@ -46,6 +47,12 @@ const slice = createSlice({
       state.error = null;
       const newTask = action.payload.data;
       state.tasksList.unshift(newTask);
+    },
+    updateTaskSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      const updatedTask = action.payload.data;
+      state.updatedTask = updatedTask;
     },
     deleteTaskSuccess(state, action) {
       state.isLoading = false;
@@ -94,7 +101,7 @@ export const createTask = (data) => async (dispatch) => {
     const response = await apiService.post("/task", data);
     const createdTask = response.data;
     dispatch(slice.actions.createTaskSuccess(createdTask));
-    toast.success("Task created successfully");
+    toast.success(response.data.message);
     return createdTask;
   } catch (error) {
     dispatch(slice.actions.hasError(error.message));
@@ -123,7 +130,8 @@ export const updateTask =
       const data = { name, description, status, deadline, priority };
       const response = await apiService.put(`/task/${id}`, data);
       dispatch(slice.actions.updateTaskSuccess(response.data));
-      toast.success(response.message);
+      // toast.success("Task updated successfully");
+      toast.success(response.data.message);
       dispatch(getSingleTask(id));
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));
@@ -138,7 +146,7 @@ export const deleteTask =
     try {
       const response = await apiService.delete(`/task/${id}`);
       dispatch(slice.actions.deleteTaskSuccess(response.data));
-      toast.success(response.data);
+      toast.success(response.data.message);
       console.log("delete task succeed");
       dispatch(getTasks());
       console.log("getTasks called after delete");

@@ -1,7 +1,6 @@
 import { Box, Card, CardContent, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import "./projectcard.css";
 
 function ProjectCard({ project }) {

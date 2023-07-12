@@ -90,7 +90,7 @@ function ProjectList() {
           <Grid
             container
             direction="row"
-            spacing={{ xs: 2, md: 3 }}
+            spacing={3}
             columns={{ xs: 12, sm: 8, md: 12 }}
           >
             {projects?.map((project) => (
