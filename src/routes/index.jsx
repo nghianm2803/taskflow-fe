@@ -24,9 +24,9 @@ function Router() {
         }
       >
         <Route index element={<HomePage />} />
-        <Route path="/project" element={<ProjectList />} />
-        <Route path="/project/:id" element={<SingleProject />} />
-        <Route path="user/:userId" element={<UserProfilePage />} />
+        <Route path="/projects" element={<ProjectList />} />
+        <Route path="/projects/:id" element={<SingleProject />} />
+        <Route path="users/:userId" element={<UserProfilePage />} />
         <Route
           path="/me"
           element={

@@ -8,7 +8,7 @@ function ProjectCard({ project }) {
 
   const handleExplore = () => {
     const projectId = project._id;
-    navigate(`/project/${projectId}`);
+    navigate(`/projects/${projectId}`);
   };
 
   const [isHovered, setIsHovered] = useState(false);

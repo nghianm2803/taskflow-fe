@@ -35,28 +35,19 @@ const TaskCard = ({ task }) => {
   const [detailTask, setDetailTask] = useState(task);
   const [isEditingDeadline, setIsEditingDeadline] = useState(false);
   const [isInvalidDate, setIsInvalidDate] = useState(false);
-
   const [searchQuery, setSearchQuery] = useState("");
-  // const [filteredUsers, setFilteredUsers] = useState([]);
+
+  const userList = useSelector((state) => state.user.user);
 
   const descriptionRef = useRef(null);
   const nameRef = useRef(null);
   const deadlineRef = useRef(null);
-
-  const userList = useSelector((state) => state.user.user);
 
   useEffect(() => {
     if (showDetail) {
       dispatch(getUsers({ page: 1, name: searchQuery }));
     }
   }, [dispatch, searchQuery, showDetail]);
-
-  // const handleUserSearch = (query) => {
-  //   const filteredList = userList.filter((user) =>
-  //     user.name.toLowerCase().includes(query.toLowerCase())
-  //   );
-  //   setFilteredUsers(filteredList);
-  // };
 
   const handleAssignUser = (taskId, userId) => {
     dispatch(assignTask({ taskId, userId }));
@@ -383,7 +374,6 @@ const TaskCard = ({ task }) => {
                           onChange={(e) => {
                             const query = e.target.value;
                             setSearchQuery(query);
-                            // handleUserSearch(query);
                           }}
                           label="Assignee"
                           variant="standard"

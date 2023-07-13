@@ -65,7 +65,7 @@ export const getProjects =
       if (name) {
         params.name = name;
       }
-      const response = await apiService.get(`/project`, {
+      const response = await apiService.get(`/projects`, {
         params,
       });
 
@@ -81,7 +81,7 @@ export const getSingleProject = (id) => async (dispatch) => {
   try {
     dispatch(slice.actions.startLoading());
 
-    const response = await apiService.get(`project/${id}`);
+    const response = await apiService.get(`projects/${id}`);
 
     dispatch(slice.actions.getSingleProjectSuccess(response.data));
   } catch (error) {
@@ -95,7 +95,7 @@ export const createProject =
   async (dispatch) => {
     try {
       dispatch(slice.actions.startLoading());
-      const response = await apiService.post("/project/", {
+      const response = await apiService.post("/projects/", {
         name,
         description,
       });
@@ -114,7 +114,7 @@ export const updateProject =
     try {
       dispatch(slice.actions.startLoading());
       const data = { name, description };
-      const response = await apiService.put(`/project/${id}`, data);
+      const response = await apiService.put(`/projects/${id}`, data);
       dispatch(slice.actions.updateProjectSuccess(response.data));
       toast.success(response.data.message);
       dispatch(getSingleProject(id));
@@ -129,7 +129,7 @@ export const deleteProject =
   async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
-      const response = await apiService.delete(`/project/${id}`);
+      const response = await apiService.delete(`/projects/${id}`);
       console.log("res", response);
       dispatch(slice.actions.deleteProjectSuccess(response.data));
       toast.success(response.data.message);
