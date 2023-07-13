@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   Typography,
   Box,
@@ -11,12 +11,15 @@ import {
   Select,
   Button,
   Modal,
+  Autocomplete,
 } from "@mui/material";
 import "./taskstyle.css";
 import { fDate, fDeadline } from "../../utils/formatTime";
+import { useDispatch, useSelector } from "react-redux";
+import { updateTask, deleteTask, assignTask } from "./taskSlice";
+import { getUsers } from "../user/userSlice";
+
 import CloseIcon from "@mui/icons-material/Close";
-import { useDispatch } from "react-redux";
-import { updateTask, deleteTask } from "./taskSlice";
 import ContentPasteIcon from "@mui/icons-material/ContentPaste";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import ContentPasteSearchIcon from "@mui/icons-material/ContentPasteSearch";
@@ -33,9 +36,31 @@ const TaskCard = ({ task }) => {
   const [isEditingDeadline, setIsEditingDeadline] = useState(false);
   const [isInvalidDate, setIsInvalidDate] = useState(false);
 
+  const [searchQuery, setSearchQuery] = useState("");
+  // const [filteredUsers, setFilteredUsers] = useState([]);
+
   const descriptionRef = useRef(null);
   const nameRef = useRef(null);
   const deadlineRef = useRef(null);
+
+  const userList = useSelector((state) => state.user.user);
+
+  useEffect(() => {
+    if (showDetail) {
+      dispatch(getUsers({ page: 1, name: searchQuery }));
+    }
+  }, [dispatch, searchQuery, showDetail]);
+
+  // const handleUserSearch = (query) => {
+  //   const filteredList = userList.filter((user) =>
+  //     user.name.toLowerCase().includes(query.toLowerCase())
+  //   );
+  //   setFilteredUsers(filteredList);
+  // };
+
+  const handleAssignUser = (taskId, userId) => {
+    dispatch(assignTask({ taskId, userId }));
+  };
 
   const handleHover = () => {
     setIsHovered(true);
@@ -348,10 +373,26 @@ const TaskCard = ({ task }) => {
                   }}
                 >
                   <CardContent>
-                    <Typography variant="body2">
-                      Assignee{" "}
-                      {detailTask.assignTo ? detailTask.assignTo : "Empty"}
-                    </Typography>
+                    <Typography variant="body2">Assignee</Typography>
+                    <Autocomplete
+                      options={userList}
+                      getOptionLabel={(userList) => userList.name}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          onChange={(e) => {
+                            const query = e.target.value;
+                            setSearchQuery(query);
+                            // handleUserSearch(query);
+                          }}
+                          label="Assignee"
+                          variant="standard"
+                        />
+                      )}
+                      onChange={(event, user) =>
+                        handleAssignUser(detailTask._id, user ? user._id : null)
+                      }
+                    />
                   </CardContent>
                 </Card>
               </Box>

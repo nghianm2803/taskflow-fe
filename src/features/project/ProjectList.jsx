@@ -21,12 +21,11 @@ import "./projectcard.css";
 
 function ProjectList() {
   const [page, setPage] = useState(1);
-  const dispatch = useDispatch();
   const [name, setName] = useState("");
+  const [isHovered, setIsHovered] = useState(false);
   const projects = useSelector((state) => state.project.project);
   const totalPage = useSelector((state) => state.project.totalPages);
-
-  const [isHovered, setIsHovered] = useState(false);
+  const dispatch = useDispatch();
 
   const handleHover = () => {
     setIsHovered(true);

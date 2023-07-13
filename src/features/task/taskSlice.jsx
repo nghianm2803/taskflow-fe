@@ -54,6 +54,12 @@ const slice = createSlice({
       const updatedTask = action.payload.data;
       state.updatedTask = updatedTask;
     },
+    assignTaskSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      const currentTask = action.payload.data;
+      state.currentTask = currentTask;
+    },
     deleteTaskSuccess(state, action) {
       state.isLoading = false;
       state.error = null;
@@ -73,7 +79,6 @@ const slice = createSlice({
 export const getTasks =
   ({ projectId, limit }) =>
   async (dispatch) => {
-    console.log("getTasks called");
     dispatch(slice.actions.startLoading());
     try {
       const response = await apiService.get(`/task?limit=${limit}`);
@@ -150,6 +155,20 @@ export const deleteTask =
       console.log("delete task succeed");
       dispatch(getTasks());
       console.log("getTasks called after delete");
+    } catch (error) {
+      dispatch(slice.actions.hasError(error.message));
+      toast.error(error.message);
+    }
+  };
+
+export const assignTask =
+  ({ taskId, userId }) =>
+  async (dispatch) => {
+    dispatch(slice.actions.startLoading());
+    try {
+      const response = await apiService.put(`/task/${taskId}/user/${userId}`);
+      dispatch(slice.actions.assignTaskSuccess(response.data));
+      toast.success(response.data.message);
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));
       toast.error(error.message);
