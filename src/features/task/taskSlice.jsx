@@ -66,13 +66,6 @@ const slice = createSlice({
       const { id } = action.payload.data;
       state.tasksList = state.tasksList.filter((task) => task._id !== id);
     },
-
-    // deleteTaskSuccess(state, action) {
-    //   state.isLoading = false;
-    //   state.error = null;
-    //   const taskId = action.payload;
-    //   state.tasksList = state.tasksList.filter((task) => task._id !== taskId);
-    // },
   },
 });
 
@@ -120,7 +113,7 @@ export const addTaskToProject =
   async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
-      await apiService.put(`/tasks/${taskId}/project/${projectId}`);
+      await apiService.put(`/tasks/${taskId}/projects/${projectId}`);
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));
       toast.error(error.message);
@@ -166,7 +159,7 @@ export const assignTask =
   async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
-      const response = await apiService.put(`/tasks/${taskId}/user/${userId}`);
+      const response = await apiService.put(`/tasks/${taskId}/users/${userId}`);
       dispatch(slice.actions.assignTaskSuccess(response.data));
       toast.success(response.data.message);
     } catch (error) {

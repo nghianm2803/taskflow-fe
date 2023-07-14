@@ -3,6 +3,7 @@ import {
   Typography,
   Box,
   Card,
+  Grid,
   CardContent,
   Divider,
   IconButton,
@@ -18,6 +19,9 @@ import { fDate, fDeadline } from "../../utils/formatTime";
 import { useDispatch, useSelector } from "react-redux";
 import { updateTask, deleteTask, assignTask } from "./taskSlice";
 import { getUsers } from "../user/userSlice";
+
+import CommentList from "../comment/CommentList";
+import CommentForm from "../comment/CommentForm";
 
 import CloseIcon from "@mui/icons-material/Close";
 import ContentPasteIcon from "@mui/icons-material/ContentPaste";
@@ -300,7 +304,7 @@ const TaskCard = ({ task }) => {
               <Box sx={{ marginRight: "10px" }}>
                 <Card
                   sx={{
-                    width: "140px",
+                    width: "150px",
                     height: "90px",
                     backgroundColor: {
                       Pending: "#C2E1FB",
@@ -359,7 +363,7 @@ const TaskCard = ({ task }) => {
               <Box sx={{ marginRight: "10px" }}>
                 <Card
                   sx={{
-                    width: "140px",
+                    width: "150px",
                     height: "90px",
                   }}
                 >
@@ -389,7 +393,7 @@ const TaskCard = ({ task }) => {
               <Box sx={{ marginRight: "10px" }}>
                 <Card
                   sx={{
-                    width: "140px",
+                    width: "150px",
                     height: "90px",
                     backgroundColor: {
                       Low: "#CBFFA9",
@@ -420,7 +424,7 @@ const TaskCard = ({ task }) => {
                   </CardContent>
                 </Card>
               </Box>
-              <Box sx={{ marginRight: "10px" }}>
+              {/* <Box sx={{ marginRight: "10px" }}>
                 <Card
                   sx={{
                     width: "170px",
@@ -455,7 +459,7 @@ const TaskCard = ({ task }) => {
                     )}
                   </CardContent>
                 </Card>
-              </Box>
+              </Box> */}
             </Box>
 
             {/** Delete Modal */}
@@ -499,29 +503,76 @@ const TaskCard = ({ task }) => {
             )}
 
             {/* Task Description */}
-            <Box sx={{ padding: "10px", height: "200px" }}>
-              <Card sx={{ padding: "10px", height: "180px" }}>
-                <Typography sx={{ textAlign: "left" }}>Description</Typography>
-                <CardContent>
-                  <TextField
-                    multiline
-                    rows={3}
-                    value={detailTask.description}
-                    onChange={handleDescriptionChange}
-                    onKeyPress={handleDescriptionKeyPress}
-                    fullWidth
-                    inputRef={descriptionRef}
-                  />
-                </CardContent>
-              </Card>
+            <Box sx={{ flexGrow: 1, paddingLeft: "20px" }}>
+              <Grid container spacing={1}>
+                <Grid item xs={8}>
+                  <Card
+                    sx={{
+                      padding: "10px",
+                      height: "180px",
+                      weight: "100px",
+                      marginRight: "10px",
+                    }}
+                  >
+                    <Typography sx={{ textAlign: "left" }}>
+                      Description
+                    </Typography>
+                    <CardContent>
+                      <TextField
+                        multiline
+                        rows={3}
+                        value={detailTask.description}
+                        onChange={handleDescriptionChange}
+                        onKeyPress={handleDescriptionKeyPress}
+                        fullWidth
+                        inputRef={descriptionRef}
+                      />
+                    </CardContent>
+                  </Card>
+                </Grid>
+                <Grid item xs={4}>
+                  <Card
+                    sx={{
+                      width: "170px",
+                      height: "90px",
+                    }}
+                  >
+                    <CardContent>
+                      <Typography variant="body2">Deadline</Typography>
+                      {isEditingDeadline ? (
+                        <TextField
+                          value={fDeadline(detailTask.deadline)}
+                          onChange={updateDeadline}
+                          onKeyPress={handleDeadlineKeyPress}
+                          fullWidth
+                          inputRef={deadlineRef}
+                          variant="standard"
+                          error={isInvalidDate}
+                          helperText={isInvalidDate && "Invalid date value"}
+                          // type="datetime-local"
+                        />
+                      ) : (
+                        <Typography
+                          variant="body2"
+                          onClick={handleDeadlineChange}
+                          sx={{
+                            marginTop: "10px",
+                            "&:hover": { color: "#78C1F3", fontWeight: "bold" },
+                            cursor: "pointer",
+                          }}
+                        >
+                          {fDeadline(detailTask.deadline)}
+                        </Typography>
+                      )}
+                    </CardContent>
+                  </Card>
+                </Grid>
+              </Grid>
             </Box>
 
             {/* Comment Section */}
-            <Box sx={{ padding: "10px" }}>
-              <Card>
-                <CardContent>Comment section here</CardContent>
-              </Card>
-            </Box>
+            <CommentList />
+            <CommentForm />
           </Box>
         )}
       </Box>

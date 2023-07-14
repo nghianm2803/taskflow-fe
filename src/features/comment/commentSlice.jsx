@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { toast } from "react-toastify";
-import apiService from "../../app/apiService";
+// import { toast } from "react-toastify";
+// import apiService from "../../app/apiService";
 
 const initialState = {
   isLoading: false,
@@ -10,7 +10,16 @@ const initialState = {
 const slice = createSlice({
   name: "comment",
   initialState,
-  reducers: {},
+  reducers: {
+    startLoading(state) {
+      state.isLoading = true;
+    },
+
+    hasError(state, action) {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
+  },
 });
 
 export default slice.reducer;

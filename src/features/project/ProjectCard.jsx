@@ -32,6 +32,7 @@ function ProjectCard({ project }) {
             position: "relative",
             overflow: "hidden",
             backgroundColor: "aquamarine",
+            cursor: "pointer",
           }}
           onMouseEnter={handleHover}
           onMouseLeave={handleLeave}
