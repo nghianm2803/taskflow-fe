@@ -424,42 +424,6 @@ const TaskCard = ({ task }) => {
                   </CardContent>
                 </Card>
               </Box>
-              {/* <Box sx={{ marginRight: "10px" }}>
-                <Card
-                  sx={{
-                    width: "170px",
-                    height: "90px",
-                  }}
-                >
-                  <CardContent>
-                    <Typography variant="body2">Deadline</Typography>
-                    {isEditingDeadline ? (
-                      <TextField
-                        value={fDeadline(detailTask.deadline)}
-                        onChange={updateDeadline}
-                        onKeyPress={handleDeadlineKeyPress}
-                        fullWidth
-                        inputRef={deadlineRef}
-                        variant="standard"
-                        error={isInvalidDate} // Apply the error state to the TextField
-                        helperText={isInvalidDate && "Invalid date value"} // Display the error message when isInvalidDate is true
-                      />
-                    ) : (
-                      <Typography
-                        variant="body2"
-                        onClick={handleDeadlineChange}
-                        sx={{
-                          marginTop: "10px",
-                          "&:hover": { color: "#78C1F3", fontWeight: "bold" },
-                          cursor: "pointer",
-                        }}
-                      >
-                        {fDeadline(detailTask.deadline)}
-                      </Typography>
-                    )}
-                  </CardContent>
-                </Card>
-              </Box> */}
             </Box>
 
             {/** Delete Modal */}
@@ -567,12 +531,14 @@ const TaskCard = ({ task }) => {
                     </CardContent>
                   </Card>
                 </Grid>
+
+                {/* Comment Section */}
+                <Grid item xs={12}>
+                  <CommentList taskId={task._id} />
+                  <CommentForm taskId={task._id} />
+                </Grid>
               </Grid>
             </Box>
-
-            {/* Comment Section */}
-            <CommentList />
-            <CommentForm />
           </Box>
         )}
       </Box>

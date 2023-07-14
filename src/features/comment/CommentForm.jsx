@@ -1,12 +1,48 @@
-import { TextField } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 
-const CommentForm = () => {
+import { Stack, Avatar, TextField, IconButton } from "@mui/material";
+import SendIcon from "@mui/icons-material/Send";
+import useAuth from "../../hooks/useAuth";
+import { useDispatch } from "react-redux";
+import { createComment } from "./commentSlice";
+
+function CommentForm({ taskId }) {
+  const { user } = useAuth();
+  const [content, setContent] = useState("");
+  const dispatch = useDispatch();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(createComment({ taskId, content }));
+    setContent("");
+  };
+
   return (
-    <>
-      <TextField>Write comment here</TextField>
-    </>
+    <form onSubmit={handleSubmit}>
+      <Stack direction="row" alignItems="center">
+        <Avatar src={user.avatar} alt={user.name} />
+        <TextField
+          fullWidth
+          size="small"
+          value={content}
+          placeholder="Write a comment…"
+          onChange={(event) => setContent(event.target.value)}
+          sx={{
+            ml: 2,
+            mr: 1,
+            "& fieldset": {
+              borderWidth: `1px !important`,
+              borderColor: (theme) =>
+                `${theme.palette.grey[500_32]} !important`,
+            },
+          }}
+        />
+        <IconButton type="submit">
+          <SendIcon sx={{ fontSize: 30 }} />
+        </IconButton>
+      </Stack>
+    </form>
   );
-};
+}
 
 export default CommentForm;
