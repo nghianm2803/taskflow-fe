@@ -19,7 +19,6 @@ function CommentList({ taskId }) {
   useEffect(() => {
     console.log("taskId:", taskId); // Log taskId
     if (taskId) {
-      console.log("Dispatching getComments action"); // Log dispatching action
       dispatch(getComments({ taskId }));
     }
   }, [taskId, dispatch]);
