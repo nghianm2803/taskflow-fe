@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getTasks, createTask, addTaskToProject } from "./taskSlice";
-import { Grid, Card, Typography, alpha, Box } from "@mui/material";
+import { Grid, Card, Typography, alpha, Box, CardContent } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import "./taskstyle.css";
 import TaskCard from "./TaskCard";
@@ -11,6 +11,11 @@ import { LoadingButton } from "@mui/lab";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { useForm } from "react-hook-form";
+
+import ContentPasteIcon from "@mui/icons-material/ContentPaste";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import ContentPasteSearchIcon from "@mui/icons-material/ContentPasteSearch";
+import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 
 const TaskList = ({ projectId }) => {
   const { tasksList, isLoading } = useSelector((state) => state.task);
@@ -111,111 +116,206 @@ const TaskList = ({ projectId }) => {
 
     renderTasks = (
       <Grid container spacing={2}>
-        {pendingTasks.length > 0 && (
-          <Grid item xs={12} sm={6} md={3}>
-            {pendingTasks.map((task) => (
-              <TaskCard key={task._id} task={task} />
-            ))}
-            <Card
-              className={isHovered ? "task-card-hovered" : "task-card"}
-              sx={{
-                marginTop: "10px",
-                marginBottom: "10px",
-                width: "100%",
-                height: "40px",
-                position: "relative",
-                textAlign: "center",
-                alignItems: "center",
+        <Grid item xs={12} sm={6} md={3}>
+          <Card
+            sx={{
+              width: "100%",
+              height: "40px",
+              backgroundColor: "#EDEEF8",
+              display: "flex",
+              alignItems: "center",
+              marginBottom: "10px",
+            }}
+          >
+            <CardContent
+              style={{
+                paddingBottom: "16px",
                 display: "flex",
-                justifyContent: "center",
-              }}
-              onMouseEnter={handleHover}
-              onMouseLeave={handleLeave}
-              onClick={() => {
-                setShowForm((prevState) => !prevState);
+                alignItems: "center",
               }}
             >
-              <AddIcon fontSize="small" />
-              <Typography variant="body2" display="block" align="center">
-                Task
+              <ContentPasteIcon
+                style={{ color: "#3F51B5", paddingRight: "5px" }}
+              />
+              <Typography variant="body2" display="block" align="left">
+                Pending
               </Typography>
-            </Card>
-            {showForm && (
-              <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-                <FTextField
-                  name="name"
-                  fullWidth
-                  required
-                  placeholder="Task's name"
-                  sx={{
-                    "& fieldset": {
-                      borderWidth: `1px !important`,
-                      borderColor: alpha("#47BA5F", 0.32),
-                    },
-                  }}
-                />
-                <FTextField
-                  name="description"
-                  fullWidth
-                  required
-                  placeholder="Task's description"
-                  sx={{
-                    "& fieldset": {
-                      borderWidth: `1px !important`,
-                      borderColor: alpha("#47BA5F", 0.32),
-                    },
-                  }}
-                />
-                <FTextField
-                  type="datetime-local"
-                  name="deadline"
-                  sx={{ width: 1, mb: "20px" }}
-                />
+            </CardContent>
+          </Card>
+          {pendingTasks.length > 0
+            ? pendingTasks.map((task) => (
+                <TaskCard key={task._id} task={task} />
+              ))
+            : ""}
+          <Card
+            className={isHovered ? "task-card-hovered" : "task-card"}
+            sx={{
+              marginBottom: "10px",
+              width: "100%",
+              height: "40px",
+              position: "relative",
+              textAlign: "center",
+              alignItems: "center",
+              display: "flex",
+              justifyContent: "center",
+            }}
+            onMouseEnter={handleHover}
+            onMouseLeave={handleLeave}
+            onClick={() => {
+              setShowForm((prevState) => !prevState);
+            }}
+          >
+            <AddIcon fontSize="small" />
+            <Typography variant="body2" display="block" align="center">
+              Task
+            </Typography>
+          </Card>
+          {showForm && (
+            <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+              <FTextField
+                name="name"
+                fullWidth
+                required
+                placeholder="Task's name"
+                sx={{
+                  "& fieldset": {
+                    borderWidth: `1px !important`,
+                    borderColor: alpha("#47BA5F", 0.32),
+                  },
+                }}
+              />
+              <FTextField
+                name="description"
+                fullWidth
+                required
+                placeholder="Task's description"
+                sx={{
+                  "& fieldset": {
+                    borderWidth: `1px !important`,
+                    borderColor: alpha("#47BA5F", 0.32),
+                  },
+                }}
+              />
+              <FTextField
+                type="datetime-local"
+                name="deadline"
+                sx={{ width: 1, mb: "20px" }}
+              />
 
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "flex-end",
-                  }}
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "flex-end",
+                }}
+              >
+                <LoadingButton
+                  type="submit"
+                  variant="contained"
+                  size="small"
+                  loading={isSubmitting || isLoading}
                 >
-                  <LoadingButton
-                    type="submit"
-                    variant="contained"
-                    size="small"
-                    loading={isSubmitting || isLoading}
-                  >
-                    Create Task
-                  </LoadingButton>
-                </Box>
-              </FormProvider>
-            )}
-          </Grid>
-        )}
+                  Create Task
+                </LoadingButton>
+              </Box>
+            </FormProvider>
+          )}
+        </Grid>
 
-        {workingTasks.length > 0 && (
-          <Grid item xs={12} sm={6} md={3}>
-            {workingTasks.map((task) => (
-              <TaskCard key={task._id} task={task} />
-            ))}
-          </Grid>
-        )}
+        <Grid item xs={12} sm={6} md={3}>
+          <Card
+            sx={{
+              width: "100%",
+              height: "40px",
+              backgroundColor: "#FFFDEC",
+              display: "flex",
+              alignItems: "center",
+              marginBottom: "10px",
+            }}
+          >
+            <CardContent
+              style={{
+                paddingBottom: "16px",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <AssignmentIcon
+                style={{ color: "#F1C93B", paddingRight: "5px" }}
+              />
+              <Typography variant="body2" display="block" align="left">
+                Working
+              </Typography>
+            </CardContent>
+          </Card>
+          {workingTasks.length > 0
+            ? workingTasks.map((task) => (
+                <TaskCard key={task._id} task={task} />
+              ))
+            : ""}
+        </Grid>
 
-        {reviewTasks.length > 0 && (
-          <Grid item xs={12} sm={6} md={3}>
-            {reviewTasks.map((task) => (
-              <TaskCard key={task._id} task={task} />
-            ))}
-          </Grid>
-        )}
+        <Grid item xs={12} sm={6} md={3}>
+          <Card
+            sx={{
+              width: "100%",
+              height: "40px",
+              backgroundColor: "#E6F9FB",
+              display: "flex",
+              alignItems: "center",
+              marginBottom: "10px",
+            }}
+          >
+            <CardContent
+              style={{
+                paddingBottom: "16px",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <ContentPasteSearchIcon
+                style={{ color: "#00BCD4", paddingRight: "5px" }}
+              />
+              <Typography variant="body2" display="block" align="left">
+                Review
+              </Typography>
+            </CardContent>
+          </Card>
+          {reviewTasks.length > 0
+            ? reviewTasks.map((task) => <TaskCard key={task._id} task={task} />)
+            : ""}
+        </Grid>
 
-        {doneTasks.length > 0 && (
-          <Grid item xs={12} sm={6} md={3}>
-            {doneTasks.map((task) => (
-              <TaskCard key={task._id} task={task} />
-            ))}
-          </Grid>
-        )}
+        <Grid item xs={12} sm={6} md={3}>
+          <Card
+            sx={{
+              width: "100%",
+              height: "40px",
+              backgroundColor: "#F4F9ED",
+              display: "flex",
+              alignItems: "center",
+              marginBottom: "10px",
+            }}
+          >
+            <CardContent
+              style={{
+                paddingBottom: "16px",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <AssignmentTurnedInIcon
+                style={{ color: "#8BC34A", paddingRight: "5px" }}
+              />
+              <Typography variant="body2" display="block" align="left">
+                Done
+              </Typography>
+            </CardContent>
+          </Card>
+          {doneTasks.length > 0
+            ? doneTasks.map((task) => <TaskCard key={task._id} task={task} />)
+            : ""}
+        </Grid>
       </Grid>
     );
   } else if (isLoading) {

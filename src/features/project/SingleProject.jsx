@@ -7,9 +7,6 @@ import {
   DialogContent,
   IconButton,
   Typography,
-  Grid,
-  Card,
-  CardContent,
 } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,10 +18,6 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import TasksList from "../task/TaskList";
-import ContentPasteIcon from '@mui/icons-material/ContentPaste';
-import AssignmentIcon from "@mui/icons-material/Assignment";
-import ContentPasteSearchIcon from "@mui/icons-material/ContentPasteSearch";
-import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 
 function SingleProject() {
   const { id } = useParams();
@@ -136,113 +129,6 @@ function SingleProject() {
               openDeleteDialog={openDeleteDialog}
               deleteDialogClose={deleteDialogClose}
             />
-
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6} md={3}>
-                <Card
-                  sx={{
-                    width: "100%",
-                    height: "70%",
-                    backgroundColor: "#EDEEF8",
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  <CardContent
-                    style={{
-                      paddingBottom: "16px",
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                  >
-                    <ContentPasteIcon
-                      style={{ color: "#3F51B5", paddingRight: "5px" }}
-                    />
-                    <Typography variant="body2" display="block" align="left">
-                      Pending
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-              <Grid item xs={12} sm={6} md={3}>
-                <Card
-                  sx={{
-                    width: "100%",
-                    height: "70%",
-                    backgroundColor: "#FFFDEC",
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  <CardContent
-                    style={{
-                      paddingBottom: "16px",
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                  >
-                    <AssignmentIcon
-                      style={{ color: "#F1C93B", paddingRight: "5px" }}
-                    />
-                    <Typography variant="body2" display="block" align="left">
-                      Working
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-              <Grid item xs={12} sm={6} md={3}>
-                <Card
-                  sx={{
-                    width: "100%",
-                    height: "70%",
-                    backgroundColor: "#E6F9FB",
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  <CardContent
-                    style={{
-                      paddingBottom: "16px",
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                  >
-                    <ContentPasteSearchIcon
-                      style={{ color: "#00BCD4", paddingRight: "5px" }}
-                    />
-                    <Typography variant="body2" display="block" align="left">
-                      Review
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-              <Grid item xs={12} sm={6} md={3}>
-                <Card
-                  sx={{
-                    width: "100%",
-                    height: "70%",
-                    backgroundColor: "#F4F9ED",
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  <CardContent
-                    style={{
-                      paddingBottom: "16px",
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                  >
-                    <AssignmentTurnedInIcon
-                      style={{ color: "#8BC34A", paddingRight: "5px" }}
-                    />
-                    <Typography variant="body2" display="block" align="left">
-                      Done
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-            </Grid>
 
             <TasksList projectId={project._id} />
           </Box>

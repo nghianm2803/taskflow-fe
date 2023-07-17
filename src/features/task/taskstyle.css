@@ -3,7 +3,6 @@
   height: 100%;
   position: relative;
   overflow: hidden;
-  transition: transform 0.5s ease;
 }
 
 .task-card-hovered {

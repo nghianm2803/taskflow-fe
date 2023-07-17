@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Typography, Box, Card } from "@mui/material";
+import { Typography, Box, Card, Avatar, Stack } from "@mui/material";
 import "./taskstyle.css";
 import { fDate } from "../../utils/formatTime";
 import TaskDetail from "./TaskDetail";
@@ -26,13 +26,20 @@ const TaskCard = ({ task }) => {
 
   return (
     <>
-      <Box sx={{ display: "flex", alignItems: "flex-start" }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+        
+        }}
+      >
         <Card
           className={isHovered ? "task-card-hovered" : "task-card"}
           sx={{
             p: 1,
             width: "100%",
-            height: "80px",
+            minHeight: "40px",
+            height: "auto",
             position: "relative",
             overflow: "hidden",
             marginBottom: "10px",
@@ -41,10 +48,14 @@ const TaskCard = ({ task }) => {
           onMouseLeave={handleLeave}
           onClick={handleTaskClick}
         >
-          <Typography sx={styleTypo}>{task.name}</Typography>
+          <Typography sx={styleTypo} variant="h6">
+            {task.name}
+          </Typography>
           <Box
             sx={{
-              display: "grid",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
               rowGap: 3,
               columnGap: 2,
               gridTemplateColumns: {
@@ -53,10 +64,19 @@ const TaskCard = ({ task }) => {
               },
             }}
           >
-            <Typography sx={styleTypo}>
-              {task.assignTo ? task.assignTo : "Unassigned"}
-            </Typography>
-            <Typography sx={styleTypo}> {fDate(task.deadline)}</Typography>
+            <Stack direction="row" spacing={2} alignItems="center">
+              {task.assignTo && (
+                <Avatar
+                  alt={task.assignTo.name}
+                  src={task.assignTo.avatar}
+                  sx={{ width: "30px", height: "30px" }}
+                />
+              )}
+              <Typography sx={styleTypo}>
+                {task.assignTo ? task.assignTo.name : "Unassigned"}
+              </Typography>
+            </Stack>
+            <Typography sx={styleTypo}>{fDate(task.deadline)}</Typography>
           </Box>
         </Card>
         {showDetail && <TaskDetail task={task} onClose={handleCloseForm} />}

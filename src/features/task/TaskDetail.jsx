@@ -177,7 +177,6 @@ const TaskDetail = ({ task, onClose }) => {
         overflow: "hidden",
         backgroundColor: "#9BE8D8",
         borderTopLeftRadius: "10px",
-        borderTopRightRadius: "10px",
         zIndex: 1,
       }}
     >
