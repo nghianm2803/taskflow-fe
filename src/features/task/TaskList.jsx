@@ -114,6 +114,10 @@ const TaskList = ({ projectId }) => {
     );
     const doneTasks = tasksOfProject.filter((task) => task.status === "Done");
 
+    const renderTaskCards = (tasks) => {
+      return tasks.map((task) => <TaskCard key={task._id} task={task} />);
+    };
+
     renderTasks = (
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6} md={3}>
@@ -142,11 +146,7 @@ const TaskList = ({ projectId }) => {
               </Typography>
             </CardContent>
           </Card>
-          {pendingTasks.length > 0
-            ? pendingTasks.map((task) => (
-                <TaskCard key={task._id} task={task} />
-              ))
-            : ""}
+          {pendingTasks.length > 0 && renderTaskCards(pendingTasks)}
           <Card
             className={isHovered ? "task-card-hovered" : "task-card"}
             sx={{
@@ -248,11 +248,7 @@ const TaskList = ({ projectId }) => {
               </Typography>
             </CardContent>
           </Card>
-          {workingTasks.length > 0
-            ? workingTasks.map((task) => (
-                <TaskCard key={task._id} task={task} />
-              ))
-            : ""}
+          {workingTasks.length > 0 && renderTaskCards(workingTasks)}
         </Grid>
 
         <Grid item xs={12} sm={6} md={3}>
@@ -281,9 +277,7 @@ const TaskList = ({ projectId }) => {
               </Typography>
             </CardContent>
           </Card>
-          {reviewTasks.length > 0
-            ? reviewTasks.map((task) => <TaskCard key={task._id} task={task} />)
-            : ""}
+          {reviewTasks.length > 0 && renderTaskCards(reviewTasks)}
         </Grid>
 
         <Grid item xs={12} sm={6} md={3}>
@@ -312,9 +306,7 @@ const TaskList = ({ projectId }) => {
               </Typography>
             </CardContent>
           </Card>
-          {doneTasks.length > 0
-            ? doneTasks.map((task) => <TaskCard key={task._id} task={task} />)
-            : ""}
+          {doneTasks.length > 0 && renderTaskCards(doneTasks)}
         </Grid>
       </Grid>
     );
