@@ -1,7 +1,6 @@
 import { Box } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FSelect } from "./form";
-import { useEffect } from "react";
 
 function SortProject({ handleSortChange }) {
   const [sortBy, setSortBy] = useState("");

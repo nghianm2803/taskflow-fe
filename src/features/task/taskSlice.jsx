@@ -70,11 +70,17 @@ const slice = createSlice({
 });
 
 export const getTasks =
-  ({ projectId, limit }) =>
+  ({ projectId, limit, filterBy, filterValue }) =>
   async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
-      const response = await apiService.get(`/tasks?limit=${limit}`);
+      const params = { limit };
+      if (filterBy && filterValue) {
+        params[filterBy] = filterValue;
+      }
+      const response = await apiService.get(`/tasks?limit=${limit}`, {
+        params,
+      });
       dispatch(slice.actions.getTasksSuccess(response.data, projectId));
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));

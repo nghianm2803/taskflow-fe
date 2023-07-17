@@ -24,8 +24,8 @@ function SearchInput({ handleOnSubmit }) {
     <form onSubmit={onSubmit}>
       <TextField
         value={search}
-        placeholder="Search by name"
-        label="Search"
+        placeholder="Search..."
+        label="Search..."
         onChange={handleChangeSearch}
         sx={{ width: 300 }}
         size="small"
