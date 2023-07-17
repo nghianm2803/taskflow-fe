@@ -145,7 +145,6 @@ export const deleteTask =
       const response = await apiService.delete(`/tasks/${id}`);
       dispatch(slice.actions.deleteTaskSuccess(response.data));
       toast.success(response.data.message);
-      console.log("delete task succeed");
       dispatch(getTasks());
       console.log("getTasks called after delete");
     } catch (error) {
