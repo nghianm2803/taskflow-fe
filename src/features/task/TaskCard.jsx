@@ -238,306 +238,332 @@ const TaskCard = ({ task }) => {
               right: 0,
               width: "50%",
               height: "calc(100vh - 65px)",
-              overflow: "scroll",
+              overflow: "hidden",
               backgroundColor: "#9BE8D8",
               borderTopLeftRadius: "10px",
               borderTopRightRadius: "10px",
               zIndex: 1,
             }}
           >
-            {/* Delete Button */}
-            <IconButton
-              sx={{
-                position: "absolute",
-                top: "10px",
-                right: "70px",
-                zIndex: 1,
-              }}
-              onClick={handleDeleteTask}
-            >
-              <DeleteIcon />
-            </IconButton>
-
-            <IconButton
-              sx={{
-                position: "absolute",
-                top: "10px",
-                right: "40px",
-                zIndex: 1,
-              }}
-              onClick={handleMenuTask}
-            >
-              <MoreHorizIcon />
-            </IconButton>
-            <IconButton
-              sx={{
-                position: "absolute",
-                top: "10px",
-                right: "10px",
-                zIndex: 1,
-              }}
-              onClick={handleCloseForm}
-            >
-              <CloseIcon />
-            </IconButton>
-
-            <CardContent>
-              <Box sx={{ marginBottom: "10px" }}>
-                <TextField
-                  value={detailTask.name}
-                  onChange={handleNameChange}
-                  onKeyPress={handleNameKeyPress}
-                  fullWidth
-                  inputRef={nameRef}
-                  variant="standard"
-                />
-              </Box>
-            </CardContent>
-            <Divider />
             <Box
               sx={{
-                display: "flex",
-                alignItems: "flex-start",
-                padding: "20px",
+                height: "100%", // Set height to 100%
+                overflow: "auto",
+                padding: "10px",
               }}
             >
-              <Box sx={{ marginRight: "10px" }}>
-                <Card
-                  sx={{
-                    width: "150px",
-                    height: "90px",
-                    backgroundColor: {
-                      Pending: "#C2E1FB",
-                      Working: "#FFF283",
-                      Review: "#E6F9FB",
-                      Done: "#CBE4AE",
-                    }[detailTask.status],
-                  }}
-                >
-                  <CardContent>
-                    <Typography variant="body2">Status</Typography>
-                    <Select
-                      value={detailTask.status}
-                      onChange={handleStatusChange}
-                      fullWidth
-                      sx={{
-                        width: "100px",
-                        height: "40px",
-                      }}
-                      renderValue={(selected) => (
-                        <Typography variant="body2">{selected}</Typography>
-                      )}
-                      variant="standard"
-                    >
-                      <MenuItem value="Pending">
-                        <ContentPasteIcon
-                          style={{
-                            color: "#3F51B5",
-                            paddingRight: "5px",
-                          }}
-                        />
-                        Pending
-                      </MenuItem>
-                      <MenuItem value="Working">
-                        <AssignmentIcon
-                          style={{ color: "#F1C93B", paddingRight: "5px" }}
-                        />
-                        Working
-                      </MenuItem>
-                      <MenuItem value="Review">
-                        <ContentPasteSearchIcon
-                          style={{ color: "#00BCD4", paddingRight: "5px" }}
-                        />
-                        Review
-                      </MenuItem>
-                      <MenuItem value="Done">
-                        <AssignmentTurnedInIcon
-                          style={{ color: "#8BC34A", paddingRight: "5px" }}
-                        />
-                        Done
-                      </MenuItem>
-                    </Select>
-                  </CardContent>
-                </Card>
-              </Box>
-              <Box sx={{ marginRight: "10px" }}>
-                <Card
-                  sx={{
-                    width: "150px",
-                    height: "90px",
-                  }}
-                >
-                  <CardContent>
-                    <Typography variant="body2">Assignee</Typography>
-                    <Autocomplete
-                      options={userList}
-                      getOptionLabel={(userList) => userList.name}
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          onChange={(e) => {
-                            const query = e.target.value;
-                            setSearchQuery(query);
-                          }}
-                          label="Assignee"
-                          variant="standard"
-                        />
-                      )}
-                      onChange={(event, user) =>
-                        handleAssignUser(detailTask._id, user ? user._id : null)
-                      }
-                    />
-                  </CardContent>
-                </Card>
-              </Box>
-              <Box sx={{ marginRight: "10px" }}>
-                <Card
-                  sx={{
-                    width: "150px",
-                    height: "90px",
-                    backgroundColor: {
-                      Low: "#CBFFA9",
-                      Medium: "#F1C93B",
-                      High: "#EF6262",
-                    }[detailTask.priority],
-                  }}
-                >
-                  <CardContent>
-                    <Typography variant="body2">Priority</Typography>
-                    <Select
-                      value={detailTask.priority}
-                      onChange={handlePriorityChange}
-                      fullWidth
-                      sx={{
-                        width: "100px",
-                        height: "40px",
-                      }}
-                      renderValue={(selected) => (
-                        <Typography variant="body2">{selected}</Typography>
-                      )}
-                      variant="standard"
-                    >
-                      <MenuItem value="Low">Low</MenuItem>
-                      <MenuItem value="Medium">Medium</MenuItem>
-                      <MenuItem value="High">High</MenuItem>
-                    </Select>
-                  </CardContent>
-                </Card>
-              </Box>
-            </Box>
-
-            {/** Delete Modal */}
-            {deleteModal && (
-              <Modal
-                open={deleteModal}
-                onClose={handleCloseModal}
-                closeAfterTransition
-                style={{
+              {/* Header part */}
+              <Box
+                sx={{
                   display: "flex",
+                  justifyContent: "space-between",
                   alignItems: "center",
-                  justifyContent: "center",
                 }}
               >
-                <Card>
+                <Box sx={{ flex: 1 }}>
                   <CardContent>
-                    <Typography>Do you want to delete this task?</Typography>
-                    <Box
+                    <TextField
+                      value={detailTask.name}
+                      onChange={handleNameChange}
+                      onKeyPress={handleNameKeyPress}
+                      fullWidth
+                      inputRef={nameRef}
+                      variant="standard"
+                    />
+                  </CardContent>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  {/* 3 Icon Button */}
+                  <IconButton onClick={handleDeleteTask}>
+                    <DeleteIcon />
+                  </IconButton>
+                  <IconButton onClick={handleMenuTask}>
+                    <MoreHorizIcon />
+                  </IconButton>
+                  <IconButton onClick={handleCloseForm}>
+                    <CloseIcon />
+                  </IconButton>
+                </Box>
+              </Box>
+              <Divider />
+
+              {/* Body part */}
+              <Box sx={{ padding: "20px" }}>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} sm={6} md={4} lg={3}>
+                    <Card
                       sx={{
-                        display: "flex",
-                        justifyContent: "flex-end",
-                        marginTop: "10px",
+                        height: "90px",
+                        backgroundColor: {
+                          Pending: "#C2E1FB",
+                          Working: "#FFF283",
+                          Review: "#E6F9FB",
+                          Done: "#CBE4AE",
+                        }[detailTask.status],
                       }}
                     >
-                      <Button
-                        sx={{ backgroundColor: "#229A16", marginRight: "5px" }}
-                        onClick={handleConfirmDelete}
-                      >
-                        Delete
-                      </Button>
-                      <Button
-                        sx={{ backgroundColor: "#E9FCD4" }}
-                        onClick={handleCloseModal}
-                      >
-                        Cancel
-                      </Button>
-                    </Box>
-                  </CardContent>
-                </Card>
-              </Modal>
-            )}
-
-            {/* Task Description */}
-            <Box sx={{ flexGrow: 1, paddingLeft: "20px" }}>
-              <Grid container spacing={1}>
-                <Grid item xs={8}>
-                  <Card
-                    sx={{
-                      padding: "10px",
-                      height: "180px",
-                      weight: "100px",
-                      marginRight: "10px",
-                    }}
-                  >
-                    <Typography sx={{ textAlign: "left" }}>
-                      Description
-                    </Typography>
-                    <CardContent>
-                      <TextField
-                        multiline
-                        rows={3}
-                        value={detailTask.description}
-                        onChange={handleDescriptionChange}
-                        onKeyPress={handleDescriptionKeyPress}
-                        fullWidth
-                        inputRef={descriptionRef}
-                      />
-                    </CardContent>
-                  </Card>
-                </Grid>
-                <Grid item xs={4}>
-                  <Card
-                    sx={{
-                      width: "170px",
-                      height: "90px",
-                    }}
-                  >
-                    <CardContent>
-                      <Typography variant="body2">Deadline</Typography>
-                      {isEditingDeadline ? (
-                        <TextField
-                          value={fDeadline(detailTask.deadline)}
-                          onChange={updateDeadline}
-                          onKeyPress={handleDeadlineKeyPress}
+                      <CardContent>
+                        <Typography variant="body2">Status</Typography>
+                        <Select
+                          value={detailTask.status}
+                          onChange={handleStatusChange}
                           fullWidth
-                          inputRef={deadlineRef}
-                          variant="standard"
-                          error={isInvalidDate}
-                          helperText={isInvalidDate && "Invalid date value"}
-                          // type="datetime-local"
-                        />
-                      ) : (
-                        <Typography
-                          variant="body2"
-                          onClick={handleDeadlineChange}
                           sx={{
-                            marginTop: "10px",
-                            "&:hover": { color: "#78C1F3", fontWeight: "bold" },
-                            cursor: "pointer",
+                            width: "100px",
+                            height: "40px",
                           }}
+                          renderValue={(selected) => (
+                            <Typography variant="body2">{selected}</Typography>
+                          )}
+                          variant="standard"
                         >
-                          {fDeadline(detailTask.deadline)}
-                        </Typography>
-                      )}
+                          <MenuItem value="Pending">
+                            <ContentPasteIcon
+                              style={{
+                                color: "#3F51B5",
+                                paddingRight: "5px",
+                              }}
+                            />
+                            Pending
+                          </MenuItem>
+                          <MenuItem value="Working">
+                            <AssignmentIcon
+                              style={{ color: "#F1C93B", paddingRight: "5px" }}
+                            />
+                            Working
+                          </MenuItem>
+                          <MenuItem value="Review">
+                            <ContentPasteSearchIcon
+                              style={{ color: "#00BCD4", paddingRight: "5px" }}
+                            />
+                            Review
+                          </MenuItem>
+                          <MenuItem value="Done">
+                            <AssignmentTurnedInIcon
+                              style={{ color: "#8BC34A", paddingRight: "5px" }}
+                            />
+                            Done
+                          </MenuItem>
+                        </Select>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={4} lg={3}>
+                    <Card sx={{ height: "90px" }}>
+                      <CardContent>
+                        <Typography variant="body2">Assignee</Typography>
+                        <Autocomplete
+                          options={userList}
+                          getOptionLabel={(userList) => userList.name}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              onChange={(e) => {
+                                const query = e.target.value;
+                                setSearchQuery(query);
+                              }}
+                              label="Assignee"
+                              variant="standard"
+                            />
+                          )}
+                          onChange={(event, user) =>
+                            handleAssignUser(
+                              detailTask._id,
+                              user ? user._id : null
+                            )
+                          }
+                        />
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={4} lg={3}>
+                    <Card
+                      sx={{
+                        height: "90px",
+                        backgroundColor: {
+                          Low: "#CBFFA9",
+                          Medium: "#F1C93B",
+                          High: "#EF6262",
+                        }[detailTask.priority],
+                      }}
+                    >
+                      <CardContent>
+                        <Typography variant="body2">Priority</Typography>
+                        <Select
+                          value={detailTask.priority}
+                          onChange={handlePriorityChange}
+                          fullWidth
+                          sx={{
+                            width: "100px",
+                            height: "40px",
+                          }}
+                          renderValue={(selected) => (
+                            <Typography variant="body2">{selected}</Typography>
+                          )}
+                          variant="standard"
+                        >
+                          <MenuItem value="Low">Low</MenuItem>
+                          <MenuItem value="Medium">Medium</MenuItem>
+                          <MenuItem value="High">High</MenuItem>
+                        </Select>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                </Grid>
+              </Box>
+
+              {/** Delete Modal */}
+              {deleteModal && (
+                <Modal
+                  open={deleteModal}
+                  onClose={handleCloseModal}
+                  closeAfterTransition
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Card>
+                    <CardContent>
+                      <Typography>Do you want to delete this task?</Typography>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "flex-end",
+                          marginTop: "10px",
+                        }}
+                      >
+                        <Button
+                          variant="contained"
+                          sx={{
+                            backgroundColor: "#008260",
+                            color: "#FFF",
+                            marginRight: "5px",
+                          }}
+                          onClick={handleConfirmDelete}
+                        >
+                          Delete
+                        </Button>
+                        <Button
+                          variant="contained"
+                          sx={{ backgroundColor: "#E3E8F0", color: "#000" }}
+                          onClick={handleCloseModal}
+                        >
+                          Cancel
+                        </Button>
+                      </Box>
                     </CardContent>
                   </Card>
-                </Grid>
+                </Modal>
+              )}
 
-                {/* Comment Section */}
-                <Grid item xs={12}>
-                  <CommentList taskId={task._id} />
-                  <CommentForm taskId={task._id} />
+              {/* Task Description part */}
+              <Box
+                sx={{
+                  paddingLeft: "20px",
+                  paddingRight: "20px",
+                  display: "flex",
+                  flexDirection: "column",
+                  marginBottom: "20px",
+                }}
+              >
+                <Grid container spacing={2}>
+                  <Grid item xs={12} sm={8} md={8} lg={8}>
+                    <Card
+                      sx={{
+                        height: "180px",
+                        weight: "100px",
+                      }}
+                    >
+                      <CardContent>
+                        <Typography sx={{ textAlign: "left" }}>
+                          Description
+                        </Typography>
+                        <TextField
+                          multiline
+                          rows={4}
+                          value={detailTask.description}
+                          onChange={handleDescriptionChange}
+                          onKeyPress={handleDescriptionKeyPress}
+                          fullWidth
+                          inputRef={descriptionRef}
+                        />
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                  <Grid item xs={12} sm={4} md={4} lg={4}>
+                    <Card
+                      sx={{
+                        width: "170px",
+                        height: "90px",
+                      }}
+                    >
+                      <CardContent>
+                        <Typography variant="body2">Deadline</Typography>
+                        {isEditingDeadline ? (
+                          <TextField
+                            value={fDeadline(detailTask.deadline)}
+                            onChange={updateDeadline}
+                            onKeyPress={handleDeadlineKeyPress}
+                            fullWidth
+                            inputRef={deadlineRef}
+                            variant="standard"
+                            error={isInvalidDate}
+                            helperText={isInvalidDate && "Invalid date value"}
+                            // type="datetime-local"
+                          />
+                        ) : (
+                          <Typography
+                            variant="body2"
+                            onClick={handleDeadlineChange}
+                            sx={{
+                              marginTop: "10px",
+                              "&:hover": {
+                                color: "#78C1F3",
+                                fontWeight: "bold",
+                              },
+                              cursor: "pointer",
+                            }}
+                          >
+                            {fDeadline(detailTask.deadline)}
+                          </Typography>
+                        )}
+                      </CardContent>
+                    </Card>
+                  </Grid>
                 </Grid>
-              </Grid>
+              </Box>
+
+              {/* Comment Section */}
+              <Box
+                sx={{
+                  paddingLeft: "20px",
+                  paddingRight: "20px",
+                  marginTop: "20px",
+                  marginBottom: "110px",
+                }}
+              >
+                <Card
+                  sx={{
+                    padding: "20px",
+                  }}
+                >
+                  <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                      <CommentList taskId={task._id} />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <CommentForm taskId={task._id} />
+                    </Grid>
+                  </Grid>
+                </Card>
+              </Box>
             </Box>
           </Box>
         )}

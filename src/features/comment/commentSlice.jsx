@@ -5,7 +5,6 @@ import apiService from "../../app/apiService";
 const initialState = {
   isLoading: false,
   error: null,
-  commentsByTask: {},
   commentsById: {},
 };
 
@@ -24,20 +23,11 @@ const slice = createSlice({
     getCommentsSuccess(state, action) {
       state.isLoading = false;
       state.error = "";
-      const { taskId, comments } = action.payload.data;
+      const { comments } = action.payload.data;
 
       comments.forEach((comment) => {
         state.commentsById[comment._id] = comment;
       });
-
-      state.commentsByTask = {
-        ...state.commentsByTask,
-        [taskId]: comments.map((comment) => comment._id),
-      };
-
-      // state.commentsByTask[taskId] = comments
-      //   .map((comment) => comment._id)
-      //   .reverse();
     },
 
     createCommentSuccess(state, action) {

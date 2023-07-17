@@ -6,33 +6,36 @@ import CommentCard from "./CommentCard";
 import LoadingScreen from "../../components/LoadingScreen";
 
 function CommentList({ taskId }) {
-  const { commentsByTask, commentsById, isLoading } = useSelector(
+  const { commentsById, isLoading } = useSelector(
     (state) => ({
-      commentsByTask: state.comment.commentsByTask[taskId],
       commentsById: state.comment.commentsById,
       isLoading: state.comment.isLoading,
     }),
     shallowEqual
   );
+
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("taskId:", taskId); // Log taskId
     if (taskId) {
       dispatch(getComments({ taskId }));
     }
   }, [taskId, dispatch]);
 
-  console.log("commentsByTask:", commentsByTask); // Log commentsByTask
-  console.log("commentsById:", commentsById); // Log commentsById
+  const filterCommentsOfTaskId = () => {
+    return Object.values(commentsById).filter(
+      (comment) => comment.task === taskId
+    );
+  };
+
+  const commentsOfTask = filterCommentsOfTaskId();
 
   let renderComments;
 
-  if (commentsByTask) {
-    const comments = commentsByTask.map((commentId) => commentsById[commentId]);
+  if (commentsOfTask.length > 0) {
     renderComments = (
       <Stack spacing={1.5}>
-        {comments.map((comment) => (
+        {commentsOfTask.map((comment) => (
           <CommentCard key={comment._id} comment={comment} />
         ))}
       </Stack>
