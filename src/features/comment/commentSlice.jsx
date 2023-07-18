@@ -6,6 +6,7 @@ const initialState = {
   isLoading: false,
   error: null,
   commentsById: {},
+  updatedComment: {},
 };
 
 const slice = createSlice({
@@ -34,6 +35,18 @@ const slice = createSlice({
       state.isLoading = false;
       state.error = null;
     },
+
+    updateCommentSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      const updatedComment = action.payload.data;
+      state.updatedComment = updatedComment;
+    },
+    deleteCommentSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      delete state.comment;
+    },
   },
 });
 
@@ -45,7 +58,6 @@ export const getComments =
     dispatch(slice.actions.startLoading());
     try {
       const response = await apiService.get(`/tasks/${taskId}/comments`);
-      console.log("API response:", response.data); // Log the response data
       dispatch(
         slice.actions.getCommentsSuccess({
           ...response.data,
@@ -69,6 +81,36 @@ export const createComment =
       });
       dispatch(slice.actions.createCommentSuccess(response.data));
       dispatch(getComments({ taskId }));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error.message));
+      toast.error(error.message);
+    }
+  };
+
+export const updateComment =
+  ({ taskId, id, content }) =>
+  async (dispatch) => {
+    try {
+      dispatch(slice.actions.startLoading());
+      const response = await apiService.put(`/comments/${id}`, { content });
+      dispatch(slice.actions.updateCommentSuccess(response.data));
+      toast.success(response.data.message);
+      dispatch(getComments(taskId));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error.message));
+      toast.error(error.message);
+    }
+  };
+
+export const deleteComment =
+  ({ taskId, id }) =>
+  async (dispatch) => {
+    dispatch(slice.actions.startLoading());
+    try {
+      const response = await apiService.delete(`/comments/${id}`);
+      dispatch(slice.actions.deleteCommentSuccess(response.data));
+      toast.success(response.data.message);
+      dispatch(getComments(taskId));
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));
       toast.error(error.message);

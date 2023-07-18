@@ -10,14 +10,12 @@ import {
   MenuItem,
   Select,
   Grid,
-  Button,
-  Modal,
   Typography,
   Autocomplete,
 } from "@mui/material";
 import "./taskstyle.css";
 import { fDeadline } from "../../utils/formatTime";
-import { updateTask, deleteTask, assignTask } from "./taskSlice";
+import { updateTask, assignTask } from "./taskSlice";
 import { getUsers } from "../user/userSlice";
 import CloseIcon from "@mui/icons-material/Close";
 import ContentPasteIcon from "@mui/icons-material/ContentPaste";
@@ -28,14 +26,15 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CommentList from "../comment/CommentList";
 import CommentForm from "../comment/CommentForm";
+import DeleteTask from "./DeleteTask";
 
 const TaskDetail = ({ task, onClose }) => {
   const dispatch = useDispatch();
   const [detailTask, setDetailTask] = useState(task);
   const [isEditingDeadline, setIsEditingDeadline] = useState(false);
   const [isInvalidDate, setIsInvalidDate] = useState(false);
-  const [deleteModal, setDeleteModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
   const userList = useSelector((state) => state.user.user);
 
@@ -154,16 +153,11 @@ const TaskDetail = ({ task, onClose }) => {
   };
 
   const handleDeleteTask = () => {
-    setDeleteModal(true);
+    setOpenDeleteDialog(true);
   };
 
-  const handleConfirmDelete = () => {
-    dispatch(
-      deleteTask({
-        id: detailTask._id,
-      })
-    );
-    onClose();
+  const deleteDialogClose = () => {
+    setOpenDeleteDialog(false);
   };
 
   return (
@@ -425,50 +419,11 @@ const TaskDetail = ({ task, onClose }) => {
           </Grid>
         </Box>
 
-        {/* Delete Modal */}
-        {deleteModal && (
-          <Modal
-            open={true}
-            onClose={onClose}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Card>
-              <CardContent>
-                <Typography>Do you want to delete this task?</Typography>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    marginTop: "10px",
-                  }}
-                >
-                  <Button
-                    variant="contained"
-                    sx={{
-                      backgroundColor: "#008260",
-                      color: "#FFF",
-                      marginRight: "5px",
-                    }}
-                    onClick={handleConfirmDelete}
-                  >
-                    Delete
-                  </Button>
-                  <Button
-                    variant="contained"
-                    sx={{ backgroundColor: "#E3E8F0", color: "#000" }}
-                    onClick={onClose}
-                  >
-                    Cancel
-                  </Button>
-                </Box>
-              </CardContent>
-            </Card>
-          </Modal>
-        )}
+        <DeleteTask
+          id={detailTask._id}
+          openDeleteDialog={openDeleteDialog}
+          deleteDialogClose={deleteDialogClose}
+        />
 
         <Box
           sx={{

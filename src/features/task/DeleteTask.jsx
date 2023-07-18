@@ -8,13 +8,22 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { deleteProject } from "./projectSlice";
+import { deleteTask } from "./taskSlice";
 
-function DeleteProject({ id, openDeleteDialog, deleteDialogClose }) {
+function DeleteTask({ id, openDeleteDialog, deleteDialogClose }) {
   const dispatch = useDispatch();
 
-  const handleDeleteProject = () => {
-    dispatch(deleteProject({ id }));
+  // const handleConfirmDelete = () => {
+  //   dispatch(
+  //     deleteTask({
+  //       id: detailTask._id,
+  //     })
+  //   );
+  //   onClose();
+  // };
+
+  const handleDeleteTask = () => {
+    dispatch(deleteTask({ id }));
     deleteDialogClose();
   };
 
@@ -23,11 +32,11 @@ function DeleteProject({ id, openDeleteDialog, deleteDialogClose }) {
       <DialogTitle>Delete Confirmation</DialogTitle>
       <DialogContent>
         <Typography variant="body1">
-          Are you sure you want to delete this project?
+          Are you sure you want to delete this task?
         </Typography>
       </DialogContent>
       <DialogActions>
-        <Button variant="contained" onClick={handleDeleteProject}>
+        <Button variant="contained" onClick={handleDeleteTask}>
           Delete
         </Button>
         <Button variant="outlined" onClick={deleteDialogClose}>
@@ -38,4 +47,4 @@ function DeleteProject({ id, openDeleteDialog, deleteDialogClose }) {
   );
 }
 
-export default DeleteProject;
+export default DeleteTask;

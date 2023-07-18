@@ -18,7 +18,7 @@ function CommentList({ taskId }) {
 
   useEffect(() => {
     if (taskId) {
-      dispatch(getComments({ taskId }));
+      dispatch(getComments({ taskId, litmit: 100 }));
     }
   }, [taskId, dispatch]);
 
