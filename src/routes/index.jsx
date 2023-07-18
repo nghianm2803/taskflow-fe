@@ -11,6 +11,7 @@ import AuthRequire from "./AuthRequire";
 import Profile from "../features/user/Profile";
 import ProjectList from "../features/project/ProjectList";
 import SingleProject from "../features/project/SingleProject";
+import MyTasks from "../features/task/MyTasks";
 
 function Router() {
   return (
@@ -26,6 +27,7 @@ function Router() {
         <Route index element={<HomePage />} />
         <Route path="/projects" element={<ProjectList />} />
         <Route path="/projects/:id" element={<SingleProject />} />
+        <Route path="/tasks/mytasks" element={<MyTasks />} />
         <Route path="users/:userId" element={<UserProfilePage />} />
         <Route
           path="/me"

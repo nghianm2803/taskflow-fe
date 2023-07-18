@@ -235,7 +235,13 @@ const TaskDetail = ({ task, onClose }) => {
                   }[detailTask.status],
                 }}
               >
-                <CardContent>
+                <CardContent
+                  sx={{
+                    "&:last-child": {
+                      padding: "16px",
+                    },
+                  }}
+                >
                   <Typography variant="body2">Status</Typography>
                   <Select
                     value={detailTask.status}
@@ -283,7 +289,13 @@ const TaskDetail = ({ task, onClose }) => {
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <Card sx={{ height: "90px" }}>
-                <CardContent>
+                <CardContent
+                  sx={{
+                    "&:last-child": {
+                      padding: "16px",
+                    },
+                  }}
+                >
                   <Typography variant="body2">Assignee</Typography>
                   <Autocomplete
                     options={userList}
@@ -317,7 +329,13 @@ const TaskDetail = ({ task, onClose }) => {
                   }[detailTask.priority],
                 }}
               >
-                <CardContent>
+                <CardContent
+                  sx={{
+                    "&:last-child": {
+                      padding: "16px",
+                    },
+                  }}
+                >
                   <Typography variant="body2">Priority</Typography>
                   <Select
                     value={detailTask.priority}
@@ -360,7 +378,13 @@ const TaskDetail = ({ task, onClose }) => {
                   weight: "100px",
                 }}
               >
-                <CardContent>
+                <CardContent
+                  sx={{
+                    "&:last-child": {
+                      padding: "16px",
+                    },
+                  }}
+                >
                   <Typography sx={{ textAlign: "left" }}>
                     Description
                   </Typography>
@@ -383,7 +407,13 @@ const TaskDetail = ({ task, onClose }) => {
                   height: "90px",
                 }}
               >
-                <CardContent>
+                <CardContent
+                  sx={{
+                    "&:last-child": {
+                      padding: "16px",
+                    },
+                  }}
+                >
                   <Typography variant="body2">Deadline</Typography>
                   {isEditingDeadline ? (
                     <TextField

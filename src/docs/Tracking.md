@@ -10,13 +10,14 @@
 - [x] Manager can view projects, tasks in different views (by project, by assignee, by status,…)
 - [x] Manager can assign tasks to themselves or to team members by selecting from a list of users
 - [x] Manager can add priority, deadline to the task
-- [ ] Team member can view all their assigned tasks in one place
+- [x] Team member can view all their assigned tasks in one place
 - [x] Team member can assign task to themselves if the created task doesn’t have an assignee
 - [x] Team member can update the status of their assigned task as they progress
 
 ### Team Collaboration
 - [x] Team member can view other members’ tasks
 - [x] Team member and manager can leave comments on other members tasks
+- [x] Team member and manager can edit or delete their comments
 
 ### Reminder & Notification
 - [ ] Manager can receive email and/or in app notification about task status update by team member

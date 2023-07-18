@@ -11,6 +11,7 @@ import {
   CardContent,
   Card,
   Modal,
+  Button,
   Fade,
 } from "@mui/material";
 import SearchInput from "../../components/SearchInput";
@@ -18,6 +19,7 @@ import ProjectCard from "./ProjectCard";
 import ProjectForm from "./ProjectForm";
 import LoadingScreen from "../../components/LoadingScreen";
 import "./projectcard.css";
+import { Link } from "react-router-dom";
 
 function ProjectList() {
   const [page, setPage] = useState(1);
@@ -81,9 +83,22 @@ function ProjectList() {
       >
         Browse current Start Up opportunities on Taskflow.
       </Typography>
-      <Box marginBottom={5}>
-        <SearchInput handleOnSubmit={handleOnSubmit} />
-      </Box>
+      <Stack
+        display="flex"
+        flexDirection={{ xs: "column", md: "row" }}
+        justifyContent="flex-start"
+        alignItems="center"
+      >
+        <Box marginBottom={5} marginRight={1}>
+          <SearchInput handleOnSubmit={handleOnSubmit} />
+        </Box>
+        <Box marginBottom={5}>
+          {/* View all my assigned tasks */}
+          <Button variant="contained" component={Link} to="/tasks/mytasks">
+            My Tasks
+          </Button>
+        </Box>
+      </Stack>
       {projects ? (
         <>
           <Grid

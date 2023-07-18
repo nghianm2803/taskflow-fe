@@ -88,6 +88,25 @@ export const getTasks =
     }
   };
 
+export const getTasksOfCurrentUser =
+  ({ limit, filterBy, filterValue }) =>
+  async (dispatch) => {
+    dispatch(slice.actions.startLoading());
+    try {
+      const params = { limit };
+      if (filterBy && filterValue) {
+        params[filterBy] = filterValue;
+      }
+      const response = await apiService.get(`/tasks/mytasks`, {
+        params,
+      });
+      dispatch(slice.actions.getTasksSuccess(response.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error.message));
+      toast.error(error.message);
+    }
+  };
+
 export const getSingleTask = (id) => async (dispatch) => {
   try {
     dispatch(slice.actions.startLoading());

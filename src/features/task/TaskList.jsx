@@ -177,7 +177,6 @@ const TaskList = ({ projectId }) => {
             >
               <CardContent
                 style={{
-                  paddingBottom: "16px",
                   display: "flex",
                   alignItems: "center",
                 }}
@@ -266,7 +265,6 @@ const TaskList = ({ projectId }) => {
             >
               <CardContent
                 style={{
-                  paddingBottom: "16px",
                   display: "flex",
                   alignItems: "center",
                 }}
@@ -295,7 +293,6 @@ const TaskList = ({ projectId }) => {
             >
               <CardContent
                 style={{
-                  paddingBottom: "16px",
                   display: "flex",
                   alignItems: "center",
                 }}
@@ -324,7 +321,6 @@ const TaskList = ({ projectId }) => {
             >
               <CardContent
                 style={{
-                  paddingBottom: "16px",
                   display: "flex",
                   alignItems: "center",
                 }}

@@ -1,36 +1,37 @@
 function Card(theme) {
-    return {
-      MuiCard: {
-        styleOverrides: {
-          root: {
-            position: "relative",
-            borderRadius: Number(theme.shape.borderRadius) * 2,
-            zIndex: 0, // Fix Safari overflow: hidden with border radius
-          },
+  return {
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          position: "relative",
+          // borderRadius: Number(theme.shape.borderRadius) * 2,
+          zIndex: 0, // Fix Safari overflow: hidden with border radius
         },
       },
-      MuiCardHeader: {
-        defaultProps: {
-          titleTypographyProps: { variant: "h6" },
-          subheaderTypographyProps: {
-            variant: "body3",
-            marginTop: theme.spacing(0.5),
-          },
-        },
-        styleOverrides: {
-          root: {
-            padding: theme.spacing(3, 3, 0),
-          },
+    },
+    MuiCardHeader: {
+      defaultProps: {
+        titleTypographyProps: { variant: "h6" },
+        subheaderTypographyProps: {
+          variant: "body2",
+          marginTop: theme.spacing(0.5),
         },
       },
-      MuiCardContent: {
-        styleOverrides: {
-          root: {
-            padding: theme.spacing(3),
-          },
+      styleOverrides: {
+        root: {
+          padding: theme.spacing(3, 3, 0),
         },
       },
-    };
-  }
-  
-  export default Card;
+    },
+
+    MuiCardContent: {
+      styleOverrides: {
+        root: {
+          padding: theme.spacing(3),
+        },
+      },
+    },
+  };
+}
+
+export default Card;
