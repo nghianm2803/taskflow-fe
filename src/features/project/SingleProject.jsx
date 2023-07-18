@@ -74,61 +74,86 @@ function SingleProject() {
       >
         {project && (
           <Box width="100%" minHeight="80vh" padding={1}>
-            <ProjectHeader project={project} />
-            <Box>
-              <IconButton onClick={handleDialogOpen}>
-                <MoreVertIcon fontSize="medium" />
-              </IconButton>
-            </Box>
-
-            <Popover
-              open={openDialog}
-              onClose={() => setOpenDialog(false)}
-              anchorEl={anchorEl}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "right",
-              }}
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
+            <Stack
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                flexDirection: "row",
+                alignItems: "center",
               }}
             >
-              <DialogContent>
-                <Stack
-                  flexDirection="row"
-                  alignItems="center"
-                  onClick={handleEditBtnClick}
-                >
-                  <IconButton>
-                    <EditIcon />
-                  </IconButton>
-                  <Typography variant="subtitle2">Edit</Typography>
-                </Stack>
-                <Divider />
-                <Stack
-                  flexDirection="row"
-                  alignItems="center"
-                  onClick={handleDeleteBtnClick}
-                >
-                  <IconButton>
-                    <DeleteIcon />
-                  </IconButton>
-                  <Typography variant="subtitle2">Delete</Typography>
-                </Stack>
-              </DialogContent>
-            </Popover>
+              <ProjectHeader project={project} />
+              <Box>
+                <IconButton onClick={handleDialogOpen}>
+                  <MoreVertIcon fontSize="medium" />
+                </IconButton>
+              </Box>
 
-            <EditProject
-              project={project}
-              openEditDialog={openEditDialog}
-              editDialogClose={editDialogClose}
-            />
-            <DeleteProject
-              id={id}
-              openDeleteDialog={openDeleteDialog}
-              deleteDialogClose={deleteDialogClose}
-            />
+              <Popover
+                open={openDialog}
+                onClose={() => setOpenDialog(false)}
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "right",
+                }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+              >
+                <DialogContent>
+                  <Stack
+                    sx={{
+                      width: "100px",
+                      height: "20px",
+                      cursor: "pointer",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      marginBottom: "5px",
+                    }}
+                    onClick={handleEditBtnClick}
+                  >
+                    <Typography variant="subtitle2">Edit</Typography>
+                    <IconButton>
+                      <EditIcon />
+                    </IconButton>
+                  </Stack>
+                  <Divider />
+                  <Stack
+                    sx={{
+                      width: "100px",
+                      height: "20px",
+                      cursor: "pointer",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      marginTop: "5px",
+                    }}
+                    onClick={handleDeleteBtnClick}
+                  >
+                    <Typography variant="subtitle2">Delete</Typography>
+                    <IconButton>
+                      <DeleteIcon />
+                    </IconButton>
+                  </Stack>
+                </DialogContent>
+              </Popover>
+
+              <EditProject
+                project={project}
+                openEditDialog={openEditDialog}
+                editDialogClose={editDialogClose}
+              />
+              <DeleteProject
+                id={id}
+                openDeleteDialog={openDeleteDialog}
+                deleteDialogClose={deleteDialogClose}
+              />
+            </Stack>
 
             <TasksList projectId={project._id} />
           </Box>

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useState, useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import {
   Avatar,
   Paper,
@@ -8,6 +8,8 @@ import {
   IconButton,
   Card,
   Divider,
+  Link,
+  TextField,
   Popover,
   DialogContent,
 } from "@mui/material";
@@ -17,18 +19,24 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import useAuth from "../../hooks/useAuth";
+import { updateComment } from "./commentSlice";
 
 function CommentCard({ comment }) {
   const { user } = useAuth();
+  const dispatch = useDispatch();
+
   const commentId = useSelector(
     (state) => state.comment.commentsById[comment._id]._id
   );
 
+  const [contentComment, setContentComment] = useState(comment);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [openDialog, setOpenDialog] = useState(false);
-  const [openEditDialog, setOpenEditDialog] = useState(false);
+  const [editCommentForm, setEditCommentForm] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+
+  const contentRef = useRef(null);
 
   const handleHover = () => {
     setIsHovered(true);
@@ -43,13 +51,41 @@ function CommentCard({ comment }) {
     setOpenDialog(true);
   };
 
-  const editDialogClose = () => {
-    setOpenEditDialog(false);
-  };
-
   const handleEditBtnClick = () => {
     setOpenDialog(false);
-    setOpenEditDialog(true);
+    setEditCommentForm(true);
+  };
+
+  const handleCommentChange = (e) => {
+    setContentComment((prevComment) => ({
+      ...prevComment,
+      content: e.target.value,
+    }));
+  };
+
+  const handleCommentKeyPress = (e) => {
+    if (e.key === "Enter") {
+      dispatch(
+        updateComment({
+          id: contentComment._id,
+          content: contentComment.content,
+        })
+      );
+      contentRef.current.blur();
+    }
+  };
+
+  const handleManualUpdateComment = () => {
+    dispatch(
+      updateComment({
+        id: contentComment._id,
+        content: contentComment.content,
+      })
+    );
+  };
+
+  const handleCloseEditComment = () => {
+    setEditCommentForm(false);
   };
 
   const handleDeleteBtnClick = () => {
@@ -150,12 +186,6 @@ function CommentCard({ comment }) {
                   </Stack>
                 </DialogContent>
               </Popover>
-
-              {/* <EditComment
-                comment={content}
-                openEditDialog={openEditDialog}
-                editDialogClose={editDialogClose}
-              /> */}
               <DeleteComment
                 id={commentId}
                 openDeleteDialog={openDeleteDialog}
@@ -170,9 +200,40 @@ function CommentCard({ comment }) {
             {fDate(comment.createdAt)}
           </Typography>
         </Stack>
-        <Typography variant="body2" sx={{ color: "text.secondary" }}>
-          {comment.content}
-        </Typography>
+        {editCommentForm ? (
+          <>
+            <TextField
+              value={contentComment.content}
+              onChange={handleCommentChange}
+              onKeyPress={handleCommentKeyPress}
+              fullWidth
+              inputRef={contentRef}
+            />
+            <Typography variant="caption">
+              <Link
+                variant="caption"
+                color="secondary"
+                sx={{ cursor: "pointer" }}
+                onClick={handleCloseEditComment}
+              >
+                Cancel
+              </Link>{" "}
+              or enter to{" "}
+              <Link
+                variant="caption"
+                color="secondary"
+                sx={{ cursor: "pointer" }}
+                onClick={handleManualUpdateComment}
+              >
+                save
+              </Link>
+            </Typography>
+          </>
+        ) : (
+          <Typography variant="body2" sx={{ color: "text.secondary" }}>
+            {comment.content}
+          </Typography>
+        )}
       </Paper>
     </Stack>
   );

@@ -56,12 +56,11 @@ function EditProject({ project, openEditDialog, editDialogClose }) {
             <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
               <FTextField
                 name="name"
-                multiline
                 fullWidth
                 onChange={(e) => setValue("name", e.target.value)}
-                rows={2}
                 placeholder="Project name..."
                 sx={{
+                  marginBottom: "5px",
                   "& fieldset": {
                     borderWidth: `1px !important`,
                     borderColor: alpha("#919EAB", 0.32),
@@ -76,6 +75,7 @@ function EditProject({ project, openEditDialog, editDialogClose }) {
                 rows={2}
                 placeholder="Project description..."
                 sx={{
+                  marginBottom: "5px",
                   "& fieldset": {
                     borderWidth: `1px !important`,
                     borderColor: alpha("#919EAB", 0.32),
