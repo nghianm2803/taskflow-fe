@@ -7,7 +7,7 @@
 ### Task Management
 - [x] Manager can create a project with title, description, and add tasks to it
 - [x] Manager can create new tasks by entering a title, description, and selecting a project.
-- [ ] Manager can view projects, tasks in different views (by project, by assignee, by status,…)
+- [x] Manager can view projects, tasks in different views (by project, by assignee, by status,…)
 - [x] Manager can assign tasks to themselves or to team members by selecting from a list of users
 - [x] Manager can add priority, deadline to the task
 - [ ] Team member can view all their assigned tasks in one place

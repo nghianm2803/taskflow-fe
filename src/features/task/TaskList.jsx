@@ -5,7 +5,6 @@ import {
   Grid,
   Card,
   Typography,
-  alpha,
   Box,
   CardContent,
   Stack,
@@ -222,31 +221,18 @@ const TaskList = ({ projectId }) => {
                   fullWidth
                   required
                   placeholder="Task's name"
-                  sx={{
-                    "& fieldset": {
-                      borderWidth: `1px !important`,
-                      borderColor: alpha("#47BA5F", 0.32),
-                    },
-                  }}
                 />
                 <FTextField
                   name="description"
                   fullWidth
                   required
                   placeholder="Task's description"
-                  sx={{
-                    "& fieldset": {
-                      borderWidth: `1px !important`,
-                      borderColor: alpha("#47BA5F", 0.32),
-                    },
-                  }}
                 />
                 <FTextField
                   type="datetime-local"
                   name="deadline"
                   sx={{ width: 1, mb: "20px" }}
                 />
-
                 <Box
                   sx={{
                     display: "flex",
@@ -415,24 +401,12 @@ const TaskList = ({ projectId }) => {
                   fullWidth
                   required
                   placeholder="Task's name"
-                  sx={{
-                    "& fieldset": {
-                      borderWidth: `1px !important`,
-                      borderColor: alpha("#47BA5F", 0.32),
-                    },
-                  }}
                 />
                 <FTextField
                   name="description"
                   fullWidth
                   required
                   placeholder="Task's description"
-                  sx={{
-                    "& fieldset": {
-                      borderWidth: `1px !important`,
-                      borderColor: alpha("#47BA5F", 0.32),
-                    },
-                  }}
                 />
                 <FTextField
                   type="datetime-local"
