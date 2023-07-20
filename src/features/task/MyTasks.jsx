@@ -23,6 +23,7 @@ import BlankLayout from "../../layouts/BlankLayout";
 function MyTasks() {
   const { tasksList, isLoading } = useSelector((state) => state.task);
   const [sorting, setSorting] = useState({ field: "", order: "" });
+  const [sortedTasks, setSortedTasks] = useState([]);
   const dispatch = useDispatch();
 
   const handleSort = (field) => {
@@ -37,14 +38,25 @@ function MyTasks() {
   };
 
   useEffect(() => {
-    dispatch(
-      getTasksOfCurrentUser({
-        limit: 6,
-        sortBy: sorting.field,
-        sortOrder: sorting.order,
-      })
-    );
-  }, [dispatch, sorting]);
+    dispatch(getTasksOfCurrentUser({ limit: 100 }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (tasksList.length > 0) {
+      const sorted = [...tasksList].sort((a, b) => {
+        const isAsc = sorting.order === "asc";
+        if (a[sorting.field] < b[sorting.field]) {
+          return isAsc ? -1 : 1;
+        }
+        if (a[sorting.field] > b[sorting.field]) {
+          return isAsc ? 1 : -1;
+        }
+        return 0;
+      });
+      setSortedTasks(sorted);
+    }
+  }, [tasksList, sorting]);
 
   if (isLoading) {
     return <LoadingScreen />;
@@ -128,7 +140,7 @@ function MyTasks() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {tasksList.map((task) => {
+                  {sortedTasks.map((task) => {
                     return (
                       <TableRow key={task._id} hover>
                         <TableCell
