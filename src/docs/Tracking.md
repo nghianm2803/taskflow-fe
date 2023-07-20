@@ -3,6 +3,7 @@
 - [x] Manager can create an account and log in/ out of the manager’s app
 - [x] Team members cannot register by themselves, but need manager’s email invitation to set up their account.
 - [x] After initial setup, team members can login/out of the app using their credentials
+- [x] Team members can update profile
 
 ### Task Management
 - [x] Manager can create a project with title, description, and add tasks to it

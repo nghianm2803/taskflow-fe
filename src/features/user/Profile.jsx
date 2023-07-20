@@ -1,3 +1,4 @@
+import React, { useCallback } from "react";
 import useAuth from "../../hooks/useAuth";
 import { Container, Grid, Typography, Stack, Box, Card } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
@@ -15,7 +16,6 @@ const UpdateUserSchema = yup.object().shape({
 
 function Profile() {
   const { user } = useAuth();
-  const { name, email, role } = user;
 
   const isLoading = useSelector((state) => state.user.isLoading);
 
@@ -38,8 +38,24 @@ function Profile() {
 
   const dispatch = useDispatch();
 
+  const handleDrop = useCallback(
+    (acceptedFiles) => {
+      const file = acceptedFiles[0];
+
+      if (file) {
+        setValue(
+          "avatar",
+          Object.assign(file, {
+            preview: URL.createObjectURL(file),
+          })
+        );
+      }
+    },
+    [setValue]
+  );
+
   const onSubmit = (data) => {
-    // dispatch(updateUserProfile({ userId: user._id, ...data }));
+    dispatch(updateUserProfile({ userId: user._id, ...data }));
   };
 
   return (
@@ -55,10 +71,10 @@ function Profile() {
           <Grid item xs={12} md={4}>
             <Card sx={{ py: 10, px: 3, textAlign: "center" }}>
               <FUploadAvatar
-                name="avatarUrl"
+                name="avatar"
                 accept="image/*"
                 maxSize={3145728}
-                // onDrop={handleDrop}
+                onDrop={handleDrop}
                 helperText={
                   <Typography
                     variant="caption"
@@ -96,7 +112,7 @@ function Profile() {
               </Box>
 
               <Stack spacing={3} alignItems="flex-end" sx={{ mt: 3 }}>
-                <FTextField name="role" label="Role" />
+                <FTextField name="role" label="Role" disabled />
 
                 <LoadingButton
                   type="submit"

@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import apiService from "../../app/apiService";
-import { USERS_LIMIT_PER_PAGE } from "../../app/config";
+import { cloudinaryUpload } from "../../utils/cloudinary";
 
 const initialState = {
   isLoading: false,
@@ -48,7 +48,7 @@ const slice = createSlice({
 export default slice.reducer;
 
 export const getUsers =
-  ({ page, limit = USERS_LIMIT_PER_PAGE, name }) =>
+  ({ page, limit, name }) =>
   async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
@@ -88,3 +88,22 @@ export const getCurrentUserProfile = () => async (dispatch) => {
     dispatch(slice.actions.hasError(error));
   }
 };
+
+export const updateUserProfile =
+  ({ userId, name, avatar }) =>
+  async (dispatch) => {
+    dispatch(slice.actions.startLoading());
+    try {
+      const data = { name };
+      if (avatar instanceof File) {
+        const imageUrl = await cloudinaryUpload(avatar);
+        data.avatar = imageUrl;
+      }
+      const response = await apiService.put(`/users/${userId}`, data);
+      dispatch(slice.actions.updateUserProfileSuccess(response.data));
+      toast.success("Update Profile successfully");
+    } catch (error) {
+      dispatch(slice.actions.hasError(error.message));
+      toast.error(error.message);
+    }
+  };
