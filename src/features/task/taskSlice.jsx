@@ -8,6 +8,8 @@ const initialState = {
   tasksList: [],
   projectTo: {},
   updatedTask: {},
+  sortBy: "createdAt",
+  sortOrder: "desc",
 };
 
 const slice = createSlice({
@@ -66,6 +68,12 @@ const slice = createSlice({
       const { id } = action.payload.data;
       state.tasksList = state.tasksList.filter((task) => task._id !== id);
     },
+
+    updateSortingOptions(state, action) {
+      const { sortBy, sortOrder } = action.payload.data;
+      state.sortBy = sortBy;
+      state.sortOrder = sortOrder;
+    },
   },
 });
 
@@ -89,13 +97,17 @@ export const getTasks =
   };
 
 export const getTasksOfCurrentUser =
-  ({ limit, filterBy, filterValue }) =>
+  ({ limit, filterBy, filterValue, sortBy, sortOrder }) =>
   async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
       const params = { limit };
       if (filterBy && filterValue) {
         params[filterBy] = filterValue;
+      }
+      if (sortBy && sortOrder) {
+        params.sortBy = sortBy;
+        params.sortOrder = sortOrder;
       }
       const response = await apiService.get(`/tasks/mytasks`, {
         params,

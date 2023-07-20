@@ -95,7 +95,7 @@ export const updateComment =
       const response = await apiService.put(`/comments/${id}`, { content });
       dispatch(slice.actions.updateCommentSuccess(response.data));
       toast.success(response.data.message);
-      dispatch(getComments(taskId));
+      dispatch(getComments({ taskId }));
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));
       toast.error(error.message);
@@ -110,7 +110,7 @@ export const deleteComment =
       const response = await apiService.delete(`/comments/${id}`);
       dispatch(slice.actions.deleteCommentSuccess(response.data));
       toast.success(response.data.message);
-      dispatch(getComments(taskId));
+      dispatch(getComments({ taskId }));
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));
       toast.error(error.message);

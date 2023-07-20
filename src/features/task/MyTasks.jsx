@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Table,
@@ -12,20 +12,39 @@ import {
   Card,
   Typography,
   Box,
+  TableSortLabel,
   CardContent,
 } from "@mui/material";
 import { getTasksOfCurrentUser } from "./taskSlice";
 import LoadingScreen from "../../components/LoadingScreen";
 import { fDeadline } from "../../utils/formatTime";
+import BlankLayout from "../../layouts/BlankLayout";
 
 function MyTasks() {
   const { tasksList, isLoading } = useSelector((state) => state.task);
-
+  const [sorting, setSorting] = useState({ field: "", order: "" });
   const dispatch = useDispatch();
 
+  const handleSort = (field) => {
+    if (sorting.field === field) {
+      setSorting((prevState) => ({
+        ...prevState,
+        order: prevState.order === "asc" ? "desc" : "asc",
+      }));
+    } else {
+      setSorting({ field, order: "asc" });
+    }
+  };
+
   useEffect(() => {
-    dispatch(getTasksOfCurrentUser({ limit: 6 }));
-  }, [dispatch]);
+    dispatch(
+      getTasksOfCurrentUser({
+        limit: 6,
+        sortBy: sorting.field,
+        sortOrder: sorting.order,
+      })
+    );
+  }, [dispatch, sorting]);
 
   if (isLoading) {
     return <LoadingScreen />;
@@ -46,9 +65,7 @@ function MyTasks() {
       <Card sx={{ p: 3 }}>
         <Box sx={{ overflowX: "auto" }}>
           {tasksList && tasksList.length === 0 ? (
-            <Typography variant="subtitle2" sx={{ my: 4 }}>
-              No tasks available.
-            </Typography>
+            <BlankLayout />
           ) : (
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
@@ -62,16 +79,51 @@ function MyTasks() {
                         display: { sm: "table-cell" },
                         width: "20%",
                       }}
+                      onClick={() => handleSort("status")}
+                      sortDirection={
+                        sorting.field === "status" ? sorting.order : false
+                      }
                     >
-                      Status
+                      <TableSortLabel
+                        active={sorting.field === "status"}
+                        direction={
+                          sorting.field === "status" ? sorting.order : "asc"
+                        }
+                      >
+                        Status
+                      </TableSortLabel>
                     </TableCell>
                     <TableCell
                       sx={{ display: { md: "table-cell" }, width: "20%" }}
+                      onClick={() => handleSort("priority")}
+                      sortDirection={
+                        sorting.field === "priority" ? sorting.order : false
+                      }
                     >
-                      Priority
+                      <TableSortLabel
+                        active={sorting.field === "priority"}
+                        direction={
+                          sorting.field === "priority" ? sorting.order : "asc"
+                        }
+                      >
+                        Priority
+                      </TableSortLabel>
                     </TableCell>
-                    <TableCell sx={{ display: { md: "table-cell" } }}>
-                      Deadline
+                    <TableCell
+                      sx={{ display: { md: "table-cell" } }}
+                      onClick={() => handleSort("deadline")}
+                      sortDirection={
+                        sorting.field === "deadline" ? sorting.order : false
+                      }
+                    >
+                      <TableSortLabel
+                        active={sorting.field === "deadline"}
+                        direction={
+                          sorting.field === "deadline" ? sorting.order : "asc"
+                        }
+                      >
+                        Deadline
+                      </TableSortLabel>
                     </TableCell>
                   </TableRow>
                 </TableHead>

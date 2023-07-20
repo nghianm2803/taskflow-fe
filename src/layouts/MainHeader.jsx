@@ -64,9 +64,7 @@ function MainHeader() {
           {user?.email}
         </Typography>
       </Box>
-
       <Divider sx={{ borderStyle: "dashed" }} />
-
       <MenuItem
         onClick={handleMenuClose}
         to="/me"
@@ -74,6 +72,15 @@ function MainHeader() {
         sx={{ mx: 1 }}
       >
         My Profile
+      </MenuItem>
+      <Divider sx={{ borderStyle: "dashed" }} />
+      <MenuItem
+        onClick={handleMenuClose}
+        to="/tasks/mytasks"
+        component={RouterLink}
+        sx={{ mx: 1 }}
+      >
+        My Task
       </MenuItem>
       <Divider sx={{ borderStyle: "dashed" }} />
       <MenuItem onClick={handleLogout} sx={{ m: 1 }}>
