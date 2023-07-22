@@ -1,3 +1,4 @@
+import React, { createContext, useState, useContext } from "react";
 import { CssBaseline } from "@mui/material";
 import {
   alpha,
@@ -6,7 +7,7 @@ import {
 } from "@mui/material/styles";
 import customizeComponents from "./customization";
 
-const PRIMARY = {
+const PRIMARY_LIGHT = {
   lighter: "#EFE1D1",
   light: "#E7CBCB",
   main: "#A78295",
@@ -14,7 +15,7 @@ const PRIMARY = {
   darker: "#331D2C",
   contrastText: "#FFF",
 };
-const SECONDARY = {
+const SECONDARY_LIGHT = {
   lighter: "#D6E4FF",
   light: "#84A9FF",
   main: "#3366FF",
@@ -22,7 +23,7 @@ const SECONDARY = {
   darker: "#091A7A",
   contrastText: "#FFF",
 };
-const SUCCESS = {
+const SUCCESS_LIGHT = {
   lighter: "#E9FCD4",
   light: "#AAF27F",
   main: "#54D62C",
@@ -31,15 +32,30 @@ const SUCCESS = {
   contrastText: "#FFF",
 };
 
-// const DARKTHEME = {
-//   lighter: "#E5E5CB",
-//   light: "#D5CEA3",
-//   main: "#3C2A21",
-//   dark: "#1A120B",
-//   darker: "#140d0d",
-//   contrastText: "#FFF",
-// };
-
+const PRIMARY_DARK = {
+  lighter: "#E5E5CB",
+  light: "#D5CEA3",
+  main: "#3C2A21",
+  dark: "#1A120B",
+  darker: "#140d0d",
+  contrastText: "#FFF",
+};
+const SECONDARY_DARK = {
+  lighter: "#D6E4FF",
+  light: "#84A9FF",
+  main: "#3366FF",
+  dark: "#1939B7",
+  darker: "#091A7A",
+  contrastText: "#FFF",
+};
+const SUCCESS_DARK = {
+  lighter: "#E9FCD4",
+  light: "#AAF27F",
+  main: "#54D62C",
+  dark: "#229A16",
+  darker: "#08660D",
+  contrastText: "#FFF",
+};
 const GREY = {
   0: "#FFFFFF",
   100: "#F9FAFB",
@@ -61,12 +77,25 @@ const GREY = {
   500_80: alpha("#919EAB", 0.8),
 };
 
+// Create a context for the theme
+const ThemeContext = createContext();
+
+export function useThemeContext() {
+  return useContext(ThemeContext);
+}
+
 function ThemeProvider({ children }) {
-  const themeOptions = {
+  const [isDarkTheme, setIsDarkTheme] = useState(false);
+
+  const toggleTheme = () => {
+    setIsDarkTheme((prev) => !prev);
+  };
+
+  const lightThemeOptions = {
     palette: {
-      primary: PRIMARY,
-      secondary: SECONDARY,
-      success: SUCCESS,
+      primary: PRIMARY_LIGHT,
+      secondary: SECONDARY_LIGHT,
+      success: SUCCESS_LIGHT,
       text: { primary: GREY[800], secondary: GREY[600], disabled: GREY[500] },
       background: { paper: "#fff", default: "#fff", neutral: GREY[200] },
       action: {
@@ -83,13 +112,36 @@ function ThemeProvider({ children }) {
     shape: { borderRadius: 8 },
   };
 
-  const theme = createTheme(themeOptions);
-  theme.components = customizeComponents(theme);
+  const darkThemeOptions = {
+    palette: {
+      primary: PRIMARY_DARK,
+      secondary: SECONDARY_DARK,
+      success: SUCCESS_DARK,
+      text: { primary: GREY[800], secondary: GREY[600], disabled: GREY[500] },
+      background: { paper: "#F32d53", default: "#F32d53", neutral: GREY[200] },
+      action: {
+        active: GREY[600],
+        hover: GREY[500_8],
+        selected: GREY[500_16],
+        disabled: GREY[500_80],
+        disabledBackground: GREY[500_24],
+        focus: GREY[500_24],
+        hoverOpacity: 0.08,
+        disabledOpacity: 0.48,
+      },
+    },
+    shape: { borderRadius: 8 },
+  };
 
+  const theme = createTheme(isDarkTheme ? darkThemeOptions : lightThemeOptions);
+  theme.components = customizeComponents(theme);
+  const themeContextValue = { theme, toggleTheme };
   return (
     <MUIThemeProvider theme={theme}>
       <CssBaseline />
-      {children}
+      <ThemeContext.Provider value={themeContextValue}>
+        {children}
+      </ThemeContext.Provider>
     </MUIThemeProvider>
   );
 }

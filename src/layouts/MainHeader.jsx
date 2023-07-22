@@ -1,20 +1,29 @@
 import * as React from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
-
+import {
+  AppBar,
+  Menu,
+  MenuItem,
+  Typography,
+  IconButton,
+  Toolbar,
+  Box,
+  Avatar,
+  Divider,
+} from "@mui/material";
 import Logo from "../components/Logo";
-import { Avatar, Divider } from "@mui/material";
 import useAuth from "../hooks/useAuth";
 import { useNavigate, Link as RouterLink } from "react-router-dom";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import LightModeIcon from "@mui/icons-material/LightMode";
+import { useThemeContext } from "../theme";
 
 function MainHeader() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+
+  const { toggleTheme, theme } = useThemeContext();
+  
+  console.log("theme: ", theme.palette.mode)
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -110,8 +119,12 @@ function MainHeader() {
           >
             Taskflow
           </Typography>
-
           <Box sx={{ flexGrow: 1 }} />
+          {theme.palette.mode === "dark" ? (
+            <LightModeIcon onClick={toggleTheme} sx={{ marginRight: "10px", cursor: "pointer", color: "#FFF" }} />
+          ) : (
+            <DarkModeIcon onClick={toggleTheme} sx={{ marginRight: "10px", cursor: "pointer", color: "#000" }} />
+          )}
           <Box>
             <Avatar
               onClick={handleProfileMenuOpen}

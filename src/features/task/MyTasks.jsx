@@ -18,7 +18,7 @@ import {
 import { getTasksOfCurrentUser } from "./taskSlice";
 import LoadingScreen from "../../components/LoadingScreen";
 import { fDeadline } from "../../utils/formatTime";
-import BlankLayout from "../../layouts/BlankLayout";
+import EmptyData from "../../pages/EmptyData";
 
 function MyTasks() {
   const { tasksList, isLoading } = useSelector((state) => state.task);
@@ -77,7 +77,7 @@ function MyTasks() {
       <Card sx={{ p: 3 }}>
         <Box sx={{ overflowX: "auto" }}>
           {tasksList && tasksList.length === 0 ? (
-            <BlankLayout />
+            <EmptyData />
           ) : (
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
