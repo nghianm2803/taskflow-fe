@@ -35,7 +35,7 @@ const SUCCESS_LIGHT = {
 const PRIMARY_DARK = {
   lighter: "#E5E5CB",
   light: "#D5CEA3",
-  main: "#3C2A21",
+  main: "#FFF",
   dark: "#1A120B",
   darker: "#140d0d",
   contrastText: "#FFF",
