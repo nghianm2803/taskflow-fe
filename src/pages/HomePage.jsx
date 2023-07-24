@@ -22,7 +22,7 @@ function HomePage() {
         padding="10px"
       >
         <Box p="10px">
-          <Typography variant="h2" mb={5} color="primary">
+          <Typography variant="h2" mb={5} color="primary" fontWeight="bold">
             {" "}
             Taskflow{" "}
           </Typography>

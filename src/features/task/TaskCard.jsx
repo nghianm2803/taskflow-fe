@@ -30,7 +30,6 @@ const TaskCard = ({ task }) => {
         sx={{
           display: "flex",
           flexDirection: "column",
-        
         }}
       >
         <Card
@@ -43,6 +42,7 @@ const TaskCard = ({ task }) => {
             position: "relative",
             overflow: "hidden",
             marginBottom: "10px",
+            backgroundColor: "#FFF"
           }}
           onMouseEnter={handleHover}
           onMouseLeave={handleLeave}
@@ -92,6 +92,7 @@ const styleTypo = {
   letterSpace: "0px",
   wordBreak: "break-word",
   cursor: "pointer",
+  color: "#212B36"
 };
 
 export default TaskCard;

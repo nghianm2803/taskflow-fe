@@ -22,11 +22,8 @@ function MainHeader() {
   const navigate = useNavigate();
 
   const { toggleTheme, theme } = useThemeContext();
-  
-  console.log("theme: ", theme.palette.mode)
 
   const [anchorEl, setAnchorEl] = React.useState(null);
-
   const isMenuOpen = Boolean(anchorEl);
 
   const handleProfileMenuOpen = (event) => {
@@ -99,8 +96,8 @@ function MainHeader() {
   );
 
   return (
-    <Box sx={{ mb: 3 }}>
-      <AppBar position="static" color="transparent">
+    <Box sx={{ mb: 8 }}>
+      <AppBar position="fixed">
         <Toolbar>
           <IconButton
             size="large"
@@ -121,9 +118,9 @@ function MainHeader() {
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
           {theme.palette.mode === "dark" ? (
-            <LightModeIcon onClick={toggleTheme} sx={{ marginRight: "10px", cursor: "pointer", color: "#FFF" }} />
+            <LightModeIcon onClick={toggleTheme} sx={{ marginRight: "20px", cursor: "pointer", color: "#FFF" }} />
           ) : (
-            <DarkModeIcon onClick={toggleTheme} sx={{ marginRight: "10px", cursor: "pointer", color: "#000" }} />
+            <DarkModeIcon onClick={toggleTheme} sx={{ marginRight: "20px", cursor: "pointer", color: "#000" }} />
           )}
           <Box>
             <Avatar

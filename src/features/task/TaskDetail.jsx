@@ -242,7 +242,7 @@ const TaskDetail = ({ task, onClose }) => {
                     },
                   }}
                 >
-                  <Typography variant="body2">Status</Typography>
+                  <Typography variant="body2" color="#212B36">Status</Typography>
                   <Select
                     value={detailTask.status}
                     onChange={handleStatusChange}
@@ -252,7 +252,7 @@ const TaskDetail = ({ task, onClose }) => {
                       height: "40px",
                     }}
                     renderValue={(selected) => (
-                      <Typography variant="body2">{selected}</Typography>
+                      <Typography variant="body2" color="#212B36">{selected}</Typography>
                     )}
                     variant="standard"
                   >
@@ -336,7 +336,7 @@ const TaskDetail = ({ task, onClose }) => {
                     },
                   }}
                 >
-                  <Typography variant="body2">Priority</Typography>
+                  <Typography variant="body2" color="#212B36">Priority</Typography>
                   <Select
                     value={detailTask.priority}
                     onChange={handlePriorityChange}
@@ -346,7 +346,7 @@ const TaskDetail = ({ task, onClose }) => {
                       height: "40px",
                     }}
                     renderValue={(selected) => (
-                      <Typography variant="body2">{selected}</Typography>
+                      <Typography variant="body2" color="#212B36">{selected}</Typography>
                     )}
                     variant="standard"
                   >
@@ -425,7 +425,7 @@ const TaskDetail = ({ task, onClose }) => {
                       variant="standard"
                       error={isInvalidDate}
                       helperText={isInvalidDate && "Invalid date value"}
-                      // type="datetime-local"
+                    // type="datetime-local"
                     />
                   ) : (
                     <Typography

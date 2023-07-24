@@ -184,7 +184,7 @@ const TaskList = ({ projectId }) => {
                 <ContentPasteIcon
                   style={{ color: "#3F51B5", paddingRight: "5px" }}
                 />
-                <Typography variant="body2" display="block" align="left">
+                <Typography variant="body2" display="block" align="left" color="#212B36">
                   Pending
                 </Typography>
               </CardContent>
@@ -201,6 +201,7 @@ const TaskList = ({ projectId }) => {
                 alignItems: "center",
                 display: "flex",
                 justifyContent: "center",
+                backgroundColor: "#FFF"
               }}
               onMouseEnter={handleHover}
               onMouseLeave={handleLeave}
@@ -208,8 +209,8 @@ const TaskList = ({ projectId }) => {
                 setShowForm((prevState) => !prevState);
               }}
             >
-              <AddIcon fontSize="small" />
-              <Typography variant="body2" display="block" align="center">
+              <AddIcon fontSize="small" sx={{ color: "#212B36" }} />
+              <Typography variant="body2" display="block" align="center" color="#212B36">
                 Task
               </Typography>
             </Card>
@@ -272,7 +273,7 @@ const TaskList = ({ projectId }) => {
                 <AssignmentIcon
                   style={{ color: "#F1C93B", paddingRight: "5px" }}
                 />
-                <Typography variant="body2" display="block" align="left">
+                <Typography variant="body2" display="block" align="left" color="#212B36">
                   Working
                 </Typography>
               </CardContent>
@@ -300,7 +301,7 @@ const TaskList = ({ projectId }) => {
                 <ContentPasteSearchIcon
                   style={{ color: "#00BCD4", paddingRight: "5px" }}
                 />
-                <Typography variant="body2" display="block" align="left">
+                <Typography variant="body2" display="block" align="left" color="#212B36">
                   Review
                 </Typography>
               </CardContent>
@@ -328,7 +329,7 @@ const TaskList = ({ projectId }) => {
                 <AssignmentTurnedInIcon
                   style={{ color: "#8BC34A", paddingRight: "5px" }}
                 />
-                <Typography variant="body2" display="block" align="left">
+                <Typography variant="body2" display="block" align="left" color="#212B36">
                   Done
                 </Typography>
               </CardContent>
@@ -380,13 +381,14 @@ const TaskList = ({ projectId }) => {
                 alignItems: "center",
                 display: "flex",
                 justifyContent: "center",
+                backgroundColor: "#FFF"
               }}
               onMouseEnter={handleHover}
               onMouseLeave={handleLeave}
               onClick={handleTaskClick}
             >
-              <AddIcon fontSize="small" />
-              <Typography variant="body2" display="block" align="center">
+              <AddIcon fontSize="small" sx={{ color: "#212B36" }} />
+              <Typography variant="body2" display="block" align="center" color="#212B36">
                 Task
               </Typography>
             </Card>

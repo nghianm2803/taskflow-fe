@@ -8,11 +8,11 @@ import {
 import customizeComponents from "./customization";
 
 const PRIMARY_LIGHT = {
-  lighter: "#EFE1D1",
-  light: "#E7CBCB",
-  main: "#A78295",
-  dark: "#3F2E3E",
-  darker: "#331D2C",
+  lighter: "#CAD2C5",
+  light: "#84A98C",
+  main: "#52796F",
+  dark: "#354F52",
+  darker: "#2F3E46",
   contrastText: "#FFF",
 };
 const SECONDARY_LIGHT = {
@@ -33,12 +33,12 @@ const SUCCESS_LIGHT = {
 };
 
 const PRIMARY_DARK = {
-  lighter: "#E5E5CB",
-  light: "#D5CEA3",
-  main: "#FFF",
-  dark: "#1A120B",
-  darker: "#140d0d",
-  contrastText: "#FFF",
+  lighter: "#CCD5AE",
+  light: "#E9EDC9",
+  main: "#FEFAE0",
+  dark: "#FAEDCD",
+  darker: "#D4A373",
+  contrastText: "#52796F",
 };
 const SECONDARY_DARK = {
   lighter: "#D6E4FF",
@@ -77,6 +77,27 @@ const GREY = {
   500_80: alpha("#919EAB", 0.8),
 };
 
+const TEXT_DARK = {
+  0: "#FFFFFF",
+  100: "#F9FAFB",
+  200: "#F4F6F8",
+  300: "#DFE3E8",
+  400: "#C4CDD5",
+  500: "#919EAB",
+  600: "#637381",
+  700: "#454F5B",
+  800: "#212B36",
+  900: "#161C24",
+  500_8: alpha("#919EAB", 0.08),
+  500_12: alpha("#919EAB", 0.12),
+  500_16: alpha("#919EAB", 0.16),
+  500_24: alpha("#919EAB", 0.24),
+  500_32: alpha("#919EAB", 0.32),
+  500_48: alpha("#919EAB", 0.48),
+  500_56: alpha("#919EAB", 0.56),
+  500_80: alpha("#919EAB", 0.8),
+};
+
 // Create a context for the theme
 const ThemeContext = createContext();
 
@@ -93,6 +114,7 @@ function ThemeProvider({ children }) {
 
   const lightThemeOptions = {
     palette: {
+      mode: "light",
       primary: PRIMARY_LIGHT,
       secondary: SECONDARY_LIGHT,
       success: SUCCESS_LIGHT,
@@ -114,11 +136,12 @@ function ThemeProvider({ children }) {
 
   const darkThemeOptions = {
     palette: {
+      mode: "dark",
       primary: PRIMARY_DARK,
       secondary: SECONDARY_DARK,
       success: SUCCESS_DARK,
-      text: { primary: GREY[800], secondary: GREY[600], disabled: GREY[500] },
-      background: { paper: "#F32d53", default: "#F32d53", neutral: GREY[200] },
+      text: { primary: TEXT_DARK[200], secondary: TEXT_DARK[500], disabled: TEXT_DARK[600] },
+      background: { paper: "#00111c", default: "#00111c", neutral: TEXT_DARK[800] },
       action: {
         active: GREY[600],
         hover: GREY[500_8],
