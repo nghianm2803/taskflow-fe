@@ -10,7 +10,7 @@ function SearchInput({ handleOnSubmit }) {
     e.preventDefault();
     handleOnSubmit(search);
   };
-  
+
   const handleClearSearch = () => {
     setSearch("");
     handleOnSubmit('')
@@ -27,7 +27,7 @@ function SearchInput({ handleOnSubmit }) {
         placeholder="Search..."
         label="Search..."
         onChange={handleChangeSearch}
-        sx={{ width: 300 }}
+        sx={{ width: 380 }}
         size="small"
         InputProps={{
           endAdornment: (

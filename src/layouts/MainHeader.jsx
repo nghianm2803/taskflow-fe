@@ -140,7 +140,7 @@ function MainHeader() {
               onClick={handleProfileMenuOpen}
               src={user.avatar}
               alt={user.name}
-              sx={{ width: 32, height: 32 }}
+              sx={{ width: 32, height: 32, cursor: "pointer" }}
             />
           </Box>
         </Toolbar>

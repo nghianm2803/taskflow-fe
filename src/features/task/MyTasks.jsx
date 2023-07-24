@@ -6,7 +6,6 @@ import {
   TableRow,
   TableBody,
   TableCell,
-  Link,
   TableContainer,
   Container,
   Card,
@@ -149,9 +148,9 @@ function MyTasks() {
                             cursor: "pointer",
                           }}
                         >
-                          <Link variant="subtitle2" sx={{ fontWeight: 600 }}>
+                          <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
                             {task.name}
-                          </Link>
+                          </Typography>
                         </TableCell>
                         <TableCell
                           align="left"
