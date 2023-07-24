@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import "./taskstyle.css";
 import { fDeadline } from "../../utils/formatTime";
-import { updateTask, assignTask } from "./taskSlice";
+import { updateTask, assignTask, getSingleTask } from "./taskSlice";
 import { getUsers } from "../user/userSlice";
 import CloseIcon from "@mui/icons-material/Close";
 import ContentPasteIcon from "@mui/icons-material/ContentPaste";
@@ -45,6 +45,10 @@ const TaskDetail = ({ task, onClose }) => {
   useEffect(() => {
     dispatch(getUsers({ page: 1, name: searchQuery }));
   }, [dispatch, searchQuery]);
+
+  useEffect(() => {
+    dispatch(getSingleTask(detailTask._id));
+  }, [dispatch, detailTask._id]);
 
   const handleAssignUser = (taskId, userId) => {
     dispatch(assignTask({ taskId, userId }));
@@ -169,7 +173,7 @@ const TaskDetail = ({ task, onClose }) => {
         width: "50%",
         height: "calc(100vh - 65px)",
         overflow: "hidden",
-        backgroundColor: "#EDEEF8",
+        backgroundColor: "#b7b7a4",
         borderTopLeftRadius: "10px",
         zIndex: 1,
       }}
@@ -316,6 +320,7 @@ const TaskDetail = ({ task, onClose }) => {
                         variant="standard"
                       />
                     )}
+                    // value={detailTask.assignTo}
                     onChange={(event, user) =>
                       handleAssignUser(detailTask._id, user ? user._id : null)
                     }

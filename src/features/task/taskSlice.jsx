@@ -79,45 +79,45 @@ const slice = createSlice({
 
 export const getTasks =
   ({ projectId, limit, filterBy, filterValue }) =>
-  async (dispatch) => {
-    dispatch(slice.actions.startLoading());
-    try {
-      const params = { limit };
-      if (filterBy && filterValue) {
-        params[filterBy] = filterValue;
+    async (dispatch) => {
+      dispatch(slice.actions.startLoading());
+      try {
+        const params = { limit };
+        if (filterBy && filterValue) {
+          params[filterBy] = filterValue;
+        }
+        const response = await apiService.get(`/tasks?limit=${limit}`, {
+          params,
+        });
+        dispatch(slice.actions.getTasksSuccess(response.data, projectId));
+      } catch (error) {
+        dispatch(slice.actions.hasError(error.message));
+        toast.error(error.message);
       }
-      const response = await apiService.get(`/tasks?limit=${limit}`, {
-        params,
-      });
-      dispatch(slice.actions.getTasksSuccess(response.data, projectId));
-    } catch (error) {
-      dispatch(slice.actions.hasError(error.message));
-      toast.error(error.message);
-    }
-  };
+    };
 
 export const getTasksOfCurrentUser =
   ({ limit, filterBy, filterValue, sortBy, sortOrder }) =>
-  async (dispatch) => {
-    dispatch(slice.actions.startLoading());
-    try {
-      const params = { limit };
-      if (filterBy && filterValue) {
-        params[filterBy] = filterValue;
+    async (dispatch) => {
+      dispatch(slice.actions.startLoading());
+      try {
+        const params = { limit };
+        if (filterBy && filterValue) {
+          params[filterBy] = filterValue;
+        }
+        if (sortBy && sortOrder) {
+          params.sortBy = sortBy;
+          params.sortOrder = sortOrder;
+        }
+        const response = await apiService.get(`/tasks/mytasks`, {
+          params,
+        });
+        dispatch(slice.actions.getTasksSuccess(response.data));
+      } catch (error) {
+        dispatch(slice.actions.hasError(error.message));
+        toast.error(error.message);
       }
-      if (sortBy && sortOrder) {
-        params.sortBy = sortBy;
-        params.sortOrder = sortOrder;
-      }
-      const response = await apiService.get(`/tasks/mytasks`, {
-        params,
-      });
-      dispatch(slice.actions.getTasksSuccess(response.data));
-    } catch (error) {
-      dispatch(slice.actions.hasError(error.message));
-      toast.error(error.message);
-    }
-  };
+    };
 
 export const getSingleTask = (id) => async (dispatch) => {
   try {
@@ -147,61 +147,60 @@ export const createTask = (data) => async (dispatch) => {
 
 export const addTaskToProject =
   ({ taskId, projectId }) =>
-  async (dispatch) => {
-    dispatch(slice.actions.startLoading());
-    try {
-      await apiService.put(`/tasks/${taskId}/projects/${projectId}`);
-    } catch (error) {
-      dispatch(slice.actions.hasError(error.message));
-      toast.error(error.message);
-    }
-  };
+    async (dispatch) => {
+      dispatch(slice.actions.startLoading());
+      try {
+        await apiService.put(`/tasks/${taskId}/projects/${projectId}`);
+      } catch (error) {
+        dispatch(slice.actions.hasError(error.message));
+        toast.error(error.message);
+      }
+    };
 
 export const updateTask =
   ({ id, name, description, status, deadline, priority }) =>
-  async (dispatch) => {
-    try {
-      dispatch(slice.actions.startLoading());
-      const data = { name, description, status, deadline, priority };
-      const response = await apiService.put(`/tasks/${id}`, data);
-      dispatch(slice.actions.updateTaskSuccess(response.data));
-      // toast.success("Task updated successfully");
-      toast.success(response.data.message);
-      dispatch(getSingleTask(id));
-    } catch (error) {
-      dispatch(slice.actions.hasError(error.message));
-      toast.error(error.message);
-    }
-  };
+    async (dispatch) => {
+      try {
+        dispatch(slice.actions.startLoading());
+        const data = { name, description, status, deadline, priority };
+        const response = await apiService.put(`/tasks/${id}`, data);
+        dispatch(slice.actions.updateTaskSuccess(response.data));
+        // toast.success("Task updated successfully");
+        toast.success(response.data.message);
+        dispatch(getSingleTask(id));
+      } catch (error) {
+        dispatch(slice.actions.hasError(error.message));
+        toast.error(error.message);
+      }
+    };
 
 export const deleteTask =
   ({ id }) =>
-  async (dispatch) => {
-    dispatch(slice.actions.startLoading());
-    try {
-      const response = await apiService.delete(`/tasks/${id}`);
-      dispatch(slice.actions.deleteTaskSuccess(response.data));
-      toast.success(response.data.message);
-      dispatch(getTasks());
-      console.log("getTasks called after delete");
-    } catch (error) {
-      dispatch(slice.actions.hasError(error.message));
-      toast.error(error.message);
-    }
-  };
+    async (dispatch) => {
+      dispatch(slice.actions.startLoading());
+      try {
+        const response = await apiService.delete(`/tasks/${id}`);
+        dispatch(slice.actions.deleteTaskSuccess(response.data));
+        toast.success(response.data.message);
+        console.log("getTasks called after delete");
+      } catch (error) {
+        dispatch(slice.actions.hasError(error.message));
+        toast.error(error.message);
+      }
+    };
 
 export const assignTask =
   ({ taskId, userId }) =>
-  async (dispatch) => {
-    dispatch(slice.actions.startLoading());
-    try {
-      const response = await apiService.put(`/tasks/${taskId}/users/${userId}`);
-      dispatch(slice.actions.assignTaskSuccess(response.data));
-      toast.success(response.data.message);
-    } catch (error) {
-      dispatch(slice.actions.hasError(error.message));
-      toast.error(error.message);
-    }
-  };
+    async (dispatch) => {
+      dispatch(slice.actions.startLoading());
+      try {
+        const response = await apiService.put(`/tasks/${taskId}/users/${userId}`);
+        dispatch(slice.actions.assignTaskSuccess(response.data));
+        toast.success(response.data.message);
+      } catch (error) {
+        dispatch(slice.actions.hasError(error.message));
+        toast.error(error.message);
+      }
+    };
 
 export default slice.reducer;
