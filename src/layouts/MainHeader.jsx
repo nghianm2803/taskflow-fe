@@ -8,6 +8,7 @@ import {
   Toolbar,
   Box,
   Avatar,
+  Button,
   Divider,
 } from "@mui/material";
 import Logo from "../components/Logo";
@@ -118,9 +119,21 @@ function MainHeader() {
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
           {theme.palette.mode === "dark" ? (
-            <LightModeIcon onClick={toggleTheme} sx={{ marginRight: "20px", cursor: "pointer", color: "#FFF" }} />
+            <Button variant="primary" onClick={toggleTheme} sx={{
+              width: "40px", height: "40px", borderRadius: "20px", marginRight: "10px"
+            }}>
+              <LightModeIcon sx={{
+                cursor: "pointer", color: "#FFF",
+              }} />
+            </Button>
           ) : (
-            <DarkModeIcon onClick={toggleTheme} sx={{ marginRight: "20px", cursor: "pointer", color: "#000" }} />
+            <Button variant="primary" onClick={toggleTheme} sx={{
+              width: "40px", height: "40px", borderRadius: "20px", marginRight: "10px",
+            }}>
+              <DarkModeIcon sx={{
+                cursor: "pointer", color: "#000"
+              }} />
+            </Button>
           )}
           <Box>
             <Avatar

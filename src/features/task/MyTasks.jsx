@@ -172,7 +172,16 @@ function MyTasks() {
                               }[task.status],
                             }}
                           >
-                            <CardContent>{task.status}</CardContent>
+                            <CardContent>
+                              <Typography
+                                variant="body2"
+                                display="block"
+                                align="left"
+                                color="#212B36"
+                              >
+                                {task.status}
+                              </Typography>
+                            </CardContent>
                           </Card>
                         </TableCell>
                         <TableCell
@@ -198,6 +207,7 @@ function MyTasks() {
                                 variant="body2"
                                 display="block"
                                 align="left"
+                                color="#212B36"
                               >
                                 {task.priority}
                               </Typography>

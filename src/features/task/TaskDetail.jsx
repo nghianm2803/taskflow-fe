@@ -169,7 +169,7 @@ const TaskDetail = ({ task, onClose }) => {
         width: "50%",
         height: "calc(100vh - 65px)",
         overflow: "hidden",
-        backgroundColor: "#DDFFBB",
+        backgroundColor: "#EDEEF8",
         borderTopLeftRadius: "10px",
         zIndex: 1,
       }}
@@ -198,6 +198,11 @@ const TaskDetail = ({ task, onClose }) => {
                 fullWidth
                 inputRef={nameRef}
                 variant="standard"
+                InputProps={{
+                  style: {
+                    color: "#212B36",
+                  },
+                }}
               />
             </CardContent>
           </Box>

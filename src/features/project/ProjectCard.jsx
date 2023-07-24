@@ -31,7 +31,7 @@ function ProjectCard({ project }) {
             height: "100%",
             position: "relative",
             overflow: "hidden",
-            backgroundColor: "#DDFFBB",
+            backgroundColor: "#FAEDCD",
             cursor: "pointer",
           }}
           onMouseEnter={handleHover}
@@ -57,7 +57,7 @@ function ProjectCard({ project }) {
                   variant="h5"
                   gutterBottom
                   fontWeight="bold"
-                  color="#07825B"
+                  color="#52796F"
                 >
                   {project?.name}
                 </Typography>
