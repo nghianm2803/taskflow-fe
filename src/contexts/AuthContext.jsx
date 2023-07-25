@@ -12,6 +12,7 @@ const initialState = {
 const INITIALIZE = "AUTH.INITIALIZE";
 const LOGIN_SUCCESS = "AUTH.LOGIN_SUCCESS";
 const REGISTER_SUCCESS = "AUTH.REGISTER_SUCCESS";
+const SETUP_ACCOUNT_SUCCESS = "AUTH.SETUP_ACCOUNT_SUCCESS";
 const LOGOUT = "AUTH.LOGOUT";
 const UPDATE_PROFILE = "AUTH.UPDATE_PROFILE";
 
@@ -32,6 +33,12 @@ const reducer = (state, action) => {
         user: action.payload.user,
       };
     case REGISTER_SUCCESS:
+      return {
+        ...state,
+        isAuthenticated: true,
+        user: action.payload.user,
+      };
+    case SETUP_ACCOUNT_SUCCESS:
       return {
         ...state,
         isAuthenticated: true,
@@ -149,6 +156,26 @@ function AuthProvider({ children }) {
     callback();
   };
 
+  const setupAccount = async ({ name, email, password, role, token }, callback) => {
+    const response = await apiService.post("/auth/setup-account", {
+      name,
+      email,
+      password,
+      role,
+    }, {
+      params: { token },
+    });
+
+    const { user, accessToken } = response.data.data;
+    setSession(accessToken);
+    dispatch({
+      type: SETUP_ACCOUNT_SUCCESS,
+      payload: { user },
+    });
+
+    callback();
+  };
+
   const logout = async (callback) => {
     setSession(null);
     dispatch({ type: LOGOUT });
@@ -161,6 +188,7 @@ function AuthProvider({ children }) {
         ...state,
         login,
         register,
+        setupAccount,
         logout,
       }}
     >
