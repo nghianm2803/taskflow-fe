@@ -13,6 +13,7 @@ import {
   Modal,
   Button,
   Fade,
+  alpha,
 } from "@mui/material";
 import SearchInput from "../../components/SearchInput";
 import ProjectCard from "./ProjectCard";
@@ -20,6 +21,12 @@ import ProjectForm from "./ProjectForm";
 import LoadingScreen from "../../components/LoadingScreen";
 import "./projectcard.css";
 import { Link } from "react-router-dom";
+import { FTextField, FormProvider } from "../../components/form";
+import { LoadingButton } from "@mui/lab";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { sendInvitation } from "../user/userSlice";
 
 function ProjectList() {
   const [page, setPage] = useState(1);
@@ -27,6 +34,7 @@ function ProjectList() {
   const [isHovered, setIsHovered] = useState(false);
   const projects = useSelector((state) => state.project.project);
   const totalPage = useSelector((state) => state.project.totalPages);
+  const isLoading = useSelector((state) => state.project.isLoading);
   const dispatch = useDispatch();
 
   const handleHover = () => {
@@ -62,6 +70,27 @@ function ProjectList() {
     );
   }, [dispatch, page, name]);
 
+
+  const updateSchema = yup.object().shape({
+    email: yup.string().email("Invalid email").required("Email is required"),
+  });
+
+  const methods = useForm({
+    resolver: yupResolver(updateSchema),
+  });
+
+  const {
+    reset,
+    setValue,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = methods;
+
+  const onSubmit = (data) => {
+    dispatch(sendInvitation({ ...data }));
+    reset();
+  };
+
   return (
     <Container
       sx={{
@@ -86,18 +115,54 @@ function ProjectList() {
       <Stack
         display="flex"
         flexDirection={{ xs: "column", md: "row" }}
-        justifyContent="flex-start"
+        justifyContent="space-between"
         alignItems="center"
       >
-        <Box marginBottom={5} marginRight={1}>
-          <SearchInput handleOnSubmit={handleOnSubmit} />
+        <Box display="flex"
+          flexDirection={{ xs: "column", md: "row" }}
+          justifyContent="flex-start"
+          alignItems="center">
+          <Box marginBottom={5} marginRight={1}>
+            <SearchInput handleOnSubmit={handleOnSubmit} />
+          </Box>
+          <Box marginBottom={5}>
+            <Button variant="contained" component={Link} to="/tasks/mytasks">
+              My Tasks
+            </Button>
+          </Box>
         </Box>
+
         <Box marginBottom={5}>
-          {/* View all my assigned tasks */}
-          <Button variant="contained" component={Link} to="/tasks/mytasks">
-            My Tasks
-          </Button>
+          <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+            <Box display="flex"
+              flexDirection={{ xs: "column", md: "row" }}
+              justifyContent="flex-start"
+              alignItems="center">
+              <FTextField
+                name="email"
+                fullWidth
+                onChange={(e) => setValue("email", e.target.value)}
+                placeholder="Enter email..."
+                sx={{
+                  marginBottom: "5px",
+                  "& fieldset": {
+                    borderWidth: `1px !important`,
+                    borderColor: alpha("#919EAB", 0.32),
+                  },
+                }}
+              />
+              <LoadingButton
+                type="submit"
+                variant="contained"
+                color="primary"
+                loading={isSubmitting || isLoading}
+              >
+                Add
+              </LoadingButton>
+            </Box>
+          </FormProvider>
         </Box>
+
       </Stack>
       {projects ? (
         <>

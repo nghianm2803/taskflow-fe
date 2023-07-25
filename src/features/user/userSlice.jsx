@@ -49,24 +49,24 @@ export default slice.reducer;
 
 export const getUsers =
   ({ page, limit, name }) =>
-  async (dispatch) => {
-    dispatch(slice.actions.startLoading());
-    try {
-      const params = { page, limit };
-      if (name) {
-        params.name = name;
-      }
-      const response = await apiService.get(`/users`, {
-        params,
-      });
+    async (dispatch) => {
+      dispatch(slice.actions.startLoading());
+      try {
+        const params = { page, limit };
+        if (name) {
+          params.name = name;
+        }
+        const response = await apiService.get(`/users`, {
+          params,
+        });
 
-      dispatch(slice.actions.getUsersSuccess(response.data));
-    } catch (error) {
-      console.error("Error occurred during API request:", error);
-      dispatch(slice.actions.hasError(error.message));
-      toast.error(error.message);
-    }
-  };
+        dispatch(slice.actions.getUsersSuccess(response.data));
+      } catch (error) {
+        console.error("Error occurred during API request:", error);
+        dispatch(slice.actions.hasError(error.message));
+        toast.error(error.message);
+      }
+    };
 
 export const getUser = (id) => async (dispatch) => {
   dispatch(slice.actions.startLoading());
@@ -91,19 +91,32 @@ export const getCurrentUserProfile = () => async (dispatch) => {
 
 export const updateUserProfile =
   ({ userId, name, avatar }) =>
-  async (dispatch) => {
-    dispatch(slice.actions.startLoading());
-    try {
-      const data = { name };
-      if (avatar instanceof File) {
-        const imageUrl = await cloudinaryUpload(avatar);
-        data.avatar = imageUrl;
+    async (dispatch) => {
+      dispatch(slice.actions.startLoading());
+      try {
+        const data = { name };
+        if (avatar instanceof File) {
+          const imageUrl = await cloudinaryUpload(avatar);
+          data.avatar = imageUrl;
+        }
+        const response = await apiService.put(`/users/${userId}`, data);
+        dispatch(slice.actions.updateUserProfileSuccess(response.data));
+        toast.success("Update Profile successfully");
+      } catch (error) {
+        dispatch(slice.actions.hasError(error.message));
+        toast.error(error.message);
       }
-      const response = await apiService.put(`/users/${userId}`, data);
-      dispatch(slice.actions.updateUserProfileSuccess(response.data));
-      toast.success("Update Profile successfully");
-    } catch (error) {
-      dispatch(slice.actions.hasError(error.message));
-      toast.error(error.message);
-    }
-  };
+    };
+
+export const sendInvitation =
+  ({ email }) =>
+    async (dispatch) => {
+      dispatch(slice.actions.startLoading());
+      try {
+        await apiService.put(`/auth/invitation`, email);
+        toast.success("Send invitation successfully");
+      } catch (error) {
+        dispatch(slice.actions.hasError(error.message));
+        toast.error(error.message);
+      }
+    };
