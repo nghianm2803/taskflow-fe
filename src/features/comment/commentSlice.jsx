@@ -7,6 +7,7 @@ const initialState = {
   error: null,
   commentsById: {},
   updatedComment: {},
+  comments: [],
 };
 
 const slice = createSlice({
@@ -45,7 +46,9 @@ const slice = createSlice({
     deleteCommentSuccess(state, action) {
       state.isLoading = false;
       state.error = null;
-      delete state.comment;
+      const deletedCommentId = action.payload.data._id;
+      state.comments = state.comments.filter((comment) => comment._id !== deletedCommentId);
+      delete state.commentsById[deletedCommentId];
     },
   },
 });

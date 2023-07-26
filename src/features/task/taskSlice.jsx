@@ -68,7 +68,6 @@ const slice = createSlice({
       const { id } = action.payload.data;
       state.tasksList = state.tasksList.filter((task) => task._id !== id);
     },
-
     updateSortingOptions(state, action) {
       const { sortBy, sortOrder } = action.payload.data;
       state.sortBy = sortBy;
@@ -158,16 +157,15 @@ export const addTaskToProject =
     };
 
 export const updateTask =
-  ({ id, name, description, status, deadline, priority }) =>
+  ({ id, name, description, status, deadline, priority, projectId }) =>
     async (dispatch) => {
       try {
         dispatch(slice.actions.startLoading());
         const data = { name, description, status, deadline, priority };
         const response = await apiService.put(`/tasks/${id}`, data);
         dispatch(slice.actions.updateTaskSuccess(response.data));
-        // toast.success("Task updated successfully");
         toast.success(response.data.message);
-        dispatch(getSingleTask(id));
+        dispatch(getTasks(projectId));
       } catch (error) {
         dispatch(slice.actions.hasError(error.message));
         toast.error(error.message);
@@ -175,13 +173,14 @@ export const updateTask =
     };
 
 export const deleteTask =
-  ({ id }) =>
+  ({ id, projectId }) =>
     async (dispatch) => {
       dispatch(slice.actions.startLoading());
       try {
         const response = await apiService.delete(`/tasks/${id}`);
         dispatch(slice.actions.deleteTaskSuccess(response.data));
         toast.success(response.data.message);
+        dispatch(getTasks(projectId));
         console.log("getTasks called after delete");
       } catch (error) {
         dispatch(slice.actions.hasError(error.message));
