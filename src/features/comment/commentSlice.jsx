@@ -54,65 +54,65 @@ export default slice.reducer;
 
 export const getComments =
   ({ taskId }) =>
-  async (dispatch) => {
-    dispatch(slice.actions.startLoading());
-    try {
-      const response = await apiService.get(`/tasks/${taskId}/comments`);
-      dispatch(
-        slice.actions.getCommentsSuccess({
-          ...response.data,
-          taskId,
-        })
-      );
-    } catch (error) {
-      dispatch(slice.actions.hasError(error.message));
-      toast.error(error.message);
-    }
-  };
+    async (dispatch) => {
+      dispatch(slice.actions.startLoading());
+      try {
+        const response = await apiService.get(`/tasks/${taskId}/comments`);
+        dispatch(
+          slice.actions.getCommentsSuccess({
+            ...response.data,
+            taskId,
+          })
+        );
+      } catch (error) {
+        dispatch(slice.actions.hasError(error.message));
+        toast.error(error.message);
+      }
+    };
 
 export const createComment =
   ({ taskId, content }) =>
-  async (dispatch) => {
-    dispatch(slice.actions.startLoading());
-    try {
-      const response = await apiService.post("/comments", {
-        taskId,
-        content,
-      });
-      dispatch(slice.actions.createCommentSuccess(response.data));
-      dispatch(getComments({ taskId }));
-    } catch (error) {
-      dispatch(slice.actions.hasError(error.message));
-      toast.error(error.message);
-    }
-  };
+    async (dispatch) => {
+      dispatch(slice.actions.startLoading());
+      try {
+        const response = await apiService.post("/comments", {
+          taskId,
+          content,
+        });
+        dispatch(slice.actions.createCommentSuccess(response.data));
+        dispatch(getComments({ taskId }));
+      } catch (error) {
+        dispatch(slice.actions.hasError(error.message));
+        toast.error(error.message);
+      }
+    };
 
 export const updateComment =
   ({ taskId, id, content }) =>
-  async (dispatch) => {
-    try {
-      dispatch(slice.actions.startLoading());
-      const response = await apiService.put(`/comments/${id}`, { content });
-      dispatch(slice.actions.updateCommentSuccess(response.data));
-      toast.success(response.data.message);
-      dispatch(getComments({ taskId }));
-    } catch (error) {
-      dispatch(slice.actions.hasError(error.message));
-      toast.error(error.message);
-    }
-  };
+    async (dispatch) => {
+      try {
+        dispatch(slice.actions.startLoading());
+        const response = await apiService.put(`/comments/${id}`, { content });
+        dispatch(slice.actions.updateCommentSuccess(response.data));
+        toast.success(response.data.message);
+        dispatch(getComments({ taskId }));
+      } catch (error) {
+        dispatch(slice.actions.hasError(error.message));
+        toast.error(error.message);
+      }
+    };
 
 export const deleteComment =
   ({ taskId, id }) =>
-  async (dispatch) => {
-    dispatch(slice.actions.startLoading());
-    try {
-      const response = await apiService.delete(`/comments/${id}`);
-      dispatch(slice.actions.deleteCommentSuccess(response.data));
-      toast.success(response.data.message);
-      dispatch(getComments({ taskId }));
-    } catch (error) {
-      dispatch(slice.actions.hasError(error.message));
-      toast.error(error.message);
-    }
-  };
+    async (dispatch) => {
+      dispatch(slice.actions.startLoading());
+      try {
+        const response = await apiService.delete(`/comments/${id}`);
+        dispatch(slice.actions.deleteCommentSuccess(response.data));
+        toast.success(response.data.message);
+        dispatch(getComments({ taskId }));
+      } catch (error) {
+        dispatch(slice.actions.hasError(error.message));
+        toast.error(error.message);
+      }
+    };

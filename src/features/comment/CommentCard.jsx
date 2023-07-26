@@ -69,9 +69,11 @@ function CommentCard({ comment }) {
         updateComment({
           id: contentComment._id,
           content: contentComment.content,
+          taskId: contentComment.task,
         })
       );
       contentRef.current.blur();
+      setEditCommentForm(false);
     }
   };
 
@@ -80,8 +82,10 @@ function CommentCard({ comment }) {
       updateComment({
         id: contentComment._id,
         content: contentComment.content,
+        taskId: contentComment.task,
       })
     );
+    setEditCommentForm(false);
   };
 
   const handleCloseEditComment = () => {
@@ -188,6 +192,7 @@ function CommentCard({ comment }) {
               </Popover>
               <DeleteComment
                 id={commentId}
+                task={contentComment.task}
                 openDeleteDialog={openDeleteDialog}
                 deleteDialogClose={deleteDialogClose}
               />

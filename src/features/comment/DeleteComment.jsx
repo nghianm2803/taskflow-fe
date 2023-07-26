@@ -10,11 +10,11 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { deleteComment } from "./commentSlice";
 
-function DeleteComment({ id, openDeleteDialog, deleteDialogClose }) {
+function DeleteComment({ id, task, openDeleteDialog, deleteDialogClose }) {
   const dispatch = useDispatch();
 
   const handleDeleteComment = () => {
-    dispatch(deleteComment({ id }));
+    dispatch(deleteComment({ id, taskId: task }));
     deleteDialogClose();
   };
 
