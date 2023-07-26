@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import {
-  Link,
   Stack,
   Alert,
   IconButton,
   InputAdornment,
   Container,
+  Typography,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { useNavigate, useLocation, Link as RouterLink } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import useAuth from "../hooks/useAuth";
 import { FormProvider, FTextField } from "../components/form";
@@ -78,13 +78,15 @@ function SetupAccountPage() {
           {!!errors.responseError && (
             <Alert severity="error">{errors.responseError.message}</Alert>
           )}
-          <Alert severity="info">
-            Already have an account?{" "}
-            <Link variant="subtitle2" component={RouterLink} to="/login">
-              Sign in
-            </Link>
-          </Alert>
-
+          <Typography
+            color="primary"
+            textAlign="center"
+            variant="h5"
+            fontFamily="sans-serif"
+            fontWeight="bolder"
+          >
+            Setup your account
+          </Typography>
           <FTextField name="name" label="Full name" />
           <FTextField name="email" label="Email address" />
           <FTextField

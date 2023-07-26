@@ -27,6 +27,7 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { sendInvitation } from "../user/userSlice";
+import useAuth from "../../hooks/useAuth";
 
 function ProjectList() {
   const [page, setPage] = useState(1);
@@ -35,6 +36,9 @@ function ProjectList() {
   const projects = useSelector((state) => state.project.project);
   const totalPage = useSelector((state) => state.project.totalPages);
   const isLoading = useSelector((state) => state.project.isLoading);
+  const { user } = useAuth();
+  console.log("log user data: ", user)
+
   const dispatch = useDispatch();
 
   const handleHover = () => {
@@ -70,25 +74,28 @@ function ProjectList() {
     );
   }, [dispatch, page, name]);
 
-
-  const updateSchema = yup.object().shape({
+  const yupSchema = yup.object().shape({
     email: yup.string().email("Invalid email").required("Email is required"),
   });
 
-  const methods = useForm({
-    resolver: yupResolver(updateSchema),
-  });
+  const defaultValues = {
+    email: "",
+  };
 
+  const methods = useForm({
+    resolver: yupResolver(yupSchema),
+    defaultValues,
+  });
   const {
-    reset,
-    setValue,
     handleSubmit,
+    reset,
     formState: { isSubmitting },
   } = methods;
 
   const onSubmit = (data) => {
-    dispatch(sendInvitation({ ...data }));
-    reset();
+    dispatch(sendInvitation(data)).then(() => {
+      reset();
+    });
   };
 
   return (
@@ -131,8 +138,7 @@ function ProjectList() {
             </Button>
           </Box>
         </Box>
-
-        <Box marginBottom={5}>
+        {user.role === "Manager" ? (<Box marginBottom={5}>
           <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
             <Box display="flex"
               flexDirection={{ xs: "column", md: "row" }}
@@ -141,13 +147,14 @@ function ProjectList() {
               <FTextField
                 name="email"
                 fullWidth
-                onChange={(e) => setValue("email", e.target.value)}
+                label="Add member"
                 placeholder="Enter email..."
+                size="small"
                 sx={{
-                  marginBottom: "5px",
                   "& fieldset": {
                     borderWidth: `1px !important`,
                     borderColor: alpha("#919EAB", 0.32),
+                    marginRight:"10px"
                   },
                 }}
               />
@@ -161,8 +168,7 @@ function ProjectList() {
               </LoadingButton>
             </Box>
           </FormProvider>
-        </Box>
-
+        </Box>) : ""}
       </Stack>
       {projects ? (
         <>

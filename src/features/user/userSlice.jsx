@@ -108,15 +108,14 @@ export const updateUserProfile =
       }
     };
 
-export const sendInvitation =
-  ({ email }) =>
-    async (dispatch) => {
-      dispatch(slice.actions.startLoading());
-      try {
-        await apiService.put(`/auth/invitation`, email);
-        toast.success("Send invitation successfully");
-      } catch (error) {
-        dispatch(slice.actions.hasError(error.message));
-        toast.error(error.message);
-      }
-    };
+export const sendInvitation = ({ email }) => async (dispatch) => {
+  dispatch(slice.actions.startLoading());
+  try {
+    const data = { email };
+    await apiService.post(`/auth/invitation`, data);
+    toast.success("Send invitation successfully");
+  } catch (error) {
+    dispatch(slice.actions.hasError(error.message));
+    toast.error(error.message);
+  }
+};
