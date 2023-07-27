@@ -32,11 +32,12 @@ const slice = createSlice({
     getTasksSuccess(state, action) {
       state.isLoading = false;
       state.error = null;
-      const { taskList } = action.payload.data;
+      const { taskList, count } = action.payload.data;
       state.tasksList = taskList.filter(
         (task) =>
           task.projectTo._id === action.payload.projectId && !task.isDeleted
       );
+      state.count = count;
     },
     getSingleTaskSuccess(state, action) {
       state.isLoading = false;
@@ -85,7 +86,7 @@ export const getTasks =
         if (filterBy && filterValue) {
           params[filterBy] = filterValue;
         }
-        const response = await apiService.get(`/tasks?limit=${limit}`, {
+        const response = await apiService.get(`/tasks`, {
           params,
         });
         dispatch(slice.actions.getTasksSuccess(response.data, projectId));
@@ -196,6 +197,7 @@ export const assignTask =
         const response = await apiService.put(`/tasks/${taskId}/users/${userId}`);
         dispatch(slice.actions.assignTaskSuccess(response.data));
         toast.success(response.data.message);
+        dispatch(getTasks(userId));
       } catch (error) {
         dispatch(slice.actions.hasError(error.message));
         toast.error(error.message);

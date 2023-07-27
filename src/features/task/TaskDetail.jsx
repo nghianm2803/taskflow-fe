@@ -37,21 +37,22 @@ const TaskDetail = ({ task, onClose }) => {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
   const userList = useSelector((state) => state.user.user);
+  const userCount = useSelector((state) => state.user.count);
 
   const descriptionRef = useRef(null);
   const nameRef = useRef(null);
   const deadlineRef = useRef(null);
 
   useEffect(() => {
-    dispatch(getUsers({ page: 1, name: searchQuery }));
-  }, [dispatch, searchQuery]);
+    dispatch(getUsers({ page: 1, limit: userCount, name: searchQuery }));
+  }, [dispatch, searchQuery, userCount]);
 
   useEffect(() => {
     dispatch(getSingleTask(detailTask._id));
   }, [dispatch, detailTask._id]);
 
   const handleAssignUser = (taskId, userId) => {
-    dispatch(assignTask({ taskId, userId }));
+    dispatch(assignTask({ taskId, userId, projectId: detailTask.projectTo }));
   };
 
   const handleNameChange = (e) => {
@@ -173,6 +174,10 @@ const TaskDetail = ({ task, onClose }) => {
     dispatch(deleteTask({ id: taskId, projectId: detailTask.projectTo }));
     setOpenDeleteDialog(false);
   };
+
+ // Custom function to compare options with the value prop
+ const isOptionEqualToValue = (option, value) => option._id === value?._id;
+
 
   return (
     <Box
@@ -307,38 +312,6 @@ const TaskDetail = ({ task, onClose }) => {
               </Card>
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-              <Card sx={{ height: "90px" }}>
-                <CardContent
-                  sx={{
-                    "&:last-child": {
-                      padding: "16px",
-                    },
-                  }}
-                >
-                  <Typography variant="body2">Assignee</Typography>
-                  <Autocomplete
-                    options={userList}
-                    getOptionLabel={(userList) => userList.name}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        onChange={(e) => {
-                          const query = e.target.value;
-                          setSearchQuery(query);
-                        }}
-                        label="Assignee"
-                        variant="standard"
-                      />
-                    )}
-                    // value={detailTask.assignTo}
-                    onChange={(event, user) =>
-                      handleAssignUser(detailTask._id, user ? user._id : null)
-                    }
-                  />
-                </CardContent>
-              </Card>
-            </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
               <Card
                 sx={{
                   height: "90px",
@@ -374,6 +347,39 @@ const TaskDetail = ({ task, onClose }) => {
                     <MenuItem value="Medium">Medium</MenuItem>
                     <MenuItem value="High">High</MenuItem>
                   </Select>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <Card sx={{ height: "90px", width: "200px" }}>
+                <CardContent
+                  sx={{
+                    "&:last-child": {
+                      padding: "16px",
+                    },
+                  }}
+                >
+                  <Typography variant="body2">Assignee</Typography>
+                  <Autocomplete
+                    options={userList ?? []}
+                    getOptionLabel={(user) => user.name}
+                    value={detailTask.assignTo ? detailTask.assignTo : null}
+                    isOptionEqualToValue={isOptionEqualToValue}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        onChange={(e) => {
+                          const query = e.target.value;
+                          setSearchQuery(query);
+                        }}
+                        label="Assignee"
+                        variant="standard"
+                      />
+                    )}
+                    onChange={(event, user) =>
+                      handleAssignUser(detailTask._id, user ? user._id : null)
+                    }
+                  />
                 </CardContent>
               </Card>
             </Grid>

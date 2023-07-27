@@ -28,7 +28,7 @@ import ContentPasteSearchIcon from "@mui/icons-material/ContentPasteSearch";
 import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 
 const TaskList = ({ projectId }) => {
-  const { tasksList, isLoading } = useSelector((state) => state.task);
+  const { tasksList, isLoading, taskCount } = useSelector((state) => state.task);
   const [filterBy, setFilterBy] = useState("");
   const [filterValue, setFilterValue] = useState("");
 
@@ -110,9 +110,9 @@ const TaskList = ({ projectId }) => {
 
   useEffect(() => {
     if (projectId) {
-      dispatch(getTasks({ projectId, limit: 100, filterBy, filterValue }));
+      dispatch(getTasks({ projectId, limit: taskCount, filterBy, filterValue }));
     }
-  }, [projectId, dispatch, filterBy, filterValue]);
+  }, [projectId, dispatch, filterBy, filterValue, taskCount]);
 
   const filterTasksByProjectId = () => {
     return tasksList.filter((task) => task.projectTo === projectId);

@@ -20,7 +20,7 @@ import { fDeadline } from "../../utils/formatTime";
 import EmptyData from "../../pages/EmptyData";
 
 function MyTasks() {
-  const { tasksList, isLoading } = useSelector((state) => state.task);
+  const { tasksList, isLoading, taskCount } = useSelector((state) => state.task);
   const [sorting, setSorting] = useState({ field: "", order: "" });
   const [sortedTasks, setSortedTasks] = useState([]);
   const dispatch = useDispatch();
@@ -37,7 +37,7 @@ function MyTasks() {
   };
 
   useEffect(() => {
-    dispatch(getTasksOfCurrentUser({ limit: 100 }));
+    dispatch(getTasksOfCurrentUser({ limit: taskCount }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

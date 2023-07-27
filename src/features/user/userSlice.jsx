@@ -25,8 +25,9 @@ const slice = createSlice({
     getUsersSuccess(state, action) {
       state.isLoading = false;
       state.error = null;
-      const { users, totalPages } = action.payload.data;
+      const { users, totalPages, count } = action.payload.data;
       state.user = users;
+      state.count = count;
       state.totalPages = totalPages;
     },
     getUserSuccess(state, action) {
