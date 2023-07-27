@@ -18,6 +18,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import TasksList from "../task/TaskList";
+import EmptyData from "../../pages/EmptyData";
 
 function SingleProject() {
   const { id } = useParams();
@@ -72,7 +73,7 @@ function SingleProject() {
         direction="column"
         justifyContent="space-between"
       >
-        {project && (
+        {project && project.isDeleted === false ? (
           <Box width="100%" minHeight="80vh" padding={1}>
             <Stack
               sx={{
@@ -157,6 +158,8 @@ function SingleProject() {
 
             <TasksList projectId={project._id} />
           </Box>
+        ) : (
+          <EmptyData />
         )}
       </Stack>
     </Stack>

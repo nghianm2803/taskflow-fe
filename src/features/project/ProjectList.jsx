@@ -37,7 +37,6 @@ function ProjectList() {
   const totalPage = useSelector((state) => state.project.totalPages);
   const isLoading = useSelector((state) => state.project.isLoading);
   const { user } = useAuth();
-  console.log("log user data: ", user)
 
   const dispatch = useDispatch();
 

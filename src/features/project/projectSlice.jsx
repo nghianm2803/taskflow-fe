@@ -49,9 +49,9 @@ const slice = createSlice({
     deleteProjectSuccess(state, action) {
       state.isLoading = false;
       state.error = null;
-      const { project } = action.payload.data;
-      console.log("project", project);
-      delete state.project;
+      const { id } = action.payload.data;
+      state.project = state.project.filter((project) => project._id !== id);
+      state.currentProject = {};
     },
   },
 });
@@ -133,7 +133,7 @@ export const deleteProject =
       console.log("res", response);
       dispatch(slice.actions.deleteProjectSuccess(response.data));
       toast.success(response.data.message);
-      dispatch(getProjects());
+      dispatch(getSingleProject(id));
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));
       toast.error(error.message);
