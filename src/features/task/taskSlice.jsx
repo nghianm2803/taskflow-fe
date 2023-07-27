@@ -150,6 +150,7 @@ export const addTaskToProject =
       dispatch(slice.actions.startLoading());
       try {
         await apiService.put(`/tasks/${taskId}/projects/${projectId}`);
+        dispatch(getTasks(projectId));
       } catch (error) {
         dispatch(slice.actions.hasError(error.message));
         toast.error(error.message);

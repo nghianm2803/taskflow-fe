@@ -19,12 +19,13 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import TasksList from "../task/TaskList";
 import EmptyData from "../../pages/EmptyData";
+import LoadingScreen from "../../components/LoadingScreen";
 
 function SingleProject() {
   const { id } = useParams();
   const dispatch = useDispatch();
   const project = useSelector((state) => state.project.currentProject);
-
+  const isLoading = useSelector((state) => state.project.isLoading);
   const [anchorEl, setAnchorEl] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
   const [openEditDialog, setOpenEditDialog] = useState(false);
@@ -56,6 +57,10 @@ function SingleProject() {
   useEffect(() => {
     dispatch(getSingleProject(id));
   }, [dispatch, id]);
+
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <Stack

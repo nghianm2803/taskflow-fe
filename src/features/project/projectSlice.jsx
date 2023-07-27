@@ -8,6 +8,9 @@ const initialState = {
   error: null,
   project: [],
   updatedProject: {},
+  currentPageProjects: [],
+
+  currentPagePosts: [],
 };
 
 const slice = createSlice({
@@ -24,8 +27,11 @@ const slice = createSlice({
     getProjectSuccess(state, action) {
       state.isLoading = false;
       state.error = null;
-      const { projects, totalPages } = action.payload.data; // The API response data <========================
+      const { projects, totalPages, count } = action.payload.data;
+
+      projects.forEach((project) => (state.project[project._id] = project));
       state.project = projects;
+      state.count = count;
       state.totalPages = totalPages;
     },
     getSingleProjectSuccess(state, action) {
