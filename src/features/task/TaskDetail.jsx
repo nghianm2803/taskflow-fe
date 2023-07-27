@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import "./taskstyle.css";
 import { fDeadline } from "../../utils/formatTime";
-import { updateTask, assignTask, getSingleTask } from "./taskSlice";
+import { updateTask, assignTask, getSingleTask, deleteTask } from "./taskSlice";
 import { getUsers } from "../user/userSlice";
 import CloseIcon from "@mui/icons-material/Close";
 import ContentPasteIcon from "@mui/icons-material/ContentPaste";
@@ -156,11 +156,16 @@ const TaskDetail = ({ task, onClose }) => {
     // Implement MenuTask here
   };
 
+  const deleteDialogClose = () => {
+    setOpenDeleteDialog(false);
+  };
+
   const handleDeleteTask = () => {
     setOpenDeleteDialog(true);
   };
 
-  const deleteDialogClose = () => {
+  const confirmDeleteTask = async (taskId) => {
+    dispatch(deleteTask({ id: taskId, projectId: detailTask.projectTo }));
     setOpenDeleteDialog(false);
   };
 
@@ -463,6 +468,7 @@ const TaskDetail = ({ task, onClose }) => {
           id={detailTask._id}
           openDeleteDialog={openDeleteDialog}
           deleteDialogClose={deleteDialogClose}
+          onDelete={() => confirmDeleteTask(detailTask._id)}
         />
 
         <Box

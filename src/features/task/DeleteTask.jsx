@@ -7,23 +7,11 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
-import { useDispatch } from "react-redux";
-import { deleteTask } from "./taskSlice";
 
-function DeleteTask({ id, openDeleteDialog, deleteDialogClose }) {
-  const dispatch = useDispatch();
-
-  // const handleConfirmDelete = () => {
-  //   dispatch(
-  //     deleteTask({
-  //       id: detailTask._id,
-  //     })
-  //   );
-  //   onClose();
-  // };
+function DeleteTask({ openDeleteDialog, deleteDialogClose, onDelete }) {
 
   const handleDeleteTask = () => {
-    dispatch(deleteTask({ id }));
+    onDelete();
     deleteDialogClose();
   };
 
