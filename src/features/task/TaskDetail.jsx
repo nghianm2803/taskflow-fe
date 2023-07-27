@@ -67,6 +67,7 @@ const TaskDetail = ({ task, onClose }) => {
         updateTask({
           id: detailTask._id,
           name: detailTask.name,
+          projectId: detailTask.projectTo
         })
       );
       nameRef.current.blur();
@@ -86,6 +87,7 @@ const TaskDetail = ({ task, onClose }) => {
         updateTask({
           id: detailTask._id,
           description: detailTask.description,
+          projectId: detailTask.projectTo
         })
       );
       descriptionRef.current.blur();
@@ -102,6 +104,7 @@ const TaskDetail = ({ task, onClose }) => {
       updateTask({
         id: detailTask._id,
         status: newStatus,
+        projectId: detailTask.projectTo
       })
     );
   };
@@ -116,6 +119,7 @@ const TaskDetail = ({ task, onClose }) => {
       updateTask({
         id: detailTask._id,
         priority: newPriority,
+        projectId: detailTask.projectTo
       })
     );
   };
@@ -146,6 +150,7 @@ const TaskDetail = ({ task, onClose }) => {
         updateTask({
           id: detailTask._id,
           deadline: detailTask.deadline,
+          projectId: detailTask.projectTo
         })
       );
       deadlineRef.current.blur();

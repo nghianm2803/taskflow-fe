@@ -181,7 +181,6 @@ export const deleteTask =
         dispatch(slice.actions.deleteTaskSuccess(response.data));
         toast.success(response.data.message);
         dispatch(getTasks(projectId));
-        console.log("getTasks called after delete");
       } catch (error) {
         dispatch(slice.actions.hasError(error.message));
         toast.error(error.message);
