@@ -46,7 +46,12 @@
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
-    <li><a href="#features-and-specifications">Features and Specifications</a></li>
+    <li>
+      <a href="#features-and-specifications">Features and Specifications</a>
+      <ul>
+        <li><a href="#api-endpoint">API Endpoints</a></li>
+      </ul>
+    </li>
     <li><a href="#contact">Contact</a></li>
   </ol>
 </details>
@@ -94,17 +99,15 @@ With TaskFlow, managing tasks becomes a breeze. Its user-friendly interface requ
    git clone https://github.com/nghianm2803/taskflow-fe.git
    ```
 
-## Client
-
-1. Install NPM packages
+2. Install NPM packages
    ```sh
    npm install
    ```
-2. Make an `.env` file using this template below
+3. Make an `.env` file using this template below
    ```js
-   REACT_APP_LOCAL_URL = "http://localhost:3000"
+   REACT_APP_BASE_URL = "http://localhost:3000"
    ```
-3. Run the server on your local:
+4. Run the server on your local:
    ```sh
    npm start
    ```
@@ -142,9 +145,9 @@ As a employee, I can:
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- ROADMAP -->
+<!-- FEATURE AND SPECIFICATIONS -->
 
-### Features and Specifications
+## Features and Specifications
 
 User Authentication:
 
@@ -182,9 +185,9 @@ Comments
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-## API Endpoints
+### API Endpoints
 
-### Auth APIs
+Auth APIs
 
 ```
 @route POST auth/login
@@ -200,7 +203,7 @@ Comments
 @access Public
 ```
 
-## Users APIs
+Users APIs
 
 ```
 @route POST /users
@@ -223,7 +226,7 @@ Comments
 @access Login required
 ```
 
-### Project APIs
+Projects APIs
 
 ```
 @route GET /projects
@@ -268,7 +271,7 @@ Comments
 ```
 
 
-## Tasks APIs
+Tasks APIs
 
 ```
 @route GET /tasks
@@ -327,7 +330,7 @@ Comments
 @access Login required
 ```
 
-## Comments APIs
+Comments APIs
 
 ```
 @route POST /comments
@@ -349,6 +352,8 @@ Comments
 @access Login required
 ```
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 <!-- CONTACT -->
 
 ## Contact
@@ -362,16 +367,16 @@ Project Link: [https://github.com/nghianm2803/taskflow-fe](https://github.com/ng
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
-[contributors-shield]: https://img.shields.io/github/contributors/nghianm2803/taskflow-be.svg?style=for-the-badge
-[contributors-url]: https://github.com/nghianm2803/taskflow-be/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/nghianm2803/taskflow-be.svg?style=for-the-badge
-[forks-url]: https://github.com/nghianm2803/taskflow-be/network/members
-[stars-shield]: https://img.shields.io/github/stars/nghianm2803/taskflow-be.svg?style=for-the-badge
-[stars-url]: https://github.com/nghianm2803/taskflow-be/stargazers
-[issues-shield]: https://img.shields.io/github/issues/nghianm2803/taskflow-be.svg?style=for-the-badge
-[issues-url]: https://github.com/nghianm2803/taskflow-be/issues
-[license-shield]: https://img.shields.io/github/license/nghianm2803/taskflow-be.svg?style=for-the-badge
-[license-url]: https://github.com/nghianm2803/taskflow-be/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/nghianm2803/taskflow-fe.svg?style=for-the-badge
+[contributors-url]: https://github.com/nghianm2803/taskflow-fe/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/nghianm2803/taskflow-fe.svg?style=for-the-badge
+[forks-url]: https://github.com/nghianm2803/taskflow-fe/network/members
+[stars-shield]: https://img.shields.io/github/stars/nghianm2803/taskflow-fe.svg?style=for-the-badge
+[stars-url]: https://github.com/nghianm2803/taskflow-fe/stargazers
+[issues-shield]: https://img.shields.io/github/issues/nghianm2803/taskflow-fe.svg?style=for-the-badge
+[issues-url]: https://github.com/nghianm2803/taskflow-fe/issues
+[license-shield]: https://img.shields.io/github/license/nghianm2803/taskflow-fe.svg?style=for-the-badge
+[license-url]: https://github.com/nghianm2803/taskflow-fe/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/nghianm2803
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
