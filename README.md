@@ -111,7 +111,7 @@ With TaskFlow, managing tasks becomes a breeze. Its user-friendly interface requ
    ```sh
    npm start
    ```
-   
+
 ## Usage
 
 As a manager, I can:
@@ -130,6 +130,7 @@ As a manager, I can:
 - View all of my tasks
 - Sort all of my tasks by status, priority or deadline
 - Switch light and dark theme
+- Get notification about new comment on the task I already commented
 
 As a employee, I can:
 - Set up an account and log in/ out of Taskflow after receive invitation link from email
@@ -142,6 +143,9 @@ As a employee, I can:
 - View all of my tasks
 - Sort all of my tasks by status, priority or deadline
 - Switch light and dark theme
+- Get notification when manager assign a new task to me
+- Get notification when others member comment on my task
+- Get notification about new comment on the task I already commented
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -182,6 +186,11 @@ Comments
 - User can update their comment
 - User can delete their comment
 
+Notifications
+- Employee can get notification when manager assign a new task to them
+- Employee can get notification when others member comment on their task
+- User can get notification when others member comment on the task that they already commented
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
@@ -215,7 +224,7 @@ Users APIs
 ```
 @route GET /users/me
 @description get user informations
-@body 
+@body
 @access Login required
 ```
 
@@ -231,42 +240,42 @@ Projects APIs
 ```
 @route GET /projects
 @description view all projects
-@body 
+@body
 @access Login required
 ```
 
 ```
 @route GET /projects/:projectId
 @description get detail of single project
-@body 
+@body
 @access Login required
 ```
 
 ```
-@route POST /project
+@route POST /projects
 @description Manager create a new project
-@body 
+@body
 @access Manager
 ```
 
 ```
 @route PUT /projects/:projectId
 @description Manager update a project
-@body 
+@body
 @access Manager
 ```
 
 ```
 @route DELETE /projects/:projectId
 @description Manager remove a project
-@body 
+@body
 @access Manager
 ```
 
 ```
 @route PUT /projects/:projectId/tasks/:taskId
 @description Add task to a project
-@body 
+@body
 @access Manager
 ```
 
@@ -335,20 +344,49 @@ Comments APIs
 ```
 @route POST /comments
 @description Create a new comment
-@body 
+@body
 @access Login required
 ```
 
 ```
 @route PUT /comments/:commentId
 @description Update a comment
-@body 
+@body
 @access Login required
 ```
 
 ```
 @route DELETE /comments/:commentId
 @description Delete a comment
+@access Login required
+```
+
+
+Notifications APIs
+
+```
+@route GET /notifications
+@description get all the notification with current user
+@body
+@access Login required
+```
+
+```
+@route PUT /notifications
+@description Read all notifications
+@access Login required
+```
+
+```
+@route PUT /notifications/:notificationId
+@description update notification as read
+@body
+@access Login required
+```
+
+```
+@route GET /new
+@description update notification as read
 @access Login required
 ```
 

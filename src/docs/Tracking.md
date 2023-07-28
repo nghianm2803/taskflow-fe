@@ -21,5 +21,6 @@
 - [x] Team member and manager can edit or delete their comments
 
 ### Reminder & Notification
-- [ ] Manager can receive email and/or in app notification about task status update by team member
-- [ ] Team member can receive receive email and/or in app notification about changes made by their manager to their tasks
+- [x] Employee can get notification when manager assign a new task to them
+- [x] Employee can get notification when others member comment on their task
+- [x] User can get notification when others member comment on the task that they already commented

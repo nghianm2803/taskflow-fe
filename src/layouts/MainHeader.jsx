@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import {
   AppBar,
   Menu,
@@ -10,13 +10,24 @@ import {
   Avatar,
   Button,
   Divider,
+  Popover,
+  Stack,
+  Badge,
 } from "@mui/material";
 import Logo from "../components/Logo";
 import useAuth from "../hooks/useAuth";
 import { useNavigate, Link as RouterLink } from "react-router-dom";
+import { useThemeContext } from "../theme";
+import NotificationCard from "../features/notification/NotificationCard";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  countNewNotifications,
+  getAllNotificationOfUser,
+  updateNotification,
+} from "../features/notification/notificationSlice";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
-import { useThemeContext } from "../theme";
+import NotificationsIcon from "@mui/icons-material/Notifications";
 
 function MainHeader() {
   const { user, logout } = useAuth();
@@ -24,11 +35,62 @@ function MainHeader() {
 
   const { toggleTheme, theme } = useThemeContext();
 
+  const [notificationEl, setNotificationEl] = React.useState(null);
+  const [notifiDialog, setnotifiDialog] = useState(false);
+  const [page, setPage] = useState(1);
+
+  const handleChange = (e, value) => {
+    setPage(value);
+  };
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const isMenuOpen = Boolean(anchorEl);
 
+  const dispatch = useDispatch();
+  const notifications = useSelector(
+    (state) => state.notification.notifications
+  );
+  const totalPage = useSelector((state) => state.notification.totalPage);
+  const count = useSelector((state) => state.notification.count);
+
+  useEffect(() => {
+    if (user) {
+      const fetchNewNotifications = async () => {
+        try {
+          dispatch(countNewNotifications());
+        } catch (error) {
+          console.error("Error fetching new notifications count:", error);
+        }
+      };
+
+      const timeoutId = setInterval(async () => {
+        await fetchNewNotifications();
+      }, 60000); // 1 minute
+
+      return () => {
+        clearInterval(timeoutId);
+      };
+    }
+  }, [dispatch, user]);
+
+  useEffect(() => {
+    if (user) {
+      if (notifiDialog === true) {
+        dispatch(getAllNotificationOfUser({ page }));
+      }
+    }
+  }, [user, dispatch, page, notifiDialog]);
+
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
+  };
+
+  const handlePopoverNoti = (event) => {
+    if (count > 0) {
+      dispatch(updateNotification());
+    }
+    setNotificationEl(event.currentTarget);
+    setnotifiDialog(true);
   };
 
   const handleMenuClose = () => {
@@ -120,7 +182,7 @@ function MainHeader() {
           <Box sx={{ flexGrow: 1 }} />
           {theme.palette.mode === "dark" ? (
             <Button variant="primary" onClick={toggleTheme} sx={{
-              width: "40px", height: "40px", borderRadius: "20px", marginRight: "10px"
+              width: "40px", height: "40px", borderRadius: "20px"
             }}>
               <LightModeIcon sx={{
                 cursor: "pointer", color: "#FFF",
@@ -128,13 +190,20 @@ function MainHeader() {
             </Button>
           ) : (
             <Button variant="primary" onClick={toggleTheme} sx={{
-              width: "40px", height: "40px", borderRadius: "20px", marginRight: "10px",
+              width: "40px", height: "40px", borderRadius: "20px"
             }}>
               <DarkModeIcon sx={{
                 cursor: "pointer", color: "#000"
               }} />
             </Button>
           )}
+          <Button variant="primary" onClick={handlePopoverNoti} sx={{
+            width: "40px", height: "40px", borderRadius: "20px", marginRight: "10px",
+          }}>
+            <Badge badgeContent={count} color="error">
+              <NotificationsIcon color="#fff" />
+            </Badge>
+          </Button>
           <Box>
             <Avatar
               onClick={handleProfileMenuOpen}
@@ -146,7 +215,35 @@ function MainHeader() {
         </Toolbar>
       </AppBar>
       {renderMenu}
-    </Box>
+      <Popover
+        open={notifiDialog}
+        onClose={() => setnotifiDialog(false)}
+        anchorEl={notificationEl}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "right",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+      >
+        <Typography variant="h5" color="primary" sx={{
+          fontWeight: "bold",
+          justifyContent: "center",
+          padding: 2,
+        }}>Notifications</Typography>
+        <Divider />
+        <Stack style={{ minHeight: 200, width: 350 }} alignItems="center" p={1}>
+          <NotificationCard
+            notifications={notifications}
+            totalPage={totalPage}
+            count={count}
+            handleChange={handleChange}
+          />
+        </Stack>
+      </Popover>
+    </Box >
   );
 }
 
