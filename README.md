@@ -49,7 +49,7 @@
     <li>
       <a href="#features-and-specifications">Features and Specifications</a>
       <ul>
-        <li><a href="#api-endpoint">API Endpoints</a></li>
+        <li><a href="#api-endpoints">API Endpoints</a></li>
       </ul>
     </li>
     <li><a href="#contact">Contact</a></li>
