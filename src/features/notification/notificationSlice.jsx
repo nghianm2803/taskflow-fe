@@ -36,10 +36,10 @@ const slice = createSlice({
   },
 });
 
-export const getAllNotificationOfUser = ({ limit = 10, page }) => async (dispatch) => {
+export const getAllNotificationOfUser = ({ limit }) => async (dispatch) => {
   dispatch(slice.actions.startLoading());
   try {
-    const params = { limit, page }
+    const params = { limit }
     const response = await apiService.get(`/notifications`, { params });
     dispatch(slice.actions.getNotificationSuccess(response.data));
   } catch (error) {
@@ -47,10 +47,20 @@ export const getAllNotificationOfUser = ({ limit = 10, page }) => async (dispatc
   }
 };
 
-export const updateNotification = () => async (dispatch) => {
+export const readAllNotifications = (limit) => async (dispatch) => {
   dispatch(slice.actions.startLoading());
   try {
-    const response = await apiService.put("/notifications");
+    await apiService.put("/notifications");
+    dispatch(getAllNotificationOfUser({ limit }));
+  } catch (error) {
+    dispatch(slice.actions.hasError(error.message));
+  }
+}
+
+export const readNotification = ({ id }) => async (dispatch) => {
+  dispatch(slice.actions.startLoading());
+  try {
+    const response = await apiService.put(`/notifications/${id}`);
     console.log(response.data)
   } catch (error) {
     dispatch(slice.actions.hasError(error.message));

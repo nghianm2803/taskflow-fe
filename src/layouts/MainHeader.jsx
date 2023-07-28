@@ -23,11 +23,14 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   countNewNotifications,
   getAllNotificationOfUser,
-  updateNotification,
+  readAllNotifications,
+  readNotification,
 } from "../features/notification/notificationSlice";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import DoneAllIcon from '@mui/icons-material/DoneAll';
+import LoadingScreen from "../components/LoadingScreen";
 
 function MainHeader() {
   const { user, logout } = useAuth();
@@ -37,11 +40,7 @@ function MainHeader() {
 
   const [notificationEl, setNotificationEl] = React.useState(null);
   const [notifiDialog, setnotifiDialog] = useState(false);
-  const [page, setPage] = useState(1);
 
-  const handleChange = (e, value) => {
-    setPage(value);
-  };
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const isMenuOpen = Boolean(anchorEl);
@@ -52,6 +51,8 @@ function MainHeader() {
   );
   const totalPage = useSelector((state) => state.notification.totalPage);
   const count = useSelector((state) => state.notification.count);
+  const id = useSelector((state) => state.notification._id);
+  const isLoading = useSelector((state) => state.notification.isLoading);
 
   useEffect(() => {
     if (user) {
@@ -76,19 +77,25 @@ function MainHeader() {
   useEffect(() => {
     if (user) {
       if (notifiDialog === true) {
-        dispatch(getAllNotificationOfUser({ page }));
+        dispatch(getAllNotificationOfUser({ limit: count }));
       }
     }
-  }, [user, dispatch, page, notifiDialog]);
+  }, [user, dispatch, notifiDialog, count]);
+
+  const handleReadAll = () => {
+    dispatch(readAllNotifications());
+  };
+
+  const handleReadNoti = () => {
+    dispatch(readNotification(id))
+    console.log("trigger read noti")
+  };
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
   const handlePopoverNoti = (event) => {
-    if (count > 0) {
-      dispatch(updateNotification());
-    }
     setNotificationEl(event.currentTarget);
     setnotifiDialog(true);
   };
@@ -228,19 +235,33 @@ function MainHeader() {
           horizontal: "right",
         }}
       >
-        <Typography variant="h5" color="primary" sx={{
-          fontWeight: "bold",
-          justifyContent: "center",
-          padding: 2,
-        }}>Notifications</Typography>
+        <Stack direction="row"
+          alignItems={{ sm: "center" }}
+          justifyContent="space-between"
+          sx={{ mb: 0.5 }}
+          position="relative">
+          <Typography variant="h5" color="primary" sx={{
+            fontWeight: "bold",
+            justifyContent: "center",
+            padding: 2,
+          }}>Notifications</Typography>
+          <Button variant="primary" onClick={handleReadAll} sx={{
+            width: "40px", height: "40px", borderRadius: "20px",
+          }}>
+            <DoneAllIcon />
+          </Button>
+        </Stack>
         <Divider />
         <Stack style={{ minHeight: 200, width: 350 }} alignItems="center" p={1}>
-          <NotificationCard
-            notifications={notifications}
-            totalPage={totalPage}
-            count={count}
-            handleChange={handleChange}
-          />
+          {isLoading ? <LoadingScreen /> : (
+            <NotificationCard
+              notifications={notifications}
+              totalPage={totalPage}
+              count={count}
+              id={id}
+              onClick={handleReadNoti}
+            />
+          )}
         </Stack>
       </Popover>
     </Box >
