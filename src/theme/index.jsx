@@ -141,7 +141,7 @@ function ThemeProvider({ children }) {
       secondary: SECONDARY_DARK,
       success: SUCCESS_DARK,
       text: { primary: TEXT_DARK[200], secondary: TEXT_DARK[600], disabled: TEXT_DARK[600] },
-      background: { paper: "#00111c", default: "#00111c", neutral: TEXT_DARK[800] },
+      background: { paper: "#18191A", default: "#18191A", neutral: TEXT_DARK[800] },
       action: {
         active: GREY[600],
         hover: GREY[500_8],

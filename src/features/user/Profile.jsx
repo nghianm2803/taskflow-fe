@@ -60,10 +60,10 @@ function Profile() {
 
   return (
     <Container>
+      <Box sx={{ mb: 3 }} />
       <Typography variant="h5" gutterBottom>
         My Profile{" "}
       </Typography>
-
       <Box sx={{ mb: 5 }} />
 
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>

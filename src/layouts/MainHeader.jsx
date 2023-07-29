@@ -87,8 +87,8 @@ function MainHeader() {
   };
 
   const handleReadNoti = () => {
-    dispatch(readNotification(id))
-    console.log("trigger read noti")
+    dispatch(readNotification(id));
+    console.log("trigger read noti");
   };
 
   const handleProfileMenuOpen = (event) => {
