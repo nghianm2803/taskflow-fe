@@ -39,6 +39,7 @@ const PRIMARY_DARK = {
   dark: "#FAEDCD",
   darker: "#D4A373",
   contrastText: "#52796F",
+  // contrastText: "#FFF",
 };
 const SECONDARY_DARK = {
   lighter: "#D6E4FF",

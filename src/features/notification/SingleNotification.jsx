@@ -1,8 +1,11 @@
 import { Box, Divider, Stack, Typography } from "@mui/material";
 import React from "react";
 import CircleIcon from '@mui/icons-material/Circle';
+// import { useTheme } from "@mui/material/styles";
 
 function SingleNotification({ notification }) {
+  // const theme = useTheme();
+
   return (
     <>
       <Stack
@@ -15,6 +18,8 @@ function SingleNotification({ notification }) {
         sx={{
           cursor: "pointer",
           borderRadius: "10px",
+          // backgroundColor: theme.palette.primary.main,
+          // color: theme.palette.primary.contrastText,
           "&:hover": {
             backgroundColor: "#EDEEF8",
           },
