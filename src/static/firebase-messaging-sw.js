@@ -2,13 +2,13 @@ importScripts("https://www.gstatic.com/firebasejs/8.2.0/firebase-app.js");
 importScripts("https://www.gstatic.com/firebasejs/8.2.0/firebase-messaging.js");
 
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID",
-  measurementId: "YOUR_MEASUREMENT_ID",
+  apiKey: "AIzaSyDGbJ21epkXWrEpbGyWTW4aUDZYZJ-x3UA",
+  authDomain: "taskflow-c850c.firebaseapp.com",
+  projectId: "taskflow-c850c",
+  storageBucket: "taskflow-c850c.appspot.com",
+  messagingSenderId: "817711422333",
+  appId: "1:817711422333:web:5179e64ac7239bdf42ca14",
+  measurementId: "G-CFQ650CCZ0",
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -27,4 +27,3 @@ self.addEventListener("push", function (e) {
   };
   e.waitUntil(self.registration.showNotification(data.notification.title, options));
 });
-
