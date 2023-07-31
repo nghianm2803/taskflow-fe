@@ -55,24 +55,22 @@ function MainHeader() {
   const isLoading = useSelector((state) => state.notification.isLoading);
 
   useEffect(() => {
-    if (user) {
-      const fetchNewNotifications = async () => {
-        try {
-          dispatch(countNewNotifications());
-        } catch (error) {
-          console.error("Error fetching new notifications count:", error);
-        }
-      };
+    const fetchNewNotifications = async () => {
+      try {
+        dispatch(countNewNotifications());
+      } catch (error) {
+        console.error("Error fetching new notifications count:", error);
+      }
+    };
 
-      const timeoutId = setInterval(async () => {
-        await fetchNewNotifications();
-      }, 60000); // 1 minute
+    const timeoutId = setInterval(async () => {
+      await fetchNewNotifications();
+    }, 60000); // 1 minute
 
-      return () => {
-        clearInterval(timeoutId);
-      };
-    }
-  }, [dispatch, user]);
+    return () => {
+      clearInterval(timeoutId);
+    };
+  }, [dispatch]);
 
   useEffect(() => {
     if (user) {
@@ -86,9 +84,11 @@ function MainHeader() {
     dispatch(readAllNotifications());
   };
 
-  const handleReadNoti = () => {
-    dispatch(readNotification(id));
-    console.log("trigger read noti");
+  const handleReadNotification = (notificationId) => {
+    if (notificationId) {
+      dispatch(readNotification({ id: notificationId }));
+      console.log("trigger read noti");
+    }
   };
 
   const handleProfileMenuOpen = (event) => {
@@ -234,6 +234,10 @@ function MainHeader() {
           vertical: "top",
           horizontal: "right",
         }}
+        sx={{
+          maxHeight: 400,
+          width: 400,
+        }}
       >
         <Stack direction="row"
           alignItems={{ sm: "center" }}
@@ -259,7 +263,7 @@ function MainHeader() {
               totalPage={totalPage}
               count={count}
               id={id}
-              onClick={handleReadNoti}
+              handleReadNotification={handleReadNotification}
             />
           )}
         </Stack>

@@ -2,7 +2,7 @@ import { Box, Typography } from "@mui/material";
 import React from "react";
 import SingleNotification from "./SingleNotification";
 
-function NotificationCard({ notifications }) {
+function NotificationCard({ notifications, handleReadNotification }) {
   return (
     <Box>
       {notifications && notifications.length > 0 ? (
@@ -11,6 +11,7 @@ function NotificationCard({ notifications }) {
             <SingleNotification
               key={notification._id}
               notification={notification}
+              handleReadNotification={handleReadNotification}
             />
           ))}
         </>

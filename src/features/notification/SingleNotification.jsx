@@ -3,7 +3,7 @@ import React from "react";
 import CircleIcon from '@mui/icons-material/Circle';
 // import { useTheme } from "@mui/material/styles";
 
-function SingleNotification({ notification }) {
+function SingleNotification({ notification, handleReadNotification }) {
   // const theme = useTheme();
 
   return (
@@ -24,6 +24,7 @@ function SingleNotification({ notification }) {
             backgroundColor: "#EDEEF8",
           },
         }}
+        onClick={() => handleReadNotification(notification._id)}
       >
         {notification && (
           <>
