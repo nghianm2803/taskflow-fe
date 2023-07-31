@@ -20,8 +20,10 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import TasksList from "../task/TaskList";
 import EmptyData from "../../pages/EmptyData";
 import LoadingScreen from "../../components/LoadingScreen";
+import useAuth from "../../hooks/useAuth";
 
 function SingleProject() {
+  const { user } = useAuth();
   const { id } = useParams();
   const dispatch = useDispatch();
   const project = useSelector((state) => state.project.currentProject);
@@ -89,11 +91,12 @@ function SingleProject() {
               }}
             >
               <ProjectHeader project={project} />
-              <Box>
-                <IconButton onClick={handleDialogOpen}>
-                  <MoreVertIcon fontSize="medium" />
-                </IconButton>
-              </Box>
+              {user.role === "Manager" ? (
+                <Box>
+                  <IconButton onClick={handleDialogOpen}>
+                    <MoreVertIcon fontSize="medium" />
+                  </IconButton>
+                </Box>) : ""}
 
               <Popover
                 open={openDialog}

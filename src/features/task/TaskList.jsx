@@ -21,6 +21,7 @@ import TaskCard from "./TaskCard";
 import LoadingScreen from "../../components/LoadingScreen";
 import SearchInput from "../../components/SearchInput";
 import FilterTask from "../../components/FilterTask";
+import useAuth from "../../hooks/useAuth";
 
 import ContentPasteIcon from "@mui/icons-material/ContentPaste";
 import AssignmentIcon from "@mui/icons-material/Assignment";
@@ -28,6 +29,7 @@ import ContentPasteSearchIcon from "@mui/icons-material/ContentPasteSearch";
 import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 
 const TaskList = ({ projectId }) => {
+  const { user } = useAuth();
   const { tasksList, isLoading, taskCount } = useSelector((state) => state.task);
   const [filterBy, setFilterBy] = useState("");
   const [filterValue, setFilterValue] = useState("");
@@ -190,30 +192,32 @@ const TaskList = ({ projectId }) => {
               </CardContent>
             </Card>
             {pendingTasks.length > 0 && renderTaskCards(pendingTasks)}
-            <Card
-              className={isHovered ? "task-card-hovered" : "task-card"}
-              sx={{
-                marginBottom: "10px",
-                width: "100%",
-                height: "40px",
-                position: "relative",
-                textAlign: "center",
-                alignItems: "center",
-                display: "flex",
-                justifyContent: "center",
-                backgroundColor: "#FFF"
-              }}
-              onMouseEnter={handleHover}
-              onMouseLeave={handleLeave}
-              onClick={() => {
-                setShowForm((prevState) => !prevState);
-              }}
-            >
-              <AddIcon fontSize="small" sx={{ color: "#212B36" }} />
-              <Typography variant="body2" display="block" align="center" color="#212B36">
-                Task
-              </Typography>
-            </Card>
+            {user.role === "Manager" ? (
+              <Card
+                className={isHovered ? "task-card-hovered" : "task-card"}
+                sx={{
+                  marginBottom: "10px",
+                  width: "100%",
+                  height: "40px",
+                  position: "relative",
+                  textAlign: "center",
+                  alignItems: "center",
+                  display: "flex",
+                  justifyContent: "center",
+                  backgroundColor: "#FFF"
+                }}
+                onMouseEnter={handleHover}
+                onMouseLeave={handleLeave}
+                onClick={() => {
+                  setShowForm((prevState) => !prevState);
+                }}
+              >
+                <AddIcon fontSize="small" sx={{ color: "#212B36" }} />
+                <Typography variant="body2" display="block" align="center" color="#212B36">
+                  Task
+                </Typography>
+              </Card>) : ""
+            }
             {showForm && (
               <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
                 <FTextField
@@ -367,71 +371,73 @@ const TaskList = ({ projectId }) => {
             </FormProvider>
           </Box>
         </Stack>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={6} md={3}>
-            <Card
-              className={isHovered ? "task-card-hovered" : "task-card"}
-              sx={{
-                marginTop: "10px",
-                marginBottom: "10px",
-                width: "100%",
-                height: "40px",
-                position: "relative",
-                textAlign: "center",
-                alignItems: "center",
-                display: "flex",
-                justifyContent: "center",
-                backgroundColor: "#FFF"
-              }}
-              onMouseEnter={handleHover}
-              onMouseLeave={handleLeave}
-              onClick={handleTaskClick}
-            >
-              <AddIcon fontSize="small" sx={{ color: "#212B36" }} />
-              <Typography variant="body2" display="block" align="center" color="#212B36">
-                Task
-              </Typography>
-            </Card>
-            {showForm && (
-              <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-                <FTextField
-                  name="name"
-                  fullWidth
-                  required
-                  placeholder="Task's name"
-                />
-                <FTextField
-                  name="description"
-                  fullWidth
-                  required
-                  placeholder="Task's description"
-                />
-                <FTextField
-                  type="datetime-local"
-                  name="deadline"
-                  sx={{ width: 1, mb: "20px" }}
-                />
 
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "flex-end",
-                  }}
-                >
-                  <LoadingButton
-                    type="submit"
-                    variant="contained"
-                    size="small"
-                    loading={isSubmitting || isLoading}
+        {user.role === "Manager" ? (
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6} md={3}>
+              <Card
+                className={isHovered ? "task-card-hovered" : "task-card"}
+                sx={{
+                  marginTop: "10px",
+                  marginBottom: "10px",
+                  width: "100%",
+                  height: "40px",
+                  position: "relative",
+                  textAlign: "center",
+                  alignItems: "center",
+                  display: "flex",
+                  justifyContent: "center",
+                  backgroundColor: "#FFF"
+                }}
+                onMouseEnter={handleHover}
+                onMouseLeave={handleLeave}
+                onClick={handleTaskClick}
+              >
+                <AddIcon fontSize="small" sx={{ color: "#212B36" }} />
+                <Typography variant="body2" display="block" align="center" color="#212B36">
+                  Task
+                </Typography>
+              </Card>
+              {showForm && (
+                <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+                  <FTextField
+                    name="name"
+                    fullWidth
+                    required
+                    placeholder="Task's name"
+                  />
+                  <FTextField
+                    name="description"
+                    fullWidth
+                    required
+                    placeholder="Task's description"
+                  />
+                  <FTextField
+                    type="datetime-local"
+                    name="deadline"
+                    sx={{ width: 1, mb: "20px" }}
+                  />
+
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "flex-end",
+                    }}
                   >
-                    Create Task
-                  </LoadingButton>
-                </Box>
-              </FormProvider>
-            )}
-          </Grid>
-        </Grid>
+                    <LoadingButton
+                      type="submit"
+                      variant="contained"
+                      size="small"
+                      loading={isSubmitting || isLoading}
+                    >
+                      Create Task
+                    </LoadingButton>
+                  </Box>
+                </FormProvider>
+              )}
+            </Grid>
+          </Grid>) : ""}
       </Container>
     );
   }
