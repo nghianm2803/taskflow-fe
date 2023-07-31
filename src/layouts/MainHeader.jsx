@@ -51,6 +51,7 @@ function MainHeader() {
   );
   const totalPage = useSelector((state) => state.notification.totalPage);
   const count = useSelector((state) => state.notification.count);
+  const unreadCount = useSelector((state) => state.notification.unreadCount);
   const id = useSelector((state) => state.notification._id);
   const isLoading = useSelector((state) => state.notification.isLoading);
 
@@ -207,7 +208,7 @@ function MainHeader() {
           <Button variant="primary" onClick={handlePopoverNoti} sx={{
             width: "40px", height: "40px", borderRadius: "20px", marginRight: "10px",
           }}>
-            <Badge badgeContent={count} color="error">
+            <Badge badgeContent={unreadCount} color="error">
               <NotificationsIcon color="#fff" />
             </Badge>
           </Button>
