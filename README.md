@@ -379,14 +379,14 @@ Notifications APIs
 
 ```
 @route PUT /notifications/:notificationId
-@description update notification as read
+@description Mark notification as read
 @body
 @access Login required
 ```
 
 ```
 @route GET /new
-@description update notification as read
+@description Get new notification
 @access Login required
 ```
 
