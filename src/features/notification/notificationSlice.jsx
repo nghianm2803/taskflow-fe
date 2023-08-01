@@ -74,7 +74,6 @@ export const countNewNotifications = () => async (dispatch) => {
   try {
     const response = await apiService.get('/notifications/new');
     dispatch(slice.actions.countNewNotificationSuccess(response.data))
-    console.log("count new noti:", response);
   } catch (error) {
     dispatch(slice.actions.hasError(error.message));
   }

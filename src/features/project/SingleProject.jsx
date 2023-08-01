@@ -70,7 +70,6 @@ function SingleProject() {
       spacing={2}
       justifyContent="center"
       alignItems="center"
-      mt="30px"
       padding={1}
     >
       <Stack
