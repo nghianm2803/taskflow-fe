@@ -27,7 +27,7 @@ function SearchInput({ handleOnSubmit }) {
         placeholder="Search..."
         label="Search..."
         onChange={handleChangeSearch}
-        sx={{ width: 380 }}
+        sx={{ minWidth: 180 }}
         size="small"
         InputProps={{
           endAdornment: (

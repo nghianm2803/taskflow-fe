@@ -42,6 +42,7 @@ const TaskDetail = ({ task, onClose }) => {
   const descriptionRef = useRef(null);
   const nameRef = useRef(null);
   const deadlineRef = useRef(null);
+  const currentDateTime = fDeadline(new Date());
 
   useEffect(() => {
     dispatch(getUsers({ page: 1, limit: userCount, name: searchQuery }));
@@ -175,9 +176,8 @@ const TaskDetail = ({ task, onClose }) => {
     setOpenDeleteDialog(false);
   };
 
- // Custom function to compare options with the value prop
- const isOptionEqualToValue = (option, value) => option._id === value?._id;
-
+  // Custom function to compare options with the value prop
+  const isOptionEqualToValue = (option, value) => option._id === value?._id;
 
   return (
     <Box
@@ -185,12 +185,15 @@ const TaskDetail = ({ task, onClose }) => {
         position: "fixed",
         top: "170px",
         right: 0,
-        width: "50%",
         height: "calc(100vh - 65px)",
         overflow: "hidden",
         backgroundColor: "#b7b7a4",
-        borderTopLeftRadius: "10px",
         zIndex: 1,
+        width: {
+          xs: "100%",
+          sm: "70%",
+          md: "50%",
+        },
       }}
     >
       <Box
@@ -246,11 +249,10 @@ const TaskDetail = ({ task, onClose }) => {
 
         {/* Body part */}
         <Box sx={{ padding: "20px" }}>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
+          <Grid container spacing={3}>
+            <Grid item xs={6} sm={6} md={6} lg={3.5} >
               <Card
                 sx={{
-                  height: "90px",
                   backgroundColor: {
                     Pending: "#C2E1FB",
                     Working: "#FFF283",
@@ -271,10 +273,7 @@ const TaskDetail = ({ task, onClose }) => {
                     value={detailTask.status}
                     onChange={handleStatusChange}
                     fullWidth
-                    sx={{
-                      width: "100px",
-                      height: "40px",
-                    }}
+                    sx={{ width: "130px" }}
                     renderValue={(selected) => (
                       <Typography variant="body2" color="#212B36">{selected}</Typography>
                     )}
@@ -311,10 +310,9 @@ const TaskDetail = ({ task, onClose }) => {
                 </CardContent>
               </Card>
             </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
+            <Grid item xs={6} sm={6} md={6} lg={3.5} >
               <Card
                 sx={{
-                  height: "90px",
                   backgroundColor: {
                     Low: "#CBFFA9",
                     Medium: "#F1C93B",
@@ -334,10 +332,7 @@ const TaskDetail = ({ task, onClose }) => {
                     value={detailTask.priority}
                     onChange={handlePriorityChange}
                     fullWidth
-                    sx={{
-                      width: "100px",
-                      height: "40px",
-                    }}
+                    sx={{ width: "130px" }}
                     renderValue={(selected) => (
                       <Typography variant="body2" color="#212B36">{selected}</Typography>
                     )}
@@ -350,8 +345,88 @@ const TaskDetail = ({ task, onClose }) => {
                 </CardContent>
               </Card>
             </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-              <Card sx={{ height: "90px", width: "200px" }}>
+            <Grid item xs={8} sm={8} md={6} lg={5}>
+              <Card fullWidth >
+                <CardContent
+                  sx={{
+                    "&:last-child": {
+                      padding: "16px",
+                    },
+                  }}
+                >
+                  <Typography variant="body2">Deadline</Typography>
+                  {isEditingDeadline ? (
+                    <TextField
+                      value={fDeadline(detailTask.deadline)}
+                      onChange={updateDeadline}
+                      onKeyPress={handleDeadlineKeyPress}
+                      inputRef={deadlineRef}
+                      fullWidth
+                      variant="standard"
+                      error={isInvalidDate}
+                      helperText={isInvalidDate && "Invalid date value"}
+                      type="datetime-local"
+                      inputProps={{ min: currentDateTime }}
+                    />
+                  ) : (
+                    <Typography
+                      variant="body2"
+                      onClick={handleDeadlineChange}
+                      sx={{
+                        marginTop: "10px",
+                        "&:hover": {
+                          color: "#78C1F3",
+                          fontWeight: "bold",
+                        },
+                        cursor: "pointer",
+                      }}
+                    >
+                      {fDeadline(detailTask.deadline)}
+                    </Typography>
+                  )}
+                </CardContent>
+              </Card>
+            </Grid>
+          </Grid>
+        </Box>
+
+        {/* Task Description part */}
+        <Box
+          sx={{
+            paddingLeft: "20px",
+            paddingRight: "20px",
+            display: "flex",
+            flexDirection: "column",
+            marginBottom: "20px",
+          }}
+        >
+          <Grid container spacing={3}>
+            <Grid item xs={12} sm={7} md={7} lg={7}>
+              <Card fullWidth >
+                <CardContent
+                  sx={{
+                    "&:last-child": {
+                      padding: "16px",
+                    },
+                  }}
+                >
+                  <Typography sx={{ textAlign: "left" }}>
+                    Description
+                  </Typography>
+                  <TextField
+                    multiline
+                    rows={4}
+                    value={detailTask.description}
+                    onChange={handleDescriptionChange}
+                    onKeyPress={handleDescriptionKeyPress}
+                    fullWidth
+                    inputRef={descriptionRef}
+                  />
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={8} sm={5} md={5} lg={5}>
+              <Card fullWidth>
                 <CardContent
                   sx={{
                     "&:last-child": {
@@ -386,95 +461,6 @@ const TaskDetail = ({ task, onClose }) => {
           </Grid>
         </Box>
 
-        {/* Task Description part */}
-        <Box
-          sx={{
-            paddingLeft: "20px",
-            paddingRight: "20px",
-            display: "flex",
-            flexDirection: "column",
-            marginBottom: "20px",
-          }}
-        >
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={8} md={8} lg={8}>
-              <Card
-                sx={{
-                  height: "180px",
-                  weight: "100px",
-                }}
-              >
-                <CardContent
-                  sx={{
-                    "&:last-child": {
-                      padding: "16px",
-                    },
-                  }}
-                >
-                  <Typography sx={{ textAlign: "left" }}>
-                    Description
-                  </Typography>
-                  <TextField
-                    multiline
-                    rows={4}
-                    value={detailTask.description}
-                    onChange={handleDescriptionChange}
-                    onKeyPress={handleDescriptionKeyPress}
-                    fullWidth
-                    inputRef={descriptionRef}
-                  />
-                </CardContent>
-              </Card>
-            </Grid>
-            <Grid item xs={12} sm={4} md={4} lg={4}>
-              <Card
-                sx={{
-                  width: "170px",
-                  height: "90px",
-                }}
-              >
-                <CardContent
-                  sx={{
-                    "&:last-child": {
-                      padding: "16px",
-                    },
-                  }}
-                >
-                  <Typography variant="body2">Deadline</Typography>
-                  {isEditingDeadline ? (
-                    <TextField
-                      value={fDeadline(detailTask.deadline)}
-                      onChange={updateDeadline}
-                      onKeyPress={handleDeadlineKeyPress}
-                      fullWidth
-                      inputRef={deadlineRef}
-                      variant="standard"
-                      error={isInvalidDate}
-                      helperText={isInvalidDate && "Invalid date value"}
-                    // type="datetime-local"
-                    />
-                  ) : (
-                    <Typography
-                      variant="body2"
-                      onClick={handleDeadlineChange}
-                      sx={{
-                        marginTop: "10px",
-                        "&:hover": {
-                          color: "#78C1F3",
-                          fontWeight: "bold",
-                        },
-                        cursor: "pointer",
-                      }}
-                    >
-                      {fDeadline(detailTask.deadline)}
-                    </Typography>
-                  )}
-                </CardContent>
-              </Card>
-            </Grid>
-          </Grid>
-        </Box>
-
         <DeleteTask
           id={detailTask._id}
           openDeleteDialog={openDeleteDialog}
@@ -482,6 +468,7 @@ const TaskDetail = ({ task, onClose }) => {
           onDelete={() => confirmDeleteTask(detailTask._id)}
         />
 
+        {/* Comment part */}
         <Box
           sx={{
             paddingLeft: "20px",

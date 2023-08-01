@@ -1,7 +1,12 @@
 import { format, getTime, formatDistanceToNow } from "date-fns";
 
+// export function fDeadline(date) {
+//   return format(new Date(date), "dd/MM/yyyy HH:mm");
+// }
+
 export function fDeadline(date) {
-  return format(new Date(date), "dd/MM/yyyy HH:mm");
+  const formattedDate = format(new Date(date), "yyyy-MM-dd HH:mm");
+  return formattedDate;
 }
 
 export function fDate(date) {

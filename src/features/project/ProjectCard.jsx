@@ -27,7 +27,7 @@ function ProjectCard({ project }) {
         <Card
           className={isHovered ? "project-card-hovered" : "project-card"}
           sx={{
-            width: 320,
+            width: 350,
             height: "100%",
             position: "relative",
             overflow: "hidden",

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getTasks, createTask, addTaskToProject } from "./taskSlice";
+import { fDeadline } from "../../utils/formatTime";
 import {
   Grid,
   Card,
@@ -33,6 +34,8 @@ const TaskList = ({ projectId }) => {
   const { tasksList, isLoading, taskCount } = useSelector((state) => state.task);
   const [filterBy, setFilterBy] = useState("");
   const [filterValue, setFilterValue] = useState("");
+
+  const currentDateTime = fDeadline(new Date());
 
   const yupSchema = Yup.object().shape({
     name: Yup.string().required("This field is required"),
@@ -148,11 +151,11 @@ const TaskList = ({ projectId }) => {
           minHeight: "100vh",
           mt: 3,
         }}
-        padding="1"
+        padding={1}
       >
         <Stack
           display="flex"
-          flexDirection={{ xs: "column", md: "row" }}
+          flexDirection="row"
           justifyContent="flex-start"
           alignItems="center"
         >
@@ -236,6 +239,7 @@ const TaskList = ({ projectId }) => {
                   type="datetime-local"
                   name="deadline"
                   sx={{ width: 1, mb: "20px" }}
+                  inputProps={{ min: currentDateTime }}
                 />
                 <Box
                   sx={{
@@ -358,7 +362,7 @@ const TaskList = ({ projectId }) => {
       >
         <Stack
           display="flex"
-          flexDirection={{ xs: "column", md: "row" }}
+          flexDirection="row"
           justifyContent="flex-start"
           alignItems="center"
         >
@@ -416,6 +420,7 @@ const TaskList = ({ projectId }) => {
                     type="datetime-local"
                     name="deadline"
                     sx={{ width: 1, mb: "20px" }}
+                    inputProps={{ min: currentDateTime }}
                   />
 
                   <Box

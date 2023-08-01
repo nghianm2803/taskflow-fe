@@ -120,27 +120,27 @@ function ProjectList() {
       </Typography>
       <Stack
         display="flex"
-        flexDirection={{ xs: "column", md: "row" }}
+        flexDirection={{ xs: "column", sm: "row", md: "row" }}
         justifyContent="space-between"
         alignItems="center"
       >
         <Box display="flex"
-          flexDirection={{ xs: "column", md: "row" }}
+          flexDirection="row"
           justifyContent="flex-start"
           alignItems="center">
-          <Box marginBottom={5} marginRight={1}>
+          <Box mb={5} mr={1}>
             <SearchInput handleOnSubmit={handleOnSubmit} />
           </Box>
-          <Box marginBottom={5}>
+          <Box mb={5}>
             <Button variant="contained" component={Link} to="/tasks/mytasks">
               My Tasks
             </Button>
           </Box>
         </Box>
-        {user.role === "Manager" ? (<Box marginBottom={5}>
+        {user.role === "Manager" ? (<Box mb={5} mr={2}>
           <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
             <Box display="flex"
-              flexDirection={{ xs: "column", md: "row" }}
+              flexDirection="row"
               justifyContent="flex-start"
               alignItems="center">
               <FTextField
@@ -151,9 +151,7 @@ function ProjectList() {
                 size="small"
                 sx={{
                   "& fieldset": {
-                    borderWidth: `1px !important`,
-                    borderColor: alpha("#919EAB", 0.32),
-                    marginRight:"10px"
+                    marginRight: "10px"
                   },
                 }}
               />
@@ -187,7 +185,7 @@ function ProjectList() {
               <Card
                 className={isHovered ? "project-card-hovered" : "project-card"}
                 sx={{
-                  width: 320,
+                  width: 350,
                   height: "100%",
                   position: "relative",
                   overflow: "hidden",
@@ -231,7 +229,7 @@ function ProjectList() {
                     <Fade in={isCreatingProject}>
                       <Box
                         sx={{
-                          width: 400, // Adjust the width of the modal as needed
+                          width: 400,
                           bgcolor: "background.paper",
                           borderRadius: "10px",
                           boxShadow: 24,
@@ -246,7 +244,7 @@ function ProjectList() {
               </Card>
             </Grid>
           </Grid>
-          <Stack spacing={2} mt={5} justifyContent="center" alignItems="center">
+          <Stack spacing={2} mt={5} mb={1} justifyContent="center" alignItems="center">
             <Pagination
               count={totalPage}
               variant="outlined"

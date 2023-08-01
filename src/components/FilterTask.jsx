@@ -15,11 +15,11 @@ function FilterTask({ handleFilterChange }) {
   };
 
   return (
-    <Box sx={{ minWidth: 120 }}>
+    <Box sx={{ minWidth: 110 }}>
       <FSelect
         name="filterBy"
         size="small"
-        sx={{ width: 120 }}
+        sx={{ width: 110 }}
         onChange={handleChange}
       >
         {[

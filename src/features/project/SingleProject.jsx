@@ -66,7 +66,7 @@ function SingleProject() {
 
   return (
     <Stack
-      direction={{ xs: "column", md: "row" }}
+      direction="row"
       spacing={2}
       justifyContent="center"
       alignItems="center"
