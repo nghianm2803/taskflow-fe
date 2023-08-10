@@ -27,6 +27,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import CommentList from "../comment/CommentList";
 import CommentForm from "../comment/CommentForm";
 import DeleteTask from "./DeleteTask";
+// import { FDateTimePicker } from "../../components/form";
 
 const TaskDetail = ({ task, onClose }) => {
   const dispatch = useDispatch();
@@ -69,7 +70,7 @@ const TaskDetail = ({ task, onClose }) => {
         updateTask({
           id: detailTask._id,
           name: detailTask.name,
-          projectId: detailTask.projectTo
+          projectId: detailTask.projectTo,
         })
       );
       nameRef.current.blur();
@@ -89,7 +90,7 @@ const TaskDetail = ({ task, onClose }) => {
         updateTask({
           id: detailTask._id,
           description: detailTask.description,
-          projectId: detailTask.projectTo
+          projectId: detailTask.projectTo,
         })
       );
       descriptionRef.current.blur();
@@ -106,7 +107,7 @@ const TaskDetail = ({ task, onClose }) => {
       updateTask({
         id: detailTask._id,
         status: newStatus,
-        projectId: detailTask.projectTo
+        projectId: detailTask.projectTo,
       })
     );
   };
@@ -121,7 +122,7 @@ const TaskDetail = ({ task, onClose }) => {
       updateTask({
         id: detailTask._id,
         priority: newPriority,
-        projectId: detailTask.projectTo
+        projectId: detailTask.projectTo,
       })
     );
   };
@@ -152,7 +153,7 @@ const TaskDetail = ({ task, onClose }) => {
         updateTask({
           id: detailTask._id,
           deadline: detailTask.deadline,
-          projectId: detailTask.projectTo
+          projectId: detailTask.projectTo,
         })
       );
       deadlineRef.current.blur();
@@ -250,7 +251,7 @@ const TaskDetail = ({ task, onClose }) => {
         {/* Body part */}
         <Box sx={{ padding: "20px" }}>
           <Grid container spacing={3}>
-            <Grid item xs={6} sm={6} md={6} lg={3.5} >
+            <Grid item xs={6} sm={6} md={6} lg={3.5}>
               <Card
                 sx={{
                   backgroundColor: {
@@ -268,14 +269,18 @@ const TaskDetail = ({ task, onClose }) => {
                     },
                   }}
                 >
-                  <Typography variant="body2" color="#212B36">Status</Typography>
+                  <Typography variant="body2" color="#212B36">
+                    Status
+                  </Typography>
                   <Select
                     value={detailTask.status}
                     onChange={handleStatusChange}
                     fullWidth
                     sx={{ width: "130px" }}
                     renderValue={(selected) => (
-                      <Typography variant="body2" color="#212B36">{selected}</Typography>
+                      <Typography variant="body2" color="#212B36">
+                        {selected}
+                      </Typography>
                     )}
                     variant="standard"
                   >
@@ -289,28 +294,22 @@ const TaskDetail = ({ task, onClose }) => {
                       Pending
                     </MenuItem>
                     <MenuItem value="Working">
-                      <AssignmentIcon
-                        style={{ color: "#F1C93B", paddingRight: "5px" }}
-                      />
+                      <AssignmentIcon style={{ color: "#F1C93B", paddingRight: "5px" }} />
                       Working
                     </MenuItem>
                     <MenuItem value="Review">
-                      <ContentPasteSearchIcon
-                        style={{ color: "#00BCD4", paddingRight: "5px" }}
-                      />
+                      <ContentPasteSearchIcon style={{ color: "#00BCD4", paddingRight: "5px" }} />
                       Review
                     </MenuItem>
                     <MenuItem value="Done">
-                      <AssignmentTurnedInIcon
-                        style={{ color: "#8BC34A", paddingRight: "5px" }}
-                      />
+                      <AssignmentTurnedInIcon style={{ color: "#8BC34A", paddingRight: "5px" }} />
                       Done
                     </MenuItem>
                   </Select>
                 </CardContent>
               </Card>
             </Grid>
-            <Grid item xs={6} sm={6} md={6} lg={3.5} >
+            <Grid item xs={6} sm={6} md={6} lg={3.5}>
               <Card
                 sx={{
                   backgroundColor: {
@@ -327,14 +326,18 @@ const TaskDetail = ({ task, onClose }) => {
                     },
                   }}
                 >
-                  <Typography variant="body2" color="#212B36">Priority</Typography>
+                  <Typography variant="body2" color="#212B36">
+                    Priority
+                  </Typography>
                   <Select
                     value={detailTask.priority}
                     onChange={handlePriorityChange}
                     fullWidth
                     sx={{ width: "130px" }}
                     renderValue={(selected) => (
-                      <Typography variant="body2" color="#212B36">{selected}</Typography>
+                      <Typography variant="body2" color="#212B36">
+                        {selected}
+                      </Typography>
                     )}
                     variant="standard"
                   >
@@ -346,7 +349,7 @@ const TaskDetail = ({ task, onClose }) => {
               </Card>
             </Grid>
             <Grid item xs={8} sm={8} md={6} lg={5}>
-              <Card fullWidth >
+              <Card fullWidth>
                 <CardContent
                   sx={{
                     "&:last-child": {
@@ -356,6 +359,7 @@ const TaskDetail = ({ task, onClose }) => {
                 >
                   <Typography variant="body2">Deadline</Typography>
                   {isEditingDeadline ? (
+                    // <FDateTimePicker/>
                     <TextField
                       value={fDeadline(detailTask.deadline)}
                       onChange={updateDeadline}
@@ -402,7 +406,7 @@ const TaskDetail = ({ task, onClose }) => {
         >
           <Grid container spacing={3}>
             <Grid item xs={12} sm={7} md={7} lg={7}>
-              <Card fullWidth >
+              <Card fullWidth>
                 <CardContent
                   sx={{
                     "&:last-child": {
@@ -410,9 +414,7 @@ const TaskDetail = ({ task, onClose }) => {
                     },
                   }}
                 >
-                  <Typography sx={{ textAlign: "left" }}>
-                    Description
-                  </Typography>
+                  <Typography sx={{ textAlign: "left" }}>Description</Typography>
                   <TextField
                     multiline
                     rows={4}
@@ -451,9 +453,7 @@ const TaskDetail = ({ task, onClose }) => {
                         variant="standard"
                       />
                     )}
-                    onChange={(event, user) =>
-                      handleAssignUser(detailTask._id, user ? user._id : null)
-                    }
+                    onChange={(event, user) => handleAssignUser(detailTask._id, user ? user._id : null)}
                   />
                 </CardContent>
               </Card>
