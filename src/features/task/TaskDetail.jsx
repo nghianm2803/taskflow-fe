@@ -27,7 +27,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import CommentList from "../comment/CommentList";
 import CommentForm from "../comment/CommentForm";
 import DeleteTask from "./DeleteTask";
-// import { FDateTimePicker } from "../../components/form";
 
 const TaskDetail = ({ task, onClose }) => {
   const dispatch = useDispatch();
@@ -359,7 +358,6 @@ const TaskDetail = ({ task, onClose }) => {
                 >
                   <Typography variant="body2">Deadline</Typography>
                   {isEditingDeadline ? (
-                    // <FDateTimePicker/>
                     <TextField
                       value={fDeadline(detailTask.deadline)}
                       onChange={updateDeadline}
