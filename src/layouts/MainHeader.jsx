@@ -88,7 +88,6 @@ function MainHeader() {
   const handleReadNotification = (notificationId) => {
     if (notificationId) {
       dispatch(readNotification({ id: notificationId }));
-      console.log("trigger read noti");
     }
   };
 

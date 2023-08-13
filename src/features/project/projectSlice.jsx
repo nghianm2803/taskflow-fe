@@ -135,7 +135,6 @@ export const deleteProject =
       dispatch(slice.actions.startLoading());
       try {
         const response = await apiService.delete(`/projects/${id}`);
-        console.log("res", response);
         dispatch(slice.actions.deleteProjectSuccess(response.data));
         toast.success(response.data.message);
         dispatch(getSingleProject(id));
