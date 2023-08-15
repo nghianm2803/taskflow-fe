@@ -122,6 +122,10 @@ const TaskList = ({ projectId }) => {
     const taskId = result.draggableId;
     const newStatus = result.destination.droppableId;
 
+    // Check if the task is dropped within the same status column
+    const sourceColumn = result.source.droppableId;
+    if (sourceColumn === newStatus) return;
+
     dispatch(
       updateTask({
         id: taskId,
@@ -129,6 +133,13 @@ const TaskList = ({ projectId }) => {
         projectId: projectId,
       })
     );
+  };
+
+  const droppableStyles = {
+    Pending: { backgroundColor: "#EDEEF8" },
+    Working: { backgroundColor: "#FFFDEC" },
+    Review: { backgroundColor: "#E6F9FB" },
+    Done: { backgroundColor: "#F4F9ED" },
   };
 
   const renderTaskCards = (tasks) => {
@@ -163,7 +174,6 @@ const TaskList = ({ projectId }) => {
               sx={{
                 width: "100%",
                 height: "40px",
-                backgroundColor: "#EDEEF8",
                 display: "flex",
                 alignItems: "center",
                 mb: "10px",
@@ -171,67 +181,81 @@ const TaskList = ({ projectId }) => {
             >
               <CardContent style={{ display: "flex", alignItems: "center" }}>
                 <ContentPasteIcon style={{ color: "#3F51B5", paddingRight: "5px" }} />
-                <Typography variant="body2" display="block" align="left" color="#212B36">
+                <Typography variant="body1" display="block" align="left" color="#637381">
                   Pending
                 </Typography>
               </CardContent>
             </Card>
-            <Droppable droppableId="Pending" type="task">
-              {(provided) => (
-                <div ref={provided.innerRef} {...provided.droppableProps}>
-                  {tasksOfProject.length > 0 &&
-                    renderTaskCards(tasksOfProject.filter((task) => task.status === "Pending"))}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-            {user.role === "Manager" && (
-              <Card
-                className={isHovered ? "task-card-hovered" : "task-card"}
-                sx={{
-                  mb: "10px",
-                  width: "100%",
-                  height: "40px",
-                  position: "relative",
-                  textAlign: "center",
-                  alignItems: "center",
-                  display: "flex",
-                  justifyContent: "center",
-                  backgroundColor: "#FFF",
-                }}
-                onMouseEnter={handleHover}
-                onMouseLeave={handleLeave}
-                onClick={handleTaskClick}
-              >
-                <AddIcon fontSize="small" sx={{ color: "#212B36" }} />
-                <Typography variant="body2" display="block" align="center" color="#212B36">
-                  Task
-                </Typography>
-              </Card>
-            )}
-            {showForm && (
-              <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-                <FTextField name="name" fullWidth required placeholder="Task's name" />
-                <FTextField name="description" fullWidth required placeholder="Task's description" />
-                <FTextField
-                  type="datetime-local"
-                  name="deadline"
-                  sx={{ width: 1, mb: "20px" }}
-                  inputProps={{ min: currentDateTime }}
-                />
+            <Droppable droppableId="Pending">
+              {(provided, snapshot) => (
                 <Box
                   sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "flex-end",
+                    backgroundColor: snapshot.isDraggingOver ? droppableStyles.Pending : "transparent",
+                    height: "100%",
+                    width: "100%",
+                    borderRadius: "8px",
                   }}
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
                 >
-                  <LoadingButton type="submit" variant="contained" size="small" loading={isSubmitting || isLoading}>
-                    Create Task
-                  </LoadingButton>
+                  {tasksOfProject.length > 0 &&
+                    renderTaskCards(tasksOfProject.filter((task) => task.status === "Pending"))}
+
+                  {user.role === "Manager" && (
+                    <Card
+                      className={isHovered ? "task-card-hovered" : "task-card"}
+                      sx={{
+                        mb: "10px",
+                        width: "100%",
+                        height: "40px",
+                        position: "relative",
+                        textAlign: "center",
+                        alignItems: "center",
+                        display: "flex",
+                        justifyContent: "center",
+                        backgroundColor: "#FFF",
+                      }}
+                      onMouseEnter={handleHover}
+                      onMouseLeave={handleLeave}
+                      onClick={handleTaskClick}
+                    >
+                      <AddIcon fontSize="small" sx={{ color: "#212B36" }} />
+                      <Typography variant="body2" display="block" align="center" color="#212B36">
+                        Task
+                      </Typography>
+                    </Card>
+                  )}
+                  {showForm && (
+                    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+                      <FTextField name="name" fullWidth required placeholder="Task's name" />
+                      <FTextField name="description" fullWidth required placeholder="Task's description" />
+                      <FTextField
+                        type="datetime-local"
+                        name="deadline"
+                        sx={{ width: 1, mb: "20px" }}
+                        inputProps={{ min: currentDateTime }}
+                      />
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "flex-end",
+                        }}
+                      >
+                        <LoadingButton
+                          type="submit"
+                          variant="contained"
+                          size="small"
+                          loading={isSubmitting || isLoading}
+                        >
+                          Create Task
+                        </LoadingButton>
+                      </Box>
+                    </FormProvider>
+                  )}
                 </Box>
-              </FormProvider>
-            )}
+              )}
+            </Droppable>
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
@@ -239,7 +263,6 @@ const TaskList = ({ projectId }) => {
               sx={{
                 width: "100%",
                 height: "40px",
-                backgroundColor: "#FFFDEC",
                 display: "flex",
                 alignItems: "center",
                 mb: "10px",
@@ -247,18 +270,26 @@ const TaskList = ({ projectId }) => {
             >
               <CardContent style={{ display: "flex", alignItems: "center" }}>
                 <AssignmentIcon style={{ color: "#F1C93B", paddingRight: "5px" }} />
-                <Typography variant="body2" display="block" align="left" color="#212B36">
+                <Typography variant="body1" display="block" align="left" color="#637381">
                   Working
                 </Typography>
               </CardContent>
             </Card>
-            <Droppable droppableId="Working" type="task">
-              {(provided) => (
-                <div ref={provided.innerRef} {...provided.droppableProps}>
+            <Droppable droppableId="Working">
+              {(provided, snapshot) => (
+                <Box
+                  sx={{
+                    backgroundColor: snapshot.isDraggingOver ? droppableStyles.Working : "transparent",
+                    height: "100%",
+                    width: "100%",
+                    borderRadius: "8px",
+                  }}
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                >
                   {tasksOfProject.length > 0 &&
                     renderTaskCards(tasksOfProject.filter((task) => task.status === "Working"))}
-                  {provided.placeholder}
-                </div>
+                </Box>
               )}
             </Droppable>
           </Grid>
@@ -268,7 +299,6 @@ const TaskList = ({ projectId }) => {
               sx={{
                 width: "100%",
                 height: "40px",
-                backgroundColor: "#E6F9FB",
                 display: "flex",
                 alignItems: "center",
                 mb: "10px",
@@ -276,18 +306,26 @@ const TaskList = ({ projectId }) => {
             >
               <CardContent style={{ display: "flex", alignItems: "center" }}>
                 <ContentPasteSearchIcon style={{ color: "#00BCD4", paddingRight: "5px" }} />
-                <Typography variant="body2" display="block" align="left" color="#212B36">
+                <Typography variant="body1" display="block" align="left" color="#637381">
                   Review
                 </Typography>
               </CardContent>
             </Card>
-            <Droppable droppableId="Review" type="task">
-              {(provided) => (
-                <div ref={provided.innerRef} {...provided.droppableProps}>
+            <Droppable droppableId="Review">
+              {(provided, snapshot) => (
+                <Box
+                  sx={{
+                    backgroundColor: snapshot.isDraggingOver ? droppableStyles.Review : "transparent",
+                    height: "100%",
+                    width: "100%",
+                    borderRadius: "8px",
+                  }}
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                >
                   {tasksOfProject.length > 0 &&
                     renderTaskCards(tasksOfProject.filter((task) => task.status === "Review"))}
-                  {provided.placeholder}
-                </div>
+                </Box>
               )}
             </Droppable>
           </Grid>
@@ -297,7 +335,6 @@ const TaskList = ({ projectId }) => {
               sx={{
                 width: "100%",
                 height: "40px",
-                backgroundColor: "#F4F9ED",
                 display: "flex",
                 alignItems: "center",
                 mb: "10px",
@@ -305,18 +342,26 @@ const TaskList = ({ projectId }) => {
             >
               <CardContent style={{ display: "flex", alignItems: "center" }}>
                 <AssignmentTurnedInIcon style={{ color: "#8BC34A", paddingRight: "5px" }} />
-                <Typography variant="body2" display="block" align="left" color="#212B36">
+                <Typography variant="body1" display="block" align="left" color="#637381">
                   Done
                 </Typography>
               </CardContent>
             </Card>
-            <Droppable droppableId="Done" type="task">
-              {(provided) => (
-                <div ref={provided.innerRef} {...provided.droppableProps}>
+            <Droppable droppableId="Done">
+              {(provided, snapshot) => (
+                <Box
+                  sx={{
+                    backgroundColor: snapshot.isDraggingOver ? droppableStyles.Done : "transparent",
+                    height: "100%",
+                    width: "100%",
+                    borderRadius: "8px",
+                  }}
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                >
                   {tasksOfProject.length > 0 &&
                     renderTaskCards(tasksOfProject.filter((task) => task.status === "Done"))}
-                  {provided.placeholder}
-                </div>
+                </Box>
               )}
             </Droppable>
           </Grid>
