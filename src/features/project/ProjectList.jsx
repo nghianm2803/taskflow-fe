@@ -13,7 +13,6 @@ import {
   Modal,
   Button,
   Fade,
-  alpha,
 } from "@mui/material";
 import SearchInput from "../../components/SearchInput";
 import ProjectCard from "./ProjectCard";
