@@ -28,6 +28,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { sendInvitation } from "../user/userSlice";
 import useAuth from "../../hooks/useAuth";
 
+import TextField from "@mui/material/TextField";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+
 function ProjectList() {
   const [page, setPage] = useState(1);
   const [name, setName] = useState("");
@@ -36,6 +43,16 @@ function ProjectList() {
   const totalPage = useSelector((state) => state.project.totalPages);
   const isLoading = useSelector((state) => state.project.isLoading);
   const { user } = useAuth();
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const dispatch = useDispatch();
 
@@ -123,10 +140,7 @@ function ProjectList() {
         justifyContent="space-between"
         alignItems="center"
       >
-        <Box display="flex"
-          flexDirection="row"
-          justifyContent="flex-start"
-          alignItems="center">
+        <Box display="flex" flexDirection="row" justifyContent="flex-start" alignItems="center">
           <Box mb={5} mr={1}>
             <SearchInput handleOnSubmit={handleOnSubmit} />
           </Box>
@@ -136,44 +150,59 @@ function ProjectList() {
             </Button>
           </Box>
         </Box>
-        {user.role === "Manager" ? (<Box mb={5} mr={2}>
-          <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-            <Box display="flex"
-              flexDirection="row"
-              justifyContent="flex-start"
-              alignItems="center">
-              <FTextField
-                name="email"
-                fullWidth
-                label="Add member"
-                placeholder="Enter email..."
-                size="small"
-                sx={{
-                  "& fieldset": {
-                    marginRight: "10px"
-                  },
-                }}
-              />
-              <LoadingButton
-                type="submit"
-                variant="contained"
-                color="primary"
-                loading={isSubmitting || isLoading}
-              >
-                Add
-              </LoadingButton>
-            </Box>
-          </FormProvider>
-        </Box>) : ""}
+        {user.role === "Manager" ? (
+          <Box mb={5} mr={2}>
+            <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+              <Box display="flex" flexDirection="row" justifyContent="flex-start" alignItems="center">
+                <FTextField
+                  name="email"
+                  fullWidth
+                  label="Add member"
+                  placeholder="Enter email..."
+                  size="small"
+                  sx={{
+                    "& fieldset": {
+                      marginRight: "10px",
+                    },
+                  }}
+                />
+                <LoadingButton type="submit" variant="contained" color="primary" loading={isSubmitting || isLoading}>
+                  Add
+                </LoadingButton>
+              </Box>
+            </FormProvider>
+            {/* <Button variant="outlined" onClick={handleClickOpen}>
+              Open form dialog
+            </Button>
+            <Dialog open={open} onClose={handleClose}>
+              <DialogTitle>Add member</DialogTitle>
+              <DialogContent>
+                <DialogContentText>
+                  Send invitation to member's email
+                </DialogContentText>
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  id="name"
+                  label="Email Address"
+                  type="email"
+                  fullWidth
+                  variant="standard"
+                />
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose}>Cancel</Button>
+                <Button onClick={handleClose}>Add</Button>
+              </DialogActions>
+            </Dialog> */}
+          </Box>
+        ) : (
+          ""
+        )}
       </Stack>
       {projects ? (
         <>
-          <Grid
-            container
-            direction="row"
-            spacing={3}
-            columns={{ xs: 12, sm: 8, md: 12 }}
-          >
+          <Grid container direction="row" spacing={3} columns={{ xs: 12, sm: 8, md: 12 }}>
             {projects?.map((project) => (
               <Grid item xs={12} sm={4} md={4} key={project._id}>
                 <ProjectCard key={project._id} project={project} />
@@ -244,12 +273,7 @@ function ProjectList() {
             </Grid>
           </Grid>
           <Stack spacing={2} mt={5} mb={1} justifyContent="center" alignItems="center">
-            <Pagination
-              count={totalPage}
-              variant="outlined"
-              shape="rounded"
-              onChange={handleChange}
-            />
+            <Pagination count={totalPage} variant="outlined" shape="rounded" onChange={handleChange} />
           </Stack>
         </>
       ) : (
