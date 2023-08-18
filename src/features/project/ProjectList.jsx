@@ -20,20 +20,9 @@ import ProjectForm from "./ProjectForm";
 import LoadingScreen from "../../components/LoadingScreen";
 import "./projectcard.css";
 import { Link } from "react-router-dom";
-import { FTextField, FormProvider } from "../../components/form";
-import { LoadingButton } from "@mui/lab";
-import { useForm } from "react-hook-form";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { sendInvitation } from "../user/userSlice";
 import useAuth from "../../hooks/useAuth";
 
-import TextField from "@mui/material/TextField";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
+import AddMember from "./AddMember";
 
 function ProjectList() {
   const [page, setPage] = useState(1);
@@ -41,16 +30,15 @@ function ProjectList() {
   const [isHovered, setIsHovered] = useState(false);
   const projects = useSelector((state) => state.project.project);
   const totalPage = useSelector((state) => state.project.totalPages);
-  const isLoading = useSelector((state) => state.project.isLoading);
   const { user } = useAuth();
 
   const [open, setOpen] = React.useState(false);
 
-  const handleClickOpen = () => {
+  const handleAddMember = () => {
     setOpen(true);
   };
 
-  const handleClose = () => {
+  const handleCloseAddMember = () => {
     setOpen(false);
   };
 
@@ -88,30 +76,6 @@ function ProjectList() {
       })
     );
   }, [dispatch, page, name]);
-
-  const yupSchema = yup.object().shape({
-    email: yup.string().email("Invalid email").required("Email is required"),
-  });
-
-  const defaultValues = {
-    email: "",
-  };
-
-  const methods = useForm({
-    resolver: yupResolver(yupSchema),
-    defaultValues,
-  });
-  const {
-    handleSubmit,
-    reset,
-    formState: { isSubmitting },
-  } = methods;
-
-  const onSubmit = (data) => {
-    dispatch(sendInvitation(data)).then(() => {
-      reset();
-    });
-  };
 
   return (
     <Container
@@ -152,49 +116,10 @@ function ProjectList() {
         </Box>
         {user.role === "Manager" ? (
           <Box mb={5} mr={2}>
-            <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-              <Box display="flex" flexDirection="row" justifyContent="flex-start" alignItems="center">
-                <FTextField
-                  name="email"
-                  fullWidth
-                  label="Add member"
-                  placeholder="Enter email..."
-                  size="small"
-                  sx={{
-                    "& fieldset": {
-                      marginRight: "10px",
-                    },
-                  }}
-                />
-                <LoadingButton type="submit" variant="contained" color="primary" loading={isSubmitting || isLoading}>
-                  Add
-                </LoadingButton>
-              </Box>
-            </FormProvider>
-            {/* <Button variant="outlined" onClick={handleClickOpen}>
-              Open form dialog
+            <Button variant="outlined" onClick={handleAddMember}>
+              Add member
             </Button>
-            <Dialog open={open} onClose={handleClose}>
-              <DialogTitle>Add member</DialogTitle>
-              <DialogContent>
-                <DialogContentText>
-                  Send invitation to member's email
-                </DialogContentText>
-                <TextField
-                  autoFocus
-                  margin="dense"
-                  id="name"
-                  label="Email Address"
-                  type="email"
-                  fullWidth
-                  variant="standard"
-                />
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleClose}>Cancel</Button>
-                <Button onClick={handleClose}>Add</Button>
-              </DialogActions>
-            </Dialog> */}
+            <AddMember open={open} handleClose={handleCloseAddMember} />
           </Box>
         ) : (
           ""
