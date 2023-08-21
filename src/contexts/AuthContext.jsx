@@ -15,6 +15,7 @@ const REGISTER_SUCCESS = "AUTH.REGISTER_SUCCESS";
 const SETUP_ACCOUNT_SUCCESS = "AUTH.SETUP_ACCOUNT_SUCCESS";
 const LOGOUT = "AUTH.LOGOUT";
 const UPDATE_PROFILE = "AUTH.UPDATE_PROFILE";
+const RESET_PASSWORD = "AUTH.RESET_PASSWORD";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -39,6 +40,12 @@ const reducer = (state, action) => {
         user: action.payload.user,
       };
     case SETUP_ACCOUNT_SUCCESS:
+      return {
+        ...state,
+        isAuthenticated: true,
+        user: action.payload.user,
+      };
+    case RESET_PASSWORD:
       return {
         ...state,
         isAuthenticated: true,
@@ -122,8 +129,7 @@ function AuthProvider({ children }) {
   }, []);
 
   useEffect(() => {
-    if (updatedProfile)
-      dispatch({ type: UPDATE_PROFILE, payload: updatedProfile });
+    if (updatedProfile) dispatch({ type: UPDATE_PROFILE, payload: updatedProfile });
   }, [updatedProfile]);
 
   const login = async ({ email, password }, callback) => {
@@ -157,19 +163,42 @@ function AuthProvider({ children }) {
   };
 
   const setupAccount = async ({ name, email, password, role, token }, callback) => {
-    const response = await apiService.post("/auth/setup-account", {
-      name,
-      email,
-      password,
-      role,
-    }, {
-      params: { token },
-    });
+    const response = await apiService.post(
+      "/auth/setup-account",
+      {
+        name,
+        email,
+        password,
+        role,
+      },
+      {
+        params: { token },
+      }
+    );
 
     const { user, accessToken } = response.data.data;
     setSession(accessToken);
     dispatch({
       type: SETUP_ACCOUNT_SUCCESS,
+      payload: { user },
+    });
+
+    callback();
+  };
+
+  const resetPassword = async ({ password, resetToken }, callback) => {
+    const response = await apiService.put(
+      "/auth/reset-password",
+      { password },
+      {
+        params: { resetToken },
+      }
+    );
+
+    const { user, accessToken } = response.data.data;
+    setSession(accessToken);
+    dispatch({
+      type: RESET_PASSWORD,
       payload: { user },
     });
 
@@ -189,6 +218,7 @@ function AuthProvider({ children }) {
         login,
         register,
         setupAccount,
+        resetPassword,
         logout,
       }}
     >

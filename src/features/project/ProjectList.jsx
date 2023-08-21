@@ -108,22 +108,22 @@ function ProjectList() {
           <Box mb={5} mr={1}>
             <SearchInput handleOnSubmit={handleOnSubmit} />
           </Box>
-          <Box mb={5}>
+          <Box mb={5} mr={1}>
             <Button variant="contained" component={Link} to="/tasks/mytasks">
               My Tasks
             </Button>
-          </Box>
+          </Box>{" "}
+          {user.role === "Manager" ? (
+            <Box mb={5}>
+              <Button variant="outlined" onClick={handleAddMember}>
+                Add member
+              </Button>
+              <AddMember open={open} handleClose={handleCloseAddMember} />
+            </Box>
+          ) : (
+            ""
+          )}
         </Box>
-        {user.role === "Manager" ? (
-          <Box mb={5} mr={2}>
-            <Button variant="outlined" onClick={handleAddMember}>
-              Add member
-            </Button>
-            <AddMember open={open} handleClose={handleCloseAddMember} />
-          </Box>
-        ) : (
-          ""
-        )}
       </Stack>
       {projects ? (
         <>
