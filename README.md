@@ -88,7 +88,6 @@ With TaskFlow, managing tasks becomes a breeze. Its user-friendly interface requ
 
 [![Mailgun.com](https://img.shields.io/badge/Mailgun-20232A?style=for-the-badge&logo=mailgun)](https://app.mailgun.com/)
 
-
 ## Getting Started
 
 ### Installation
@@ -105,7 +104,7 @@ With TaskFlow, managing tasks becomes a breeze. Its user-friendly interface requ
    ```
 3. Make an `.env` file using this template below
    ```js
-   REACT_APP_BASE_URL = "http://localhost:3000"
+   REACT_APP_BASE_URL = "http://localhost:3000";
    ```
 4. Run the server on your local:
    ```sh
@@ -115,6 +114,7 @@ With TaskFlow, managing tasks becomes a breeze. Its user-friendly interface requ
 ## Usage
 
 As a manager, I can:
+
 - Create an account and log in/ out of Taskflow
 - Invite new team members to set up their account
 - Create, edit or delete project
@@ -133,6 +133,7 @@ As a manager, I can:
 - Get notification about new comment on the task I already commented
 
 As a employee, I can:
+
 - Set up an account and log in/ out of Taskflow after receive invitation link from email
 - Search project by name
 - View tasks of a project by name, status or priority
@@ -181,18 +182,19 @@ Tasks:
 - Employee can update the status of their assigned task as they progress
 
 Comments
+
 - User can see a list of comments on a task
 - User can write a comment on a task
 - User can update their comment
 - User can delete their comment
 
 Notifications
+
 - Employee can get notification when manager assign a new task to them
 - Employee can get notification when others member comment on their task
 - User can get notification when others member comment on the task that they already commented
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 ### API Endpoints
 
@@ -206,9 +208,30 @@ Auth APIs
 ```
 
 ```
+@route POST /auth/invitation
+@description Manager send invitation to employee's email
+@body { email }
+@access Manager
+```
+
+```
 @route POST /auth/setup-account
 @description Employee setup account to joins the team with the invitation link
 @body { email, password, role }
+@access Public
+```
+
+```
+@route POST /auth/forget-password
+@description User send reset password request to user's email
+@body { email }
+@access Public
+```
+
+```
+@route PUT /auth/reset-password
+@description User reset password
+@body { password }
 @access Public
 ```
 
@@ -279,7 +302,6 @@ Projects APIs
 @access Manager
 ```
 
-
 Tasks APIs
 
 ```
@@ -333,6 +355,7 @@ Tasks APIs
 @description Add or remove a task to project
 @access Login
 ```
+
 ```
 @route GET /tasks/:taskId/comments
 @description Get comments of a task
@@ -360,7 +383,6 @@ Comments APIs
 @description Delete a comment
 @access Login required
 ```
-
 
 Notifications APIs
 
