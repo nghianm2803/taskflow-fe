@@ -20,6 +20,7 @@ function HomePage() {
         justifyContent="space-between"
         alignItems="center"
         padding="10px"
+        data-testid="home-page"
       >
         <Box p="10px">
           <Typography variant="h2" mb={5} color="primary" fontWeight="bold">

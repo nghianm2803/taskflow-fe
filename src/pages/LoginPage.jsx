@@ -62,7 +62,7 @@ function LoginPage() {
   };
 
   return (
-    <Container maxWidth="xs">
+    <Container maxWidth="xs"  data-testid="login-page">
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={3}>
           {!!errors.responseError && (
