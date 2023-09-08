@@ -5,13 +5,13 @@ import store from "../app/store";
 import "@testing-library/jest-dom/extend-expect";
 
 
-test("Taskflow App", () => {
+it("Taskflow App", () => {
   render(
     <Provider store={store}>
       <App />
     </Provider>
   );
-  const linkElement = screen.getByText(/Login/i);
-  expect(linkElement).toBeInTheDocument();
+  const buttonElement = screen.getByText(/login/i);
+  expect(buttonElement).toBeInTheDocument();
 });
 
