@@ -18,7 +18,6 @@ function ProjectCard({ project }) {
     navigate(`/projects/${projectId}`);
   };
 
-  const [isHovered, setIsHovered] = useState(false);
   const [randomIndex, setRandomIndex] = useState(0);
 
   useEffect(() => {
@@ -26,19 +25,11 @@ function ProjectCard({ project }) {
     setRandomIndex(newIndex);
   }, []);
 
-  const handleHover = () => {
-    setIsHovered(true);
-  };
-
-  const handleLeave = () => {
-    setIsHovered(false);
-  };
-
   return (
     <>
       {project && (
         <Card
-          className={isHovered ? "project-card-hovered" : "project-card"}
+          className="project-card"
           sx={{
             width: 350,
             height: "100%",
@@ -47,8 +38,6 @@ function ProjectCard({ project }) {
             backgroundImage: `url(${projectImages[randomIndex]})`,
             cursor: "pointer",
           }}
-          onMouseEnter={handleHover}
-          onMouseLeave={handleLeave}
           onClick={handleExplore}
         >
           <CardContent

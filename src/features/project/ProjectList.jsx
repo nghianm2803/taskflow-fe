@@ -27,7 +27,6 @@ import AddMember from "./AddMember";
 function ProjectList() {
   const [page, setPage] = useState(1);
   const [name, setName] = useState("");
-  const [isHovered, setIsHovered] = useState(false);
   const projects = useSelector((state) => state.project.project);
   const totalPage = useSelector((state) => state.project.totalPages);
   const { user } = useAuth();
@@ -43,14 +42,6 @@ function ProjectList() {
   };
 
   const dispatch = useDispatch();
-
-  const handleHover = () => {
-    setIsHovered(true);
-  };
-
-  const handleLeave = () => {
-    setIsHovered(false);
-  };
 
   const handleOnSubmit = (name) => {
     setName(name);
@@ -136,7 +127,7 @@ function ProjectList() {
 
             <Grid item xs={12} sm={4} md={4}>
               <Card
-                className={isHovered ? "project-card-hovered" : "project-card"}
+                className="project-card"
                 sx={{
                   width: 350,
                   height: "100%",
@@ -144,8 +135,6 @@ function ProjectList() {
                   overflow: "hidden",
                   backgroundColor: "#D2B48C",
                 }}
-                onMouseEnter={handleHover}
-                onMouseLeave={handleLeave}
               >
                 <CardContent
                   style={{
