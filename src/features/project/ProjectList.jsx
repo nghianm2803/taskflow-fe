@@ -159,7 +159,7 @@ function ProjectList() {
 
                     justifyContent: "center",
                     alignItems: "center",
-                    color: "#52796F",
+                    color: "#523D56",
                     fontSize: "1.5rem",
                     borderRadius: "10px",
                     cursor: "pointer",

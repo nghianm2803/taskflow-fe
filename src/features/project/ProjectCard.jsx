@@ -1,7 +1,14 @@
 import { Box, Card, CardContent, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./projectcard.css";
+import cover_1 from "../../assets/cover_1.jpeg";
+import cover_2 from "../../assets/cover_2.jpeg";
+import cover_3 from "../../assets/cover_3.jpeg";
+import cover_4 from "../../assets/cover_4.jpeg";
+import cover_5 from "../../assets/cover_5.jpeg";
+
+const projectImages = [cover_1, cover_2, cover_3, cover_4, cover_5];
 
 function ProjectCard({ project }) {
   const navigate = useNavigate();
@@ -12,6 +19,12 @@ function ProjectCard({ project }) {
   };
 
   const [isHovered, setIsHovered] = useState(false);
+  const [randomIndex, setRandomIndex] = useState(0);
+
+  useEffect(() => {
+    const newIndex = Math.floor(Math.random() * projectImages.length);
+    setRandomIndex(newIndex);
+  }, []);
 
   const handleHover = () => {
     setIsHovered(true);
@@ -31,7 +44,7 @@ function ProjectCard({ project }) {
             height: "100%",
             position: "relative",
             overflow: "hidden",
-            backgroundColor: "#FAEDCD",
+            backgroundImage: `url(${projectImages[randomIndex]})`,
             cursor: "pointer",
           }}
           onMouseEnter={handleHover}
@@ -53,19 +66,10 @@ function ProjectCard({ project }) {
           >
             <Box>
               <Box>
-                <Typography
-                  variant="h5"
-                  gutterBottom
-                  fontWeight="bold"
-                  color="#52796F"
-                >
+                <Typography variant="h5" gutterBottom fontWeight="bold" color="#523D56">
                   {project?.name}
                 </Typography>
-                <Typography
-                  variant="subtitle1"
-                  color="textSecondary"
-                  gutterBottom
-                >
+                <Typography variant="subtitle1" fontWeight="bold" gutterBottom color="#523D56">
                   {project?.description}
                 </Typography>
               </Box>
