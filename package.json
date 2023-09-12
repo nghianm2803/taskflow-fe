@@ -73,5 +73,9 @@
     "moduleNameMapper": {
       "axios": "axios/dist/node/axios.cjs"
     }
+  },
+  "overrides": {
+    "got": "^12.1.0",
+    "semver": "^7.5.4"
   }
 }
