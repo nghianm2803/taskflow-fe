@@ -90,7 +90,7 @@ function SingleProject() {
               }}
             >
               <ProjectHeader project={project} />
-              {user.role === "Manager" ? (
+              {user.role === "Manager" || user.role === "Admin" ? (
                 <Box>
                   <IconButton onClick={handleDialogOpen}>
                     <MoreVertIcon fontSize="medium" />

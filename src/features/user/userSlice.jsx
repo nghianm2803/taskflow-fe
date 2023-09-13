@@ -8,6 +8,7 @@ const initialState = {
   error: null,
   updatedProfile: null,
   user: null,
+  users: [],
 };
 
 const slice = createSlice({
@@ -26,7 +27,8 @@ const slice = createSlice({
       state.isLoading = false;
       state.error = null;
       const { users, totalPages, count } = action.payload.data;
-      state.user = users;
+      users.forEach((user) => (state.users[user._id] = user));
+      state.users = users;
       state.count = count;
       state.totalPages = totalPages;
     },
@@ -60,7 +62,6 @@ export const getUsers =
       const response = await apiService.get(`/users`, {
         params,
       });
-
       dispatch(slice.actions.getUsersSuccess(response.data));
     } catch (error) {
       console.error("Error occurred during API request:", error);

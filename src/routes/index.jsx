@@ -9,12 +9,12 @@ import SetupAccountPage from "../pages/SetupAccountPage";
 import ForgetPassword from "../pages/ForgetPassword";
 import ResetPassword from "../pages/ResetPassword";
 import NotFoundPage from "../pages/NotFoundPage";
-import UserProfilePage from "../pages/UserProfilePage";
 import AuthRequire from "./AuthRequire";
 import Profile from "../features/user/Profile";
 import ProjectList from "../features/project/ProjectList";
 import SingleProject from "../features/project/SingleProject";
 import MyTasks from "../features/task/MyTasks";
+import Dashboard from "../features/user/Dashboard";
 
 function Router() {
   return (
@@ -31,7 +31,6 @@ function Router() {
         <Route path="/projects" element={<ProjectList />} />
         <Route path="/projects/:id" element={<SingleProject />} />
         <Route path="/tasks/mytasks" element={<MyTasks />} />
-        <Route path="users/:userId" element={<UserProfilePage />} />
         <Route
           path="/me"
           element={
@@ -40,6 +39,7 @@ function Router() {
             </AuthRequire>
           }
         />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Route>
 
       <Route element={<BlankLayout />}>

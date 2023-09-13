@@ -104,7 +104,7 @@ function ProjectList() {
               My Tasks
             </Button>
           </Box>{" "}
-          {user.role === "Manager" ? (
+          {user.role === "Manager" || user.role === "Admin" ? (
             <Box mb={5}>
               <Button variant="outlined" onClick={handleAddMember}>
                 Add member

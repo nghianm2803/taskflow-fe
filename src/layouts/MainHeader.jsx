@@ -29,7 +29,7 @@ import {
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import DoneAllIcon from '@mui/icons-material/DoneAll';
+import DoneAllIcon from "@mui/icons-material/DoneAll";
 import LoadingScreen from "../components/LoadingScreen";
 
 function MainHeader() {
@@ -41,14 +41,11 @@ function MainHeader() {
   const [notificationEl, setNotificationEl] = React.useState(null);
   const [notifiDialog, setnotifiDialog] = useState(false);
 
-
   const [anchorEl, setAnchorEl] = React.useState(null);
   const isMenuOpen = Boolean(anchorEl);
 
   const dispatch = useDispatch();
-  const notifications = useSelector(
-    (state) => state.notification.notifications
-  );
+  const notifications = useSelector((state) => state.notification.notifications);
   const totalPage = useSelector((state) => state.notification.totalPage);
   const count = useSelector((state) => state.notification.count);
   const unreadCount = useSelector((state) => state.notification.unreadCount);
@@ -141,21 +138,19 @@ function MainHeader() {
         </Typography>
       </Box>
       <Divider sx={{ borderStyle: "dashed" }} />
-      <MenuItem
-        onClick={handleMenuClose}
-        to="/me"
-        component={RouterLink}
-        sx={{ mx: 1 }}
-      >
+      {user.role === "Admin" ? (
+        <MenuItem onClick={handleMenuClose} to="/dashboard" component={RouterLink} sx={{ mx: 1 }}>
+          Dashboard
+        </MenuItem>
+      ) : (
+        ""
+      )}
+      <Divider sx={{ borderStyle: "dashed" }} />
+      <MenuItem onClick={handleMenuClose} to="/me" component={RouterLink} sx={{ mx: 1 }}>
         My Profile
       </MenuItem>
       <Divider sx={{ borderStyle: "dashed" }} />
-      <MenuItem
-        onClick={handleMenuClose}
-        to="/tasks/mytasks"
-        component={RouterLink}
-        sx={{ mx: 1 }}
-      >
+      <MenuItem onClick={handleMenuClose} to="/tasks/mytasks" component={RouterLink} sx={{ mx: 1 }}>
         My Task
       </MenuItem>
       <Divider sx={{ borderStyle: "dashed" }} />
@@ -169,44 +164,58 @@ function MainHeader() {
     <Box sx={{ mb: 8 }}>
       <AppBar position="fixed">
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            sx={{ mr: 2 }}
-          >
+          <IconButton size="large" edge="start" color="inherit" aria-label="open drawer" sx={{ mr: 2 }}>
             <Logo />
           </IconButton>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ display: { xs: "none", sm: "block" } }}
-          >
+          <Typography variant="h6" noWrap component="div" sx={{ display: { xs: "none", sm: "block" } }}>
             Taskflow
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
           {theme.palette.mode === "dark" ? (
-            <Button variant="primary" onClick={toggleTheme} sx={{
-              width: "40px", height: "40px", borderRadius: "20px"
-            }}>
-              <LightModeIcon sx={{
-                cursor: "pointer", color: "#FFF",
-              }} />
+            <Button
+              variant="primary"
+              onClick={toggleTheme}
+              sx={{
+                width: "40px",
+                height: "40px",
+                borderRadius: "20px",
+              }}
+            >
+              <LightModeIcon
+                sx={{
+                  cursor: "pointer",
+                  color: "#FFF",
+                }}
+              />
             </Button>
           ) : (
-            <Button variant="primary" onClick={toggleTheme} sx={{
-              width: "40px", height: "40px", borderRadius: "20px"
-            }}>
-              <DarkModeIcon sx={{
-                cursor: "pointer", color: "#000"
-              }} />
+            <Button
+              variant="primary"
+              onClick={toggleTheme}
+              sx={{
+                width: "40px",
+                height: "40px",
+                borderRadius: "20px",
+              }}
+            >
+              <DarkModeIcon
+                sx={{
+                  cursor: "pointer",
+                  color: "#000",
+                }}
+              />
             </Button>
           )}
-          <Button variant="primary" onClick={handlePopoverNoti} sx={{
-            width: "40px", height: "40px", borderRadius: "20px", marginRight: "10px",
-          }}>
+          <Button
+            variant="primary"
+            onClick={handlePopoverNoti}
+            sx={{
+              width: "40px",
+              height: "40px",
+              borderRadius: "20px",
+              marginRight: "10px",
+            }}
+          >
             <Badge badgeContent={unreadCount} color="error">
               <NotificationsIcon color="#fff" />
             </Badge>
@@ -239,25 +248,41 @@ function MainHeader() {
           width: 400,
         }}
       >
-        <Stack direction="row"
+        <Stack
+          direction="row"
           alignItems={{ sm: "center" }}
           justifyContent="space-between"
           sx={{ mb: 0.5 }}
-          position="relative">
-          <Typography variant="h5" color="primary" sx={{
-            fontWeight: "bold",
-            justifyContent: "center",
-            padding: 2,
-          }}>Notifications</Typography>
-          <Button variant="primary" onClick={handleReadAll} sx={{
-            width: "40px", height: "40px", borderRadius: "20px",
-          }}>
+          position="relative"
+        >
+          <Typography
+            variant="h5"
+            color="primary"
+            sx={{
+              fontWeight: "bold",
+              justifyContent: "center",
+              padding: 2,
+            }}
+          >
+            Notifications
+          </Typography>
+          <Button
+            variant="primary"
+            onClick={handleReadAll}
+            sx={{
+              width: "40px",
+              height: "40px",
+              borderRadius: "20px",
+            }}
+          >
             <DoneAllIcon />
           </Button>
         </Stack>
         <Divider />
         <Stack style={{ minHeight: 200, width: 350 }} alignItems="center" p={1}>
-          {isLoading ? <LoadingScreen /> : (
+          {isLoading ? (
+            <LoadingScreen />
+          ) : (
             <NotificationCard
               notifications={notifications}
               totalPage={totalPage}
@@ -268,7 +293,7 @@ function MainHeader() {
           )}
         </Stack>
       </Popover>
-    </Box >
+    </Box>
   );
 }
 

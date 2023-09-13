@@ -36,8 +36,7 @@ const TaskDetail = ({ task, onClose }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
-  const userList = useSelector((state) => state.user.user);
-  const userCount = useSelector((state) => state.user.count);
+  const { users, count } = useSelector((state) => state.user);
 
   const descriptionRef = useRef(null);
   const nameRef = useRef(null);
@@ -45,8 +44,8 @@ const TaskDetail = ({ task, onClose }) => {
   const currentDateTime = fDeadline(new Date());
 
   useEffect(() => {
-    dispatch(getUsers({ page: 1, limit: userCount, name: searchQuery }));
-  }, [dispatch, searchQuery, userCount]);
+    dispatch(getUsers({ page: 1, limit: count, name: searchQuery }));
+  }, [dispatch, searchQuery, count]);
 
   useEffect(() => {
     dispatch(getSingleTask(detailTask._id));
@@ -436,7 +435,7 @@ const TaskDetail = ({ task, onClose }) => {
                 >
                   <Typography variant="body2">Assignee</Typography>
                   <Autocomplete
-                    options={userList ?? []}
+                    options={users ?? []}
                     getOptionLabel={(user) => user.name}
                     value={detailTask.assignTo ? detailTask.assignTo : null}
                     isOptionEqualToValue={isOptionEqualToValue}

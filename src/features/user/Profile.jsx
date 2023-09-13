@@ -114,11 +114,7 @@ function Profile() {
               <Stack spacing={3} alignItems="flex-end" sx={{ mt: 3 }}>
                 <FTextField name="role" label="Role" disabled />
 
-                <LoadingButton
-                  type="submit"
-                  variant="contained"
-                  loading={isSubmitting || isLoading}
-                >
+                <LoadingButton type="submit" variant="contained" loading={isSubmitting || isLoading}>
                   Save Changes
                 </LoadingButton>
               </Stack>
