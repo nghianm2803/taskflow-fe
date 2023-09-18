@@ -9,7 +9,6 @@ const initialState = {
   project: [],
   updatedProject: {},
   currentPageProjects: [],
-
   currentPagePosts: [],
 };
 
@@ -24,7 +23,7 @@ const slice = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     },
-    getProjectSuccess(state, action) {
+    getProjectsSuccess(state, action) {
       state.isLoading = false;
       state.error = null;
       const { projects, totalPages, count } = action.payload.data;
@@ -75,7 +74,7 @@ export const getProjects =
           params,
         });
 
-        dispatch(slice.actions.getProjectSuccess(response.data));
+        dispatch(slice.actions.getProjectsSuccess(response.data));
       } catch (error) {
         dispatch(slice.actions.hasError(error.message));
         toast.error(error.message);
