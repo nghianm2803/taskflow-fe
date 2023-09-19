@@ -41,14 +41,13 @@ function Router() {
         />
         <Route path="/dashboard" element={<Dashboard />} />
       </Route>
-
+      <Route path="*" element={<NotFoundPage />} />
       <Route element={<BlankLayout />}>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/setup-account" element={<SetupAccountPage />} />
         <Route path="/forget-password" element={<ForgetPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
   );
