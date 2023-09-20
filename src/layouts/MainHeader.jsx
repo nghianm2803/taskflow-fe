@@ -26,11 +26,10 @@ import {
   readAllNotifications,
   readNotification,
 } from "../features/notification/notificationSlice";
-import DarkModeIcon from "@mui/icons-material/DarkMode";
-import LightModeIcon from "@mui/icons-material/LightMode";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 import LoadingScreen from "../components/LoadingScreen";
+import ThemeToggle from "./ThemeToggle";
 
 function MainHeader() {
   const { user, logout } = useAuth();
@@ -171,41 +170,7 @@ function MainHeader() {
             Taskflow
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
-          {theme.palette.mode === "dark" ? (
-            <Button
-              variant="primary"
-              onClick={toggleTheme}
-              sx={{
-                width: "40px",
-                height: "40px",
-                borderRadius: "20px",
-              }}
-            >
-              <LightModeIcon
-                sx={{
-                  cursor: "pointer",
-                  color: "#FFF",
-                }}
-              />
-            </Button>
-          ) : (
-            <Button
-              variant="primary"
-              onClick={toggleTheme}
-              sx={{
-                width: "40px",
-                height: "40px",
-                borderRadius: "20px",
-              }}
-            >
-              <DarkModeIcon
-                sx={{
-                  cursor: "pointer",
-                  color: "#000",
-                }}
-              />
-            </Button>
-          )}
+          <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
           <Button
             variant="primary"
             onClick={handlePopoverNoti}
