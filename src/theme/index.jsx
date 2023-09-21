@@ -1,10 +1,6 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useState, useContext, useEffect } from "react";
 import { CssBaseline } from "@mui/material";
-import {
-  alpha,
-  createTheme,
-  ThemeProvider as MUIThemeProvider,
-} from "@mui/material/styles";
+import { alpha, createTheme, ThemeProvider as MUIThemeProvider } from "@mui/material/styles";
 import customizeComponents from "./customization";
 
 const PRIMARY_LIGHT = {
@@ -107,8 +103,14 @@ export function useThemeContext() {
 }
 
 function ThemeProvider({ children }) {
-  const [isDarkTheme, setIsDarkTheme] = useState(false);
+  const [isDarkTheme, setIsDarkTheme] = useState(() => {
+    const storedTheme = localStorage.getItem("theme");
+    return storedTheme === "dark";
+  });
 
+  useEffect(() => {
+    localStorage.setItem("theme", isDarkTheme ? "dark" : "light");
+  }, [isDarkTheme]);
   const toggleTheme = () => {
     setIsDarkTheme((prev) => !prev);
   };
@@ -159,13 +161,11 @@ function ThemeProvider({ children }) {
 
   const theme = createTheme(isDarkTheme ? darkThemeOptions : lightThemeOptions);
   theme.components = customizeComponents(theme);
-  const themeContextValue = { theme, toggleTheme };
+  const themeContextValue = { theme, isDarkTheme, toggleTheme };
   return (
     <MUIThemeProvider theme={theme}>
       <CssBaseline />
-      <ThemeContext.Provider value={themeContextValue}>
-        {children}
-      </ThemeContext.Provider>
+      <ThemeContext.Provider value={themeContextValue}>{children}</ThemeContext.Provider>
     </MUIThemeProvider>
   );
 }

@@ -1,10 +1,13 @@
 import React from "react";
 import "./themestyle.css";
+import { useThemeContext } from "../theme";
 
 function ThemeToggle({ toggleTheme }) {
+  const { isDarkTheme } = useThemeContext();
+  console.log("isDarkTheme:", isDarkTheme)
   return (
     <label id="theme-toggle-button" onClick={toggleTheme}>
-      <input type="checkbox" id="toggle" style={{ display: "none" }} />
+      <input type="checkbox" id="toggle" style={{ display: "none" }} checked={isDarkTheme} />
       <svg
         viewBox="0 0 69.667 44"
         xmlnsXlink="http://www.w3.org/1999/xlink"

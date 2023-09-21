@@ -34,8 +34,7 @@ import ThemeToggle from "./ThemeToggle";
 function MainHeader() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-
-  const { toggleTheme, theme } = useThemeContext();
+  const { toggleTheme } = useThemeContext();
 
   const [notificationEl, setNotificationEl] = React.useState(null);
   const [notifiDialog, setnotifiDialog] = useState(false);
@@ -170,7 +169,7 @@ function MainHeader() {
             Taskflow
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
-          <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+          <ThemeToggle toggleTheme={toggleTheme} />
           <Button
             variant="primary"
             onClick={handlePopoverNoti}
